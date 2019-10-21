@@ -1,1 +1,1 @@
-enum Category { book, kitchen }
+enum Category { book, kitchen, stationery, electronic }
