@@ -3,6 +3,7 @@ import './category.dart';
 
 class Ad {
   final String _title;
+  final String _idStr;
   final Category _category;
   final String _username;
   final List<String> _picturesUrl;
@@ -13,6 +14,7 @@ class Ad {
   final String _locationAsNumber;
 
   String get title => _title;
+  String get idStr => _idStr;
   Category get category => _category;
   String get username => _username;
   List<String> get picturesUrl => _picturesUrl;
@@ -24,6 +26,7 @@ class Ad {
 
   Ad(
       {@required title,
+      @required idStr,
       @required category,
       @required username,
       @required picturesUrl,
@@ -33,6 +36,7 @@ class Ad {
       @required email,
       @required locationAsNumber})
       : _title = title,
+        _idStr = idStr,
         _category = category,
         _username = username,
         _picturesUrl = picturesUrl,
