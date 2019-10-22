@@ -1,3 +1,7 @@
 class BadParameterException implements Exception {
-  String errMsg() => 'The request doesn\'t have the requested parameters';
+  final String errorMessage;
+  BadParameterException([this.errorMessage]);
+
+  String errMsg() =>
+      errorMessage ?? 'The request doesn\'t have the requested parameters';
 }

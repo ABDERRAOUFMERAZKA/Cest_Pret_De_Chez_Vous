@@ -2,25 +2,43 @@ import 'package:meta/meta.dart';
 import './category.dart';
 
 class Ad {
-  final String title;
-  final Category category;
-  final String username;
-  final List<String> picturesUrl;
-  final List<String> keyWords;
-  final String description;
-  final String phoneNumber;
-  final String email;
-  final String locationAsNumber;
+  final String _title;
+  final Category _category;
+  final String _username;
+  final List<String> _picturesUrl;
+  final List<String> _keyWords;
+  final String _description;
+  final String _phoneNumber;
+  final String _email;
+  final String _locationAsNumber;
 
-  Ad({
-    @required this.title,
-    @required this.category,
-    @required this.username,
-    @required this.picturesUrl,
-    @required this.keyWords,
-    @required this.description,
-    @required this.phoneNumber,
-    @required this.email,
-    @required this.locationAsNumber,
-  });
+  String get title => _title;
+  Category get category => _category;
+  String get username => _username;
+  List<String> get picturesUrl => _picturesUrl;
+  List<String> get keyWords => _keyWords;
+  String get description => _description;
+  String get phoneNumber => _phoneNumber;
+  String get email => _email;
+  String get locationAsNumber => _locationAsNumber;
+
+  Ad(
+      {@required title,
+      @required category,
+      @required username,
+      @required picturesUrl,
+      @required keyWords,
+      @required description,
+      @required phoneNumber,
+      @required email,
+      @required locationAsNumber})
+      : _title = title,
+        _category = category,
+        _username = username,
+        _picturesUrl = picturesUrl,
+        _keyWords = keyWords,
+        _description = description,
+        _phoneNumber = phoneNumber,
+        _email = email,
+        _locationAsNumber = locationAsNumber;
 }
