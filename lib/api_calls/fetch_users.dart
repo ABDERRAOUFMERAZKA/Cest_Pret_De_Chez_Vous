@@ -1,7 +1,7 @@
 part of './api_calls.dart';
 
 class FetchUsers {
-  static User fetchUser({@required String login}) {
+  static Future<User> fetchUser({@required String login}) async {
     return users.firstWhere((User user) => user.login == login);
   }
 }
