@@ -11,7 +11,7 @@ class Ad {
   final String _description;
   final String _phoneNumber;
   final String _email;
-  final String _locationAsNumber;
+  final String _locationAsNumberString;
 
   String get title => _title;
   String get idStr => _idStr;
@@ -22,7 +22,7 @@ class Ad {
   String get description => _description;
   String get phoneNumber => _phoneNumber;
   String get email => _email;
-  String get locationAsNumber => _locationAsNumber;
+  String get locationAsNumberString => _locationAsNumberString;
 
   Ad(
       {@required title,
@@ -34,7 +34,7 @@ class Ad {
       @required description,
       @required phoneNumber,
       @required email,
-      @required locationAsNumber})
+      @required locationAsNumberString})
       : _title = title,
         _idStr = idStr,
         _category = category,
@@ -44,5 +44,5 @@ class Ad {
         _description = description,
         _phoneNumber = phoneNumber,
         _email = email,
-        _locationAsNumber = locationAsNumber;
+        _locationAsNumberString = locationAsNumberString;
 }

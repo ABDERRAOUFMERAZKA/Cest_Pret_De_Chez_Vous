@@ -3,9 +3,10 @@ part of './api_calls.dart';
 class FetchAds {
   /// fetch function for home screen
   /// returns latest ads in provided location
-  static Future<List<Ad>> loadHome({@required String locationAsNumber}) async {
+  static Future<List<Ad>> loadHome(
+      {@required String locationAsNumberString}) async {
     return dummyListOfAds
-        .where((Ad ad) => ad.locationAsNumber == locationAsNumber);
+        .where((Ad ad) => ad.locationAsNumberString == locationAsNumberString);
   }
 
   /// fetch function for search screen
@@ -13,9 +14,9 @@ class FetchAds {
   static Future<List<Ad>> search(
       {@required Category category,
       @required List<String> keyWords,
-      @required String locationAsNumber}) async {
+      @required String locationAsNumberString}) async {
     return dummyListOfAds.where((Ad ad) =>
-        (ad.locationAsNumber == locationAsNumber) &&
+        (ad.locationAsNumberString == locationAsNumberString) &&
         ad.keyWords.contains(keyWords) &&
         ad.category == category);
   }

@@ -21,7 +21,7 @@ final List<Ad> dummyListOfAds = [
       description: "this first ad is about giving away my first book : Nemo.",
       phoneNumber: null,
       email: "dummy@email.com",
-      locationAsNumber: "92"),
+      locationAsNumberString: "92"),
   Ad(
       title: "My second 92 Ad",
       idStr: "BCD",
@@ -33,7 +33,7 @@ final List<Ad> dummyListOfAds = [
           "I am giving away my golden fork because I don\'t need it anymore",
       phoneNumber: "0658237812",
       email: null,
-      locationAsNumber: "92"),
+      locationAsNumberString: "92"),
   Ad(
       title: "My third 92 Ad",
       idStr: "CDE",
@@ -44,7 +44,7 @@ final List<Ad> dummyListOfAds = [
       description: "I have a blue pen, but I only use my computer now",
       phoneNumber: "0658237812",
       email: null,
-      locationAsNumber: "92"),
+      locationAsNumberString: "92"),
   Ad(
       title: "My fourth 92 Ad",
       idStr: "DEF",
@@ -56,7 +56,7 @@ final List<Ad> dummyListOfAds = [
           "I recently bought an iPhone, so I won\'t be needing this charger anymore.",
       phoneNumber: "0658237812",
       email: null,
-      locationAsNumber: "92"),
+      locationAsNumberString: "92"),
   Ad(
       title: "My first 78 Ad",
       idStr: "EFG",
@@ -67,7 +67,7 @@ final List<Ad> dummyListOfAds = [
       description: "Book for children : Jason and the Argonautes",
       phoneNumber: null,
       email: "dummy@email.com",
-      locationAsNumber: "78"),
+      locationAsNumberString: "78"),
   Ad(
       title: "My second 78 Ad",
       idStr: "FGH",
@@ -78,7 +78,7 @@ final List<Ad> dummyListOfAds = [
       description: "I have a sliver spoon, not where you think.",
       phoneNumber: "0658237812",
       email: null,
-      locationAsNumber: "78"),
+      locationAsNumberString: "78"),
   Ad(
       title: "My third 78 Ad",
       idStr: "GHI",
@@ -89,7 +89,7 @@ final List<Ad> dummyListOfAds = [
       description: "giving away my red scissors, right and left-handed",
       phoneNumber: "0658237812",
       email: null,
-      locationAsNumber: "78"),
+      locationAsNumberString: "78"),
   Ad(
       title: "My fourth 78 Ad",
       idStr: "HIJ",
@@ -100,7 +100,7 @@ final List<Ad> dummyListOfAds = [
       description: "I am gluten intolerant and don\'t need this toaster.",
       phoneNumber: "0658237812",
       email: null,
-      locationAsNumber: "78"),
+      locationAsNumberString: "78"),
   Ad(
       title: "My first 95 Ad",
       idStr: "IJK",
@@ -112,7 +112,7 @@ final List<Ad> dummyListOfAds = [
           "I am giving my Naruto collection i was disappointed by the end :(",
       phoneNumber: null,
       email: "dummy@email.com",
-      locationAsNumber: "95"),
+      locationAsNumberString: "95"),
   Ad(
       title: "My second 95 Ad",
       idStr: "JKL",
@@ -123,7 +123,7 @@ final List<Ad> dummyListOfAds = [
       description: "Titanium knife, very useful for cutting Fish",
       phoneNumber: "0658237812",
       email: null,
-      locationAsNumber: "95"),
+      locationAsNumberString: "95"),
   Ad(
       title: "My third 95 Ad",
       idStr: "KLM",
@@ -135,7 +135,7 @@ final List<Ad> dummyListOfAds = [
           "do you need paper for your printing machine ? I have a whole stack !",
       phoneNumber: "0658237812",
       email: null,
-      locationAsNumber: "95"),
+      locationAsNumberString: "95"),
   Ad(
       title: "My fourth 95 Ad",
       idStr: "LMN",
@@ -146,7 +146,7 @@ final List<Ad> dummyListOfAds = [
       description: "these airpods are very good, but I like cables (?)",
       phoneNumber: "0658237812",
       email: null,
-      locationAsNumber: "95"),
+      locationAsNumberString: "95"),
 ];
 
 final List<User> users = [
