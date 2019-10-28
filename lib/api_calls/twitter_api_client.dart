@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:cest_pret_de_chez_vous/api_calls.dart';
 import 'package:cest_pret_de_chez_vous/models/ad.dart';
 import 'package:cest_pret_de_chez_vous/models/category.dart';
 import 'package:oauth1/oauth1.dart';
+
+import './api_calls.dart';
 
 class TwitterApiClient extends Client {
   TwitterApiClient(
