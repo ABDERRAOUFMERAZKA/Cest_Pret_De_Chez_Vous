@@ -1,1 +1,1 @@
-export '../src/Search/Search.dart' show Search;
+export '../src/search/search.dart' show Search;
