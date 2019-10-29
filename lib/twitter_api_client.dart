@@ -1,1 +1,1 @@
-export './api_calls/twitter_api_client.dart';
+export './twitter_api_client/twitter_api_client.dart';
