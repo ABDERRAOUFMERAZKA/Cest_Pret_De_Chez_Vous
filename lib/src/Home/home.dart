@@ -16,16 +16,17 @@ class Home extends StatelessWidget {
                 title: Text('Aléatoire annonce'),
                 subtitle: Text('Annonce by UserName. publiée le 10/10/19.'),
               ),
-              ButtonTheme( // make buttons use the appropriate styles for cards
+              ButtonTheme(
+                // make buttons use the appropriate styles for cards
                 child: ButtonBar(
                   children: <Widget>[
                     FlatButton(
                       child: const Text('VOIR DETAILS'),
-                      onPressed: () { /* ... */ },
+                      onPressed: () {/* ... */},
                     ),
                     FlatButton(
                       child: const Text('Ajouter Au favoris'),
-                      onPressed: () { /* ... */ },
+                      onPressed: () {/* ... */},
                     ),
                   ],
                 ),
