@@ -1,28 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'dart:io';
+import '../../../LoginValue.dart';
 import '../../../styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class Login extends StatelessWidget {
-  // twitter Login
+import 'package:oauth1/oauth1.dart' as oauth1;
+
+
+class Login extends StatefulWidget{
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+class _LoginPageState extends State<Login>{
+  //State Variables
+  bool isVerifier = false;
+  String verifier;
+  var apiResponse;
+
+  static final apiKey = 'qZ8WnBdJDDuZua3v94FHWJeku';
+  static final apiSecret = 'sDJpmmo6zxx4eDvfQYeFnJchW32K0V1OKO0QlUC2ZUsQWVKr93';
+  var platform = new oauth1.Platform(
+      'https://api.twitter.com/oauth/request_token', // temporary credentials request
+      'https://api.twitter.com/oauth/authorize',     // resource owner authorization
+      'https://api.twitter.com/oauth/access_token',  // token credentials request
+      oauth1.SignatureMethods.hmacSha1              // signature method
+  );
+
+  var clientCredentials = new oauth1.ClientCredentials(apiKey, apiSecret);
+
+  void _confirm() async {
+    var auth = new oauth1.Authorization(clientCredentials, platform);
+    try {
+      var tokens =
+      await auth.requestTokenCredentials(apiResponse.credentials, verifier);
+      var client = new oauth1.Client(platform.signatureMethod, clientCredentials, tokens.credentials);
+      if (verifier != '') {
+        await client.get('https://api.twitter.com/1.1/statuses/home_timeline.json?count=1').then((res) {
+          Provider.of<LoginValue>(context, listen : false).updateIsLogged(true);
+        });
+      }
+
+      // NOTE: you can get optional values from AuthorizationResponse object
+      print("Your screen name is " + apiResponse.optionalParameters['screen_name']);
+    } on StateError {
+       print('error state');
+    }
+  }
+
+  void _login() async {
+    var auth = new oauth1.Authorization(clientCredentials, platform);
+    // request temporary credentials (request tokens)
+    auth.requestTemporaryCredentials('oob').then((res) {
+      // redirect to authorization page
+       var newUrl =  auth.getResourceOwnerAuthorizationURI(res.credentials.token);
+       launch(newUrl);
+
+      // get verifier (PIN)
+       setState(() { isVerifier = true; });
+       setState(() { apiResponse = res; });
+
+
+      // request token credentials (access tokens)
+    }).then((res) {
+      print('hello');
+    });
+}
+
+  void _onChangeVer(String verif) {
+    setState(() => verifier = verif);
+  }
+
 
   Widget build(BuildContext context) {
-    final emailField = TextField(
-      obscureText: false,
-      style: Styles.mediumText,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Email Or Twitter UserName",
-          border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
-    final passwordField = TextField(
-      obscureText: true,
-      style: Styles.mediumText,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password",
-          border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    );
     final loginButon = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -30,12 +80,22 @@ class Login extends StatelessWidget {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
-        child: Text("Login",
+          onPressed: isVerifier ? _confirm : _login,
+        child: Text( isVerifier ? "Confirm" : "login",
             textAlign: TextAlign.center,
             style: Styles.mediumText.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
+    );
+
+    final virifierField = TextField(
+      obscureText: false,
+      onChanged: _onChangeVer,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Verifier",
+          border:
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
 
     return Scaffold(
@@ -57,17 +117,18 @@ class Login extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-                SizedBox(height: 35.0),
-                emailField,
-                SizedBox(height: 15.0),
-                passwordField,
                 SizedBox(
                   height: 25.0,
+                ),
+                if(isVerifier) virifierField,
+                SizedBox(
+                  height: 15.0,
                 ),
                 loginButon,
                 SizedBox(
                   height: 15.0,
                 ),
+
               ],
             ),
           ),

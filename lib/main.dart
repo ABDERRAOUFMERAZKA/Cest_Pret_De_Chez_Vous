@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import './Navigation/Navigation.dart';
+import './Welcome.dart';
+import './LoginValue.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return MaterialApp(
-      home: Tabs(),
+    return ChangeNotifierProvider(
+        builder: (context) => LoginValue(),
+    child:MaterialApp(
+      home: Welcome(),
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
         accentColor: Colors.white,
@@ -19,6 +22,6 @@ class MyApp extends StatelessWidget {
               color: Colors.cyanAccent),
         ),
       ),
-    );
+    ));
   }
 }
