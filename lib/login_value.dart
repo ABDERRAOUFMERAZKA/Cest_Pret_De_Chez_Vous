@@ -1,3 +1,4 @@
+import 'package:cest_pret_de_chez_vous/twitter_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:oauth1/oauth1.dart';
 
@@ -13,7 +14,7 @@ class LoginValue with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateClient(Client client) {
+  void updateClient(TwitterApiClient client) {
     this._client = client;
   }
 }

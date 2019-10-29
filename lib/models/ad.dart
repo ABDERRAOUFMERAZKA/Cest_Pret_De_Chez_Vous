@@ -52,7 +52,7 @@ class Ad {
         _email = email,
         _locationAsNumberString = locationAsNumberString;
 
-  factory Ad.fromJson(Map<String, dynamic> json, User user) {
+  factory Ad.fromJsonAndUser(Map<String, dynamic> json, User user) {
     return Ad(
       title: json[''],
       idStr: json[''],

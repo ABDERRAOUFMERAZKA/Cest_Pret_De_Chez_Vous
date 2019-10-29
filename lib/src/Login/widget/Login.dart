@@ -1,3 +1,4 @@
+import 'package:cest_pret_de_chez_vous/twitter_api_client/twitter_api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../login_value.dart';
@@ -77,7 +78,7 @@ class _LoginPageState extends State<Login> {
       var tokens = (await auth.requestTokenCredentials(apiResponse, verifier))
           .credentials;
 
-      var definitiveClient = new oauth1.Client(
+      var definitiveClient = new TwitterApiClient(
           platform.signatureMethod, clientCredentials, tokens);
 
       Provider.of<LoginValue>(context, listen: false).updateIsLogged(true);
