@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../login_value.dart';
 
 class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    logOut() {
+      Provider.of<LoginValue>(context, listen: false).updateIsLogged(false);
+      Provider.of<LoginValue>(context, listen: false).updateClient(null);
+    }
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
@@ -40,7 +46,7 @@ class Menu extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.exit_to_app),
           title: Text('Logout'),
-          onTap: () {/* ... */},
+          onTap: () => logOut(),
         )
       ],
     );
