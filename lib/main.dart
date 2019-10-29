@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './Welcome.dart';
-import './LoginValue.dart';
+import './login_value.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -10,18 +10,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         builder: (context) => LoginValue(),
-    child:MaterialApp(
-      home: Welcome(),
-      theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
-        accentColor: Colors.white,
-        textTheme: TextTheme(
-          title: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.cyanAccent),
-        ),
-      ),
-    ));
+        child: MaterialApp(
+          home: Welcome(),
+          theme: ThemeData(
+            primarySwatch: Colors.deepOrange,
+            accentColor: Colors.white,
+            textTheme: TextTheme(
+              title: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.cyanAccent),
+            ),
+          ),
+        ));
   }
 }

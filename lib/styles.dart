@@ -8,7 +8,6 @@ class Styles {
   static final Color _textColorDefault = _hexToColor('666666');
   static final String _fontNameDefault = 'GlacialIndifference';
 
-
   static final navBarTitle = TextStyle(
     fontFamily: _fontNameDefault,
     fontWeight: FontWeight.w700,
@@ -17,8 +16,7 @@ class Styles {
   static final inputStyle = InputDecoration(
       contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
       hintText: "Password",
-      border:
-      OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)));
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)));
 
   static final mediumText = TextStyle(
     fontSize: _textSizeMedium,

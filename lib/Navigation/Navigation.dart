@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../styles.dart';
 
-import '../src/Home.dart';
-import '../src/Favorite.dart';
-import '../src/Search.dart';
-import '../src/MyAd.dart';
-import '../src/Menu.dart';
+import '../src/home.dart';
+import '../src/favorite.dart';
+import '../src/search.dart';
+import '../src/my_ad.dart';
+import '../src/menu.dart';
 
 class Tabs extends StatefulWidget {
   @override

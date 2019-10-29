@@ -1,1 +1,1 @@
-export '../src/Home/Home.dart' show Home;
+export '../src/home/home.dart' show Home;
