@@ -1,8 +1,12 @@
 import 'package:cest_pret_de_chez_vous/models/user.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
 import './category.dart';
 
+part 'ad.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Ad {
   final String _title;
   final String _idStr;
@@ -52,12 +56,28 @@ class Ad {
         _email = email,
         _locationAsNumberString = locationAsNumberString;
 
-  factory Ad.fromJsonAndUser(Map<String, dynamic> json, User user) {
+  factory Ad.fromJson(Map<String, dynamic> json) => Ad(
+      title: json['title'],
+      idStr: json['idStr'],
+      category: getCategoryFromString(json['category']),
+      user: User.fromJson(json['user']),
+      createdAt: json['createdAt'],
+      picturesUrl: json['picturesUrl'],
+      keyWords: json['keyWords'],
+      description: json['description'],
+      phoneNumber: json['phoneNumber'],
+      email: json['email'],
+      locationAsNumberString: json['locationAsNumberString']);
+
+  Map<String, dynamic> toJson() => _$AdToJson(this);
+
+  /*factory Ad.fromJsonAndUser(
+      Map<String, dynamic> json, Map<String, dynamic> user) {
     return Ad(
       title: json[''],
       idStr: json[''],
       category: json[''],
-      user: user,
+      user: User.fromJson(user),
       createdAt: DateTime.parse(json['']),
       picturesUrl: json[''],
       keyWords: json[''],
@@ -66,5 +86,5 @@ class Ad {
       email: json[''],
       locationAsNumberString: json[''],
     );
-  }
+  }*/
 }
