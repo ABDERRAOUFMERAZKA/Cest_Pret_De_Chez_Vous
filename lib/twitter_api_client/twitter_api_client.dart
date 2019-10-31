@@ -27,5 +27,12 @@ class TwitterApiClient extends Client {
     return listOfAds;
   }
 
-  void postNewAd(Ad ad) {}
+  void postNewAd(Ad ad) {
+    var params = _getParamsFromAd(ad);
+    Uri url =
+        Uri.parse("https://api.twitter.com/1.1/statuses/update.json?$params");
+    print(url.toString());
+    var response = super.post(url);
+    print(response.toString());
+  }
 }

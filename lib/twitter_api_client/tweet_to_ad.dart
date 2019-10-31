@@ -4,7 +4,6 @@ Map<String, dynamic> _getInfoFromTweetText(String tweetText) {
   Map<String, dynamic> mapOfInfo = new Map();
   RegExp titleRegExp = new RegExp(r'^\*\*(.*)\*\*');
   RegExp categoryRegExp = new RegExp(r'__(.*)__');
-  RegExp keywordRegExp = new RegExp(r'#(.*) ');
   RegExp locationRegExp = new RegExp(r'\/\/location: (.*)\/\/');
 
   mapOfInfo['title'] = titleRegExp.firstMatch(tweetText).group(0);

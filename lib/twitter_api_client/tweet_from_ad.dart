@@ -5,9 +5,14 @@ String _getTweetTextFromJson(String title, String category,
   return "\*\*$title\*\*\n__$category\_\_\n${keywords.join(' ')}\n\/\/$locationAsNumberString\/\/\n$description";
 }
 
-Map<String, dynamic> _getTweetFromAd(Ad ad) {
-  Map<String, dynamic> tweetMap = new Map();
-  tweetMap['text'] = _getTweetTextFromJson(ad.title, ad.category.toString(),
+String _getParamsFromAd(Ad ad) {
+  String paramsAsString = "";
+  String tweetText = _getTweetTextFromJson(ad.title, ad.category.toString(),
       ad.keyWords, ad.locationAsNumberString, ad.description);
-  return tweetMap;
+  paramsAsString += "status:$tweetText";
+  if (ad.picturesUrl != null) {
+    String picturesUrlAsString = ad.picturesUrl.join(',');
+    paramsAsString += "&media_urls:$picturesUrlAsString";
+  }
+  return paramsAsString;
 }
