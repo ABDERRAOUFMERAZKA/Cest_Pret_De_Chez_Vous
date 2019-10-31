@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../login_value.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Menu extends StatelessWidget {
   @override
+
+  void _testDataBase() {
+    Firestore.instance.collection('books').document()
+        .setData({ 'title': 'title', 'author': 'author' });
+  }
   Widget build(BuildContext context) {
     logOut() {
       Provider.of<LoginValue>(context, listen: false).updateIsLogged(false);
@@ -22,7 +28,7 @@ class Menu extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.history),
           title: Text('Historique'),
-          onTap: () {/* ... */},
+          onTap: _testDataBase,
         ),
         Divider(
           height: 2.0,
