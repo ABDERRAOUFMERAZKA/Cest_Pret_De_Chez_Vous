@@ -1,12 +1,12 @@
-import 'package:cest_pret_de_chez_vous/models/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
 import './category.dart';
+import './user.dart';
 
 part 'ad.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable(includeIfNull: false, explicitToJson: true)
 class Ad {
   final String _title;
   final String _idStr;
@@ -16,8 +16,6 @@ class Ad {
   final List<String> _picturesUrl;
   final List<String> _keyWords;
   final String _description;
-  final String _phoneNumber;
-  final String _email;
   final String _locationAsNumberString;
 
   String get title => _title;
@@ -28,8 +26,6 @@ class Ad {
   List<String> get picturesUrl => _picturesUrl;
   List<String> get keyWords => _keyWords;
   String get description => _description;
-  String get phoneNumber => _phoneNumber;
-  String get email => _email;
   String get locationAsNumberString => _locationAsNumberString;
 
   Ad(
@@ -41,8 +37,6 @@ class Ad {
       @required picturesUrl,
       @required keyWords,
       @required description,
-      @required phoneNumber,
-      @required email,
       @required locationAsNumberString})
       : _title = title,
         _idStr = idStr,
@@ -52,9 +46,9 @@ class Ad {
         _picturesUrl = picturesUrl,
         _keyWords = keyWords,
         _description = description,
-        _phoneNumber = phoneNumber,
-        _email = email,
         _locationAsNumberString = locationAsNumberString;
+
+  //factory Ad.fromJson(Map<String, dynamic> json) => _$AdFromJson(json);
 
   factory Ad.fromJson(Map<String, dynamic> json) => Ad(
       title: json['title'],
@@ -65,26 +59,7 @@ class Ad {
       picturesUrl: json['picturesUrl'],
       keyWords: json['keyWords'],
       description: json['description'],
-      phoneNumber: json['phoneNumber'],
-      email: json['email'],
       locationAsNumberString: json['locationAsNumberString']);
 
   Map<String, dynamic> toJson() => _$AdToJson(this);
-
-  /*factory Ad.fromJsonAndUser(
-      Map<String, dynamic> json, Map<String, dynamic> user) {
-    return Ad(
-      title: json[''],
-      idStr: json[''],
-      category: json[''],
-      user: User.fromJson(user),
-      createdAt: DateTime.parse(json['']),
-      picturesUrl: json[''],
-      keyWords: json[''],
-      description: json[''],
-      phoneNumber: json[''],
-      email: json[''],
-      locationAsNumberString: json[''],
-    );
-  }*/
 }
