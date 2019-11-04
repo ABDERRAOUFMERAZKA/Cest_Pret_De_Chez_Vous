@@ -29,10 +29,10 @@ class _TabsState extends State<Tabs> {
       'icon_name': 'Favorite',
     },
     {
-      'title': 'Search',
+      'title': 'Add',
       'body': Search(),
-      'icon': Icons.search,
-      'icon_name': 'Search',
+      'icon': Icons.add,
+      'icon_name': 'Add',
     },
     {
       'title': 'MyAd',
