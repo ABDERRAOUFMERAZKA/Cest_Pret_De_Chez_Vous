@@ -1,40 +1,78 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+import '../../styles.dart';
+
+class Home extends StatefulWidget {
   @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<Home> {
+  String selected = 'Cat1';
+  var keyWords = [];
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) => Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const ListTile(
-                leading: Icon(Icons.notifications_active),
-                title: Text('Aléatoire annonce'),
-                subtitle: Text('Annonce by UserName. publiée le 10/10/19.'),
-              ),
-              ButtonTheme(
-                // make buttons use the appropriate styles for cards
-                child: ButtonBar(
-                  children: <Widget>[
-                    FlatButton(
-                      child: const Text('VOIR DETAILS'),
-                      onPressed: () {/* ... */},
-                    ),
-                    FlatButton(
-                      child: const Text('Ajouter Au favoris'),
-                      onPressed: () {/* ... */},
-                    ),
-                  ],
-                ),
-              ),
-            ],
+      padding: EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text('Categorie', style: Styles.mediumText),
+          SizedBox(
+            height: 15.0,
           ),
-        ),
-      ),
-    );
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7.0),
+                border: Border.all(color: Colors.deepOrange)),
+            child: DropdownButton<String>(
+              isExpanded: true,
+              items:  <String>['Cat1', 'Cat2', 'Cat3', 'Cat4'].map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value, ),
+                );
+              }).toList(),
+              value: selected,
+              onChanged: (String value) {
+                setState(() {
+                  selected = value;
+                });
+              },
+            ),
+          ),
+          SizedBox(
+            height: 15.0,
+          ),
+          Text('Mots-Clefs', style: Styles.mediumText),
+          SizedBox(
+            height: 15.0,
+          ),
+          TextField(
+            maxLines: 8,
+            decoration: InputDecoration(hintText: "Tapez les mots clefs ici..", border: OutlineInputBorder(),
+              labelText: 'Mots Clefs'),
+          ),
+          SizedBox(
+            height: 15.0,
+          ),
+          Material(
+            elevation: 5.0,
+            borderRadius: BorderRadius.circular(30.0),
+            color: Colors.deepOrange,
+            child: MaterialButton(
+              minWidth: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+              onPressed: () => {},
+              child: Text('Search',
+                  textAlign: TextAlign.center,
+                  style: Styles.mediumText.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+            ),
+          )
+      ],
+    ));
   }
 }
