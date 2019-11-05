@@ -1,7 +1,7 @@
 part of './twitter_api.dart';
 
-_getTweetTextFromJson(String title, String category, List<String> keywords,
-    String locationAsNumberString, String description) {
+String _getTweetTextFromJson(String title, String category,
+    List<String> keywords, String locationAsNumberString, String description) {
   return "[$title]\n__$category\__\n${keywords.join(' ')}\n//$locationAsNumberString\//\n$description";
 }
 
