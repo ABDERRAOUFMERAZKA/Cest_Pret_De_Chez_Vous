@@ -1,11 +1,9 @@
-import 'package:cest_pret_de_chez_vous/twitter_api_client/twitter_api_client.dart';
+import 'package:cest_pret_de_chez_vous/twitter_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../login_value.dart';
 import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'package:oauth1/oauth1.dart' as oauth1;
 
 class Login extends StatefulWidget {
   @override
@@ -39,19 +37,8 @@ class _LoginPageState extends State<Login> {
     super.dispose();
   }
 
-  static final apiKey = 'qZ8WnBdJDDuZua3v94FHWJeku';
-  static final apiSecret = 'sDJpmmo6zxx4eDvfQYeFnJchW32K0V1OKO0QlUC2ZUsQWVKr93';
-  var platform = new oauth1.Platform(
-      'https://api.twitter.com/oauth/request_token', // temporary credentials request
-      'https://api.twitter.com/oauth/authorize', // resource owner authorization
-      'https://api.twitter.com/oauth/access_token', // token credentials request
-      oauth1.SignatureMethods.hmacSha1 // signature method
-      );
-
-  var clientCredentials = new oauth1.ClientCredentials(apiKey, apiSecret);
-
   void _login() async {
-    var auth = new oauth1.Authorization(clientCredentials, platform);
+    var auth = new TwitterApiAuthorization();
     // request temporary credentials (request tokens)
     var credentials =
         (await auth.requestTemporaryCredentials('oob')).credentials;
@@ -72,14 +59,13 @@ class _LoginPageState extends State<Login> {
   }
 
   void _confirm() async {
-    var auth = new oauth1.Authorization(clientCredentials, platform);
+    var auth = new TwitterApiAuthorization();
     print("verifier: $verifier");
     try {
       var tokens = (await auth.requestTokenCredentials(apiResponse, verifier))
           .credentials;
 
-      var definitiveClient = new TwitterApiClient(
-          platform.signatureMethod, clientCredentials, tokens);
+      var definitiveClient = new TwitterApiClient(tokens);
 
       Provider.of<LoginValue>(context, listen: false).updateIsLogged(true);
       Provider.of<LoginValue>(context, listen: false)

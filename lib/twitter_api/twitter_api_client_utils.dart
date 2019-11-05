@@ -1,4 +1,4 @@
-part of './twitter_api_client.dart';
+part of './twitter_api.dart';
 
 Uri _getCollectionUrlFromCategoryAndLocation() {
   return (Uri.parse(

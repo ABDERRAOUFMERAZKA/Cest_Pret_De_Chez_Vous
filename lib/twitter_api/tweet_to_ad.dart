@@ -1,4 +1,4 @@
-part of './twitter_api_client.dart';
+part of './twitter_api.dart';
 
 Map<String, dynamic> _getInfoFromTweetText(String tweetText) {
   Map<String, dynamic> mapOfInfo = new Map();

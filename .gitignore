@@ -30,6 +30,9 @@
 /build/
 pubspec.lock
 
+# Config files
+*.config.dart
+
 # Web related
 lib/generated_plugin_registrant.dart
 
