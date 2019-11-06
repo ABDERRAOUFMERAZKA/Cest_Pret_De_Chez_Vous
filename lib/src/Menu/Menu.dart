@@ -13,7 +13,6 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     logOut() {
       Provider.of<LoginValue>(context, listen: false).updateIsLogged(false);
-      Provider.of<LoginValue>(context, listen: false).updateClient(null);
     }
     return ListView(
       padding: EdgeInsets.zero,
