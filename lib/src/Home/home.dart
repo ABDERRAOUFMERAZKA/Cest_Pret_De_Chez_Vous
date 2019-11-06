@@ -8,8 +8,29 @@ class Home extends StatefulWidget {
 }
 
 class _HomePageState extends State<Home> {
-  String selected = 'Cat1';
+  String category = 'Cat1';
   var keyWords = [];
+
+  final keyWordsController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    keyWordsController.addListener(_onVerifierChanged);
+  }
+
+  void _onVerifierChanged() {
+    setState(() {
+      keyWords = keyWordsController.text.split(" ");
+    });
+  }
+
+  void _search() {
+    print(keyWords);
+    print(category);
+  }
+  
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(20),
@@ -35,10 +56,10 @@ class _HomePageState extends State<Home> {
                   child: new Text(value, ),
                 );
               }).toList(),
-              value: selected,
+              value: category,
               onChanged: (String value) {
                 setState(() {
-                  selected = value;
+                  category = value;
                 });
               },
             ),
@@ -54,6 +75,8 @@ class _HomePageState extends State<Home> {
             maxLines: 8,
             decoration: InputDecoration(hintText: "Tapez les mots clefs ici..", border: OutlineInputBorder(),
               labelText: 'Mots Clefs'),
+            controller: keyWordsController,
+            onEditingComplete: _search,
           ),
           SizedBox(
             height: 15.0,
@@ -65,7 +88,7 @@ class _HomePageState extends State<Home> {
             child: MaterialButton(
               minWidth: MediaQuery.of(context).size.width,
               padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              onPressed: () => {},
+              onPressed: _search,
               child: Text('Search',
                   textAlign: TextAlign.center,
                   style: Styles.mediumText.copyWith(
