@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "944394745057",
+    "firebase_url": "https://cestpretdechezvous.firebaseio.com",
+    "project_id": "cestpretdechezvous",
+    "storage_bucket": "cestpretdechezvous.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:944394745057:android:6d5748e6786f9bde73b3a0",
+        "android_client_info": {
+          "package_name": "com.example.console"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "944394745057-kq3nr3ssik6bssh0kiu642kqr3tvka2a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfVn6UmogwCG8w4iCTwMYANDApCDkSF3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "944394745057-kq3nr3ssik6bssh0kiu642kqr3tvka2a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "944394745057-4s43e4uq57hkla7kk86794ldgvij8flr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.viseo.cestpretdechezvous"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
