@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../login_value.dart';
 import 'package:cest_pret_de_chez_vous/styles.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'package:oauth1/oauth1.dart' as oauth1;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -13,84 +11,26 @@ class Login extends StatefulWidget {
 
 class _LoginPageState extends State<Login> {
   //State Variables
-  bool isVerified = false;
-  String verifier;
-  var apiResponse;
-
-  final verifierController = TextEditingController();
+  String _email, _password;
+  bool isUserCreated = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-
-    verifierController.addListener(_onVerifierChanged);
   }
 
-  void _onVerifierChanged() {
-    setState(() {
-      verifier = verifierController.text;
-    });
-  }
-
-  @override
-  void dispose() {
-    verifierController.dispose();
-    super.dispose();
-  }
-
-  static final apiKey = 'qZ8WnBdJDDuZua3v94FHWJeku';
-  static final apiSecret = 'sDJpmmo6zxx4eDvfQYeFnJchW32K0V1OKO0QlUC2ZUsQWVKr93';
-  var platform = new oauth1.Platform(
-      'https://api.twitter.com/oauth/request_token', // temporary credentials request
-      'https://api.twitter.com/oauth/authorize', // resource owner authorization
-      'https://api.twitter.com/oauth/access_token', // token credentials request
-      oauth1.SignatureMethods.hmacSha1 // signature method
-      );
-
-  var clientCredentials = new oauth1.ClientCredentials(apiKey, apiSecret);
-
-  void _login() async {
-    var auth = new oauth1.Authorization(clientCredentials, platform);
-    // request temporary credentials (request tokens)
-    var credentials =
-        (await auth.requestTemporaryCredentials('oob')).credentials;
-
-    // redirect to authorization page
-    // TO DO deep link from distant site
-    var newUrl = auth.getResourceOwnerAuthorizationURI(credentials.token);
-    launch(newUrl);
-
-    // change state to display input text for verifier
-    setState(() {
-      isVerified = true;
-    });
-
-    setState(() {
-      apiResponse = credentials;
-    });
-  }
-
-  void _confirm() async {
-    var auth = new oauth1.Authorization(clientCredentials, platform);
-    print("verifier: $verifier");
-    try {
-      var tokens = (await auth.requestTokenCredentials(apiResponse, verifier))
-          .credentials;
-
-      var definitiveClient = new oauth1.Client(
-          platform.signatureMethod, clientCredentials, tokens);
-
-      Provider.of<LoginValue>(context, listen: false).updateIsLogged(true);
-      Provider.of<LoginValue>(context, listen: false)
-          .updateClient(definitiveClient);
-    } on StateError {
-      // TO DO handle errors
-      print('error state');
-      Provider.of<LoginValue>(context, listen: false).updateIsLogged(false);
-    } catch (e) {
-      print("unknown error");
+  String emailValidator(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Email format is invalid';
+    } else {
+      return null;
     }
   }
+
 
   Widget build(BuildContext context) {
     loginButton(String text, onPressed) => Material(
@@ -108,60 +48,121 @@ class _LoginPageState extends State<Login> {
           ),
         );
 
-    final verifierField = TextField(
-      autofocus: true,
-      controller: verifierController,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Verifier",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    final emailField = TextFormField(
       obscureText: false,
-      onEditingComplete: _confirm,
+      onSaved: (input) => _email = input.trim(),
+      validator: emailValidator,
+
+      decoration: InputDecoration(
+          icon: new Icon(
+            Icons.mail,
+            color: Colors.grey,
+          ),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Email",
+          border:
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+
+    final passwordField = TextFormField(
+      obscureText: true,
+      onSaved: (input) => _password = input,
+      validator: (input) {
+        if(input.length < 6){
+          return 'Please, Provide a password with 6 characters minimum';
+        }
+      },
+      decoration: InputDecoration(
+          icon: new Icon(
+            Icons.lock,
+            color: Colors.grey,
+          ),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Password",
+          border:
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login With Twitter Account"),
+        title: Text("Login Or Register"),
       ),
-      body: Center(
+        body: Form(
+          key: _formKey,
         child: Container(
           child: Padding(
             padding: const EdgeInsets.all(36.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 SizedBox(
+                  height: 35.0,
+                ),
+                SizedBox(
                   height: 125.0,
-                  child: Image.asset(
-                    "assets/twitter_icon.png",
-                    fit: BoxFit.contain,
-                  ),
+                  child: Icon(Icons.person, color: Colors.deepOrange, size: 150),
                 ),
                 SizedBox(
                   height: 25.0,
                 ),
-                if (isVerified) verifierField,
+                emailField,
                 SizedBox(
                   height: 15.0,
                 ),
-                isVerified
-                    ? loginButton("Confirm", _confirm)
-                    : loginButton("Login", _login),
+                passwordField,
+                SizedBox(
+                  height: 25.0,
+                ),
+                loginButton("Login", signIn),
                 SizedBox(
                   height: 15.0,
                 ),
-                if (isVerified)
-                  loginButton(
-                      "Back",
-                      () =>
-                          setState(() => {isVerified = false, verifier = ''})),
+                Text('Or', style: Styles.textDefault),
+                SizedBox(
+                  height: 5.0,
+                ),
+                loginButton("Register", Register),
+                if (isUserCreated) Text("please confirm your account, confirmation mail was sent"),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> signIn() async {
+    final formState = _formKey.currentState;
+    if(formState.validate()) {
+      formState.save();
+      try {
+        var user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+          if(user.user.isEmailVerified) {
+            Provider.of<LoginValue>(context, listen: false).updateIsLogged(true);
+          }
+      } catch(e) {
+          print(e.message);
+      }
+
+    }
+  }
+
+  Future<void> Register() async {
+    final formState = _formKey.currentState;
+    if(formState.validate()) {
+      formState.save();
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+        var CurrentUser = await FirebaseAuth.instance.currentUser();
+        CurrentUser.sendEmailVerification();
+        setState(() {
+          isUserCreated = true;
+        });
+      } catch(e) {
+        print(e.message);
+      }
+
+    }
   }
 }

@@ -13,11 +13,6 @@ class Styles {
     fontWeight: FontWeight.w700,
   );
 
-  static final inputStyle = InputDecoration(
-      contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-      hintText: "Password",
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)));
-
   static final mediumText = TextStyle(
     fontSize: _textSizeMedium,
     fontFamily: _fontNameDefault,
