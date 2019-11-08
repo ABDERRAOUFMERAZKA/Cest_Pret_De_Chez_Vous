@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../styles.dart';
+import '../../../styles.dart';
 
-class Search extends StatelessWidget {
+class MyAd extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +14,7 @@ class Search extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('Search Screen',
+                Text('My Ad Screen',
                     textAlign: TextAlign.start, style: Styles.headerLarge),
               ],
             )
