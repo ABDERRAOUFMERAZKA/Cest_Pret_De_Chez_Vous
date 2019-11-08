@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
-import './Welcome.dart';
-import './login_value.dart';
 import 'package:provider/provider.dart';
+
+import './src/account_settings/presenter/login.dart';
+import './utils/store_provider.dart';
+import './Welcome.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        builder: (context) => LoginValue(),
+    return MultiProvider(
+        providers: [
+          StoreProvider<LoginViewModel, LoginPresenter>(
+            builder: (_) => LoginPresenter(),
+          ),
+        ],
         child: MaterialApp(
           home: Welcome(),
           theme: ThemeData(
