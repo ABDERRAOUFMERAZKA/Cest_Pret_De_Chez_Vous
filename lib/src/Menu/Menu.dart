@@ -1,20 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../login_value.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Menu extends StatelessWidget {
-  @override
-
   void _testDataBase() {
-    Firestore.instance.collection('books').document()
-        .setData({ 'title': 'title', 'author': 'author' });
+    Firestore.instance
+        .collection('books')
+        .document()
+        .setData({'title': 'title', 'author': 'author'});
   }
+
   Widget build(BuildContext context) {
     logOut() {
       FirebaseAuth.instance.signOut();
     }
+
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[

@@ -27,4 +27,3 @@ Future<void> firebaseSignUp(String email, String password) async {
     return (e.message);
   }
 }
-
