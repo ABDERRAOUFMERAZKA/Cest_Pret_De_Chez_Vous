@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import './category.dart';
+import '../../../models/category.dart';
 
 class Ad {
   final String _title;

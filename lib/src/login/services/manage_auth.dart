@@ -3,13 +3,12 @@ import 'package:flutter/services.dart';
 
 Future<void> firebaseSignIn(String email, String password) async {
   try {
-    FirebaseAuth.instance
+    await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
   } catch (e) {
     if (e is PlatformException) {
       return e.message;
     }
-    print(e.runtimeType);
     return e.message;
   }
 }
@@ -28,3 +27,4 @@ Future<void> firebaseSignUp(String email, String password) async {
     return (e.message);
   }
 }
+
