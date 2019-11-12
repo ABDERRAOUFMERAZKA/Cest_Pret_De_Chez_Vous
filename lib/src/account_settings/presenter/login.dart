@@ -1,13 +1,7 @@
 import 'package:flutter/widgets.dart';
 import '../services/manage_auth.dart';
 
-class LoginViewModel {
-  LoginViewModel();
-}
-
-class LoginPresenter extends ValueNotifier<LoginViewModel> {
-  LoginPresenter() : super(LoginViewModel());
-
+class LoginPresenter with ChangeNotifier {
   signIn(GlobalKey<FormState> formKey, String email, String password) {
     final formState = formKey.currentState;
     if (formState.validate()) {
