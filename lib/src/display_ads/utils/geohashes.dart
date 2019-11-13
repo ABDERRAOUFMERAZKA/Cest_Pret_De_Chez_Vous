@@ -1,30 +1,48 @@
 import 'dart:math' as math;
 
-Map<String, Map<String, double>> boundingBoxCoordinates(
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+double distanceInMetersBetween(GeoPoint location1, GeoPoint location2) {
+  const int EARTH_RADIUS = 6371000; // Earth's radius in meters
+  double latDelta = degreesToRadians(location2.latitude - location1.latitude);
+  double lonDelta = degreesToRadians(location2.longitude - location1.longitude);
+
+  double a = (math.sin(latDelta / 2) * math.sin(latDelta / 2)) +
+      (math.cos(degreesToRadians(location1.latitude)) *
+          math.cos(degreesToRadians(location2.latitude)) *
+          math.sin(lonDelta / 2) *
+          math.sin(lonDelta / 2));
+
+  double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+
+  return EARTH_RADIUS * c;
+}
+
+Map<String, GeoPoint> boundingBoxCoordinates(
     num centerLatitude, num centerLongitude, num radius) {
   const KM_PER_DEGREE_LATITUDE = 110.574;
   double latDegrees = radius / KM_PER_DEGREE_LATITUDE;
   double latitudeNorth = math.min(90, centerLatitude + latDegrees);
   double latitudeSouth = math.max(-90, centerLatitude - latDegrees);
   // calculate longitude based on current latitude
-  double longDegsNorth = metersToLongitudeDegrees(radius, latitudeNorth);
-  double longDegsSouth = metersToLongitudeDegrees(radius, latitudeSouth);
+  double longDegsNorth = metersToLongitudeDegrees(1000 * radius, latitudeNorth);
+  double longDegsSouth = metersToLongitudeDegrees(1000 * radius, latitudeSouth);
   double longDegs = math.max(longDegsNorth, longDegsSouth);
   return {
-    "swCorner": {
+    "swCorner": GeoPoint(
       // bottom-left (SW corner)
-      "latitude": latitudeSouth,
-      "longitude": wrapLongitude(centerLongitude - longDegs),
-    },
-    "neCorner": {
+      latitudeSouth,
+      wrapLongitude(centerLongitude - longDegs),
+    ),
+    "neCorner": GeoPoint(
       // top-right (NE corner)
-      "latitude": latitudeNorth,
-      "longitude": wrapLongitude(centerLongitude + longDegs),
-    },
+      latitudeNorth,
+      wrapLongitude(centerLongitude + longDegs),
+    ),
   };
 }
 
-double degreesToRadians(degrees) {
+double degreesToRadians(double degrees) {
   return (degrees * math.pi) / 180;
 }
 

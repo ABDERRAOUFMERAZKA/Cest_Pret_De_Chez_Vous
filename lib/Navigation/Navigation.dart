@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../styles.dart';
+import '../src/display_ads/presenter/display_ads.dart';
+import '../src/display_ads/service/retrieve_ads.dart';
 import '../src/display_ads/view/home.dart';
 import '../src/display_ads/view/favorites.dart';
 import '../src/display_ads/view/search.dart';
 import '../src/display_ads/view/my_ads.dart';
 import '../src/Menu/Menu.dart';
+import '../styles.dart';
 
 class Tabs extends StatefulWidget {
   @override
@@ -62,23 +65,31 @@ class _TabsState extends State<Tabs> {
           Text(_listTabsbar[_indexTabsbar]['title'], style: Styles.navBarTitle),
     );
     return Scaffold(
-        appBar: appBar,
-        body: Container(
-          height:
-              MediaQuery.of(context).size.height - appBar.preferredSize.height,
-          child: _listTabsbar[_indexTabsbar]['body'],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _indexTabsbar,
-          type: BottomNavigationBarType.fixed,
-          onTap: _selectTabsbar,
-          items: [
-            for (final e in _listTabsbar)
-              BottomNavigationBarItem(
-                icon: Icon(e['icon']),
-                title: Text(e['icon_name']),
-              ),
-          ],
-        ));
+      appBar: appBar,
+      body: Container(
+        height:
+            MediaQuery.of(context).size.height - appBar.preferredSize.height,
+        child: _listTabsbar[_indexTabsbar]['body'],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _indexTabsbar,
+        type: BottomNavigationBarType.fixed,
+        onTap: _selectTabsbar,
+        items: [
+          for (final e in _listTabsbar)
+            BottomNavigationBarItem(
+              icon: Icon(e['icon']),
+              title: Text(e['icon_name']),
+            ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        child: Icon(Icons.add),
+        onPressed: //populateTable,
+            Provider.of<DisplayAdsPresenter>(context, listen: false)
+                .fetchHomeAds,
+      ),
+    );
   }
 }
