@@ -23,10 +23,13 @@ class DisplayAdsPresenter with ChangeNotifier {
         _searchedUserAds = null;
 
   void fetchHomeAds() async {
-    Position currentPosition = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position currentPosition =
+        new Position(latitude: 48.8396952, longitude: 2.2399123);
+    //await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     GeoPoint firebaseGeoPoint =
         new GeoPoint(currentPosition.latitude, currentPosition.longitude);
-    fetchAds(firebaseGeoPoint, 5);
+    List<Map<String, dynamic>> allAdsAround =
+        await fetchAllAdsAround(firebaseGeoPoint, 10);
+    print("received $allAdsAround");
   }
 }
