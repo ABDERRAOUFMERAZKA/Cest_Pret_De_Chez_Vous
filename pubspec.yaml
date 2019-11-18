@@ -23,6 +23,7 @@ dependencies:
     firebase_database: ^3.0.7
     flutter:
         sdk: flutter
+    flutter_tags: ^0.4.5
     geolocator: ^5.1.5
     http:
     json_annotation: ^3.0.0

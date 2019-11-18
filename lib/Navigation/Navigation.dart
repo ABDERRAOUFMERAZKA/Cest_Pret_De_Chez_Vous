@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../src/display_ads/view/home.dart';
 import '../src/display_ads/view/favorites.dart';
-import '../src/display_ads/view/search.dart';
+import '../src/display_ads/view/add_ads.dart';
 import '../src/display_ads/view/my_ads.dart';
 import '../src/Menu/Menu.dart';
+import '../src/display_ads/view/Search.dart';
+
 import '../styles.dart';
 
 class Tabs extends StatefulWidget {
@@ -28,10 +30,10 @@ class _TabsState extends State<Tabs> {
       'icon_name': 'Favorite',
     },
     {
-      'title': 'Search',
-      'body': Search(),
-      'icon': Icons.search,
-      'icon_name': 'Search',
+      'title': 'Add',
+      'body': Add(),
+      'icon': Icons.add,
+      'icon_name': 'Add',
     },
     {
       'title': 'MyAd',
@@ -60,6 +62,17 @@ class _TabsState extends State<Tabs> {
     final AppBar appBar = AppBar(
       title:
           Text(_listTabsbar[_indexTabsbar]['title'], style: Styles.navBarTitle),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Search()),
+            );
+          },
+        ),
+      ],
     );
     return Scaffold(
       appBar: appBar,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../styles.dart';
 
-class Search extends StatelessWidget {
+class Add extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,14 +11,14 @@ class Search extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('Search Screen',
-                    textAlign: TextAlign.start, style: Styles.headerLarge),
-              ],
-            )
-          ])),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Add Screen',
+                        textAlign: TextAlign.start, style: Styles.headerLarge),
+                  ],
+                )
+              ])),
     );
   }
 }

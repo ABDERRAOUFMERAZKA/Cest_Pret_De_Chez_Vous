@@ -95,3 +95,13 @@ Future populateTable() async {
   }
   print("done");
 }
+
+Future<List<String>> getCategoriesList() async {
+  var response = await Firestore().collection('category').getDocuments();
+  var documents = response.documents;
+  List<String> categories = ['--'];
+  documents[0]['types'].forEach((category) {
+    categories.add(category);
+  });
+  return categories;
+}
