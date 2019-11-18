@@ -12,11 +12,13 @@ class DisplayAdsPresenter with ChangeNotifier {
   List<Ad> _searchedAds;
   List<Ad> _currentUserAds;
   List<Ad> _searchedUserAds;
+  List<String> _categories = [];
 
   List<Ad> get homeAds => _homeAds;
   List<Ad> get searchedAds => _searchedAds;
   List<Ad> get currentUserAds => _currentUserAds;
   List<Ad> get searchedUserAds => _searchedUserAds;
+  List<String> get categories => _categories;
 
   DisplayAdsPresenter()
       : _homeAds = null,
@@ -33,7 +35,7 @@ class DisplayAdsPresenter with ChangeNotifier {
   void fetchCurrentUserAds() async {
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     List<Map<String, dynamic>> jsonAdsFromUser =
-        await getAdsFromUser(currentUser.uid);
+    await getAdsFromUser(currentUser.uid);
     List<Ad> adsFromUser = [];
     for (var jsonAd in jsonAdsFromUser) {
       adsFromUser.add(Ad.fromJson(jsonAd));
@@ -53,7 +55,7 @@ class DisplayAdsPresenter with ChangeNotifier {
   void fetchHomeAds() async {
     GeoPoint firebaseGeoPoint = await _getPositionAsFirebaseGeoPoint();
     List<Map<String, dynamic>> jsonAllAdsAround =
-        await getAdsAround(firebaseGeoPoint, _RADIUS);
+    await getAdsAround(firebaseGeoPoint, _RADIUS);
     List<Ad> allAdsAround = [];
     for (var jsonAd in jsonAllAdsAround) {
       allAdsAround.add(Ad.fromJson(jsonAd));
@@ -64,7 +66,7 @@ class DisplayAdsPresenter with ChangeNotifier {
   void searchAds([String category, List<String> keywords]) async {
     GeoPoint firebaseGeoPoint = await _getPositionAsFirebaseGeoPoint();
     List<Map<String, dynamic>> jsonAdsAround =
-        await (String category, List<String> keywords) async {
+    await (String category, List<String> keywords) async {
       if ((category == null || category == "") &&
           (keywords == null || keywords.isEmpty)) {
         return await getAdsAround(firebaseGeoPoint, _RADIUS);
@@ -84,5 +86,9 @@ class DisplayAdsPresenter with ChangeNotifier {
       adsAround.add(Ad.fromJson(jsonAd));
     }
     this._searchedAds = adsAround;
+  }
+
+  void getCategories() async {
+    this._categories = await getCategoriesList();
   }
 }
