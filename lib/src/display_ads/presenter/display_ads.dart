@@ -1,3 +1,4 @@
+import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -28,8 +29,12 @@ class DisplayAdsPresenter with ChangeNotifier {
     //await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     GeoPoint firebaseGeoPoint =
         new GeoPoint(currentPosition.latitude, currentPosition.longitude);
-    List<Map<String, dynamic>> allAdsAround =
+    List<Map<String, dynamic>> jsonAllAdsAround =
         await fetchAllAdsAround(firebaseGeoPoint, 10);
+    List<Ad> allAdsAround = [];
+    for (var jsonAd in jsonAllAdsAround) {
+      allAdsAround.add(Ad.fromJson(jsonAd));
+    }
     print("received $allAdsAround");
   }
 }
