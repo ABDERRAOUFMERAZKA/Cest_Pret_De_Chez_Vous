@@ -20,7 +20,6 @@ class _VerificationPageState extends State<ValidationMail> {
   getEmail() async{
     var currentUser = await FirebaseAuth.instance.currentUser();
     var currentUserMail = currentUser.email;
-    print('mail$currentUser');
     setState(() {
       _email = currentUserMail;
     });
