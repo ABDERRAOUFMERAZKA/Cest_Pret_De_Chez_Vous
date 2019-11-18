@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(builder: (context) => LoginPresenter()),
           ChangeNotifierProvider(
             builder: (context) => DisplayAdsPresenter(),
-          )
+          ),
         ],
         child: MaterialApp(
           home: Welcome(),
