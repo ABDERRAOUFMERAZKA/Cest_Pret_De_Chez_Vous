@@ -1,4 +1,3 @@
-import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,10 +6,11 @@ import '../model/ad.dart';
 import '../service/retrieve_ads.dart';
 
 class DisplayAdsPresenter with ChangeNotifier {
-  final List<Ad> _homeAds;
-  final List<Ad> _searchedAds;
-  final List<Ad> _currentUserAds;
-  final List<Ad> _searchedUserAds;
+  final double _RADIUS = 10;
+  List<Ad> _homeAds;
+  List<Ad> _searchedAds;
+  List<Ad> _currentUserAds;
+  List<Ad> _searchedUserAds;
 
   List<Ad> get homeAds => _homeAds;
   List<Ad> get searchedAds => _searchedAds;
@@ -23,18 +23,45 @@ class DisplayAdsPresenter with ChangeNotifier {
         _currentUserAds = null,
         _searchedUserAds = null;
 
+  Future<GeoPoint> _getPositionAsFirebaseGeoPoint() async {
+    Position currentPosition = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return GeoPoint(currentPosition.latitude, currentPosition.longitude);
+  }
+
   void fetchHomeAds() async {
-    Position currentPosition =
-        new Position(latitude: 48.8396952, longitude: 2.2399123);
-    //await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    GeoPoint firebaseGeoPoint =
-        new GeoPoint(currentPosition.latitude, currentPosition.longitude);
+    GeoPoint firebaseGeoPoint = await _getPositionAsFirebaseGeoPoint();
     List<Map<String, dynamic>> jsonAllAdsAround =
-        await fetchAllAdsAround(firebaseGeoPoint, 10);
+        await getAdsAround(firebaseGeoPoint, _RADIUS);
     List<Ad> allAdsAround = [];
     for (var jsonAd in jsonAllAdsAround) {
       allAdsAround.add(Ad.fromJson(jsonAd));
     }
-    print("received $allAdsAround");
+    this._homeAds = allAdsAround;
+  }
+
+  void searchAds([String category, List<String> keywords]) async {
+    GeoPoint firebaseGeoPoint = await _getPositionAsFirebaseGeoPoint();
+    List<Map<String, dynamic>> jsonAdsAround =
+        await (String category, List<String> keywords) async {
+      if ((category == null || category == "") &&
+          (keywords == null || keywords.isEmpty)) {
+        return await getAdsAround(firebaseGeoPoint, _RADIUS);
+      } else if ((keywords == null || keywords.isEmpty)) {
+        return await getAdsAroundWithCategory(
+            firebaseGeoPoint, _RADIUS, category);
+      } else if (category == null) {
+        return await getAdsAroundWithKeywords(
+            firebaseGeoPoint, _RADIUS, keywords);
+      } else {
+        return await getAdsAroundWithCategoryAndKeywords(
+            firebaseGeoPoint, _RADIUS, category, keywords);
+      }
+    }(category, keywords);
+    List<Ad> adsAround = [];
+    for (var jsonAd in jsonAdsAround) {
+      adsAround.add(Ad.fromJson(jsonAd));
+    }
+    this._searchedAds = adsAround;
   }
 }

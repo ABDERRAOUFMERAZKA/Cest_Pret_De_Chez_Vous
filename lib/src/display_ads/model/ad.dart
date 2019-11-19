@@ -1,15 +1,13 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../models/category.dart';
-
 part 'ad.g.dart';
 
 @JsonSerializable()
 class Ad {
   final String title;
   final String idStr;
-  final Category category;
+  final String category;
   final String authorId;
   final List<String> picturesUrl;
   final List<String> keyWords;
@@ -23,17 +21,10 @@ class Ad {
     return currentPosition;
   }
 
-  // String get title => _title;
-  // String get idStr => _idStr;
-  // Category get category => _category;
-  // String get authorId => _authorId;
-  // List<String> get picturesUrl => _picturesUrl;
-  // List<String> get keyWords => _keyWords;
-  // String get description => _description;
-  // Geolocator get geoLocation => _geoLocation;
-
   Ad(this.title, this.idStr, this.category, this.authorId, this.picturesUrl,
       this.keyWords, this.description, this.geoLocation);
 
   factory Ad.fromJson(Map<String, dynamic> json) => _$AdFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AdToJson(this);
 }
