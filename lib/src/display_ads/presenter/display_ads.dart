@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -14,7 +15,7 @@ class DisplayAdsPresenter with ChangeNotifier {
 
   List<Ad> get homeAds => _homeAds;
   List<Ad> get searchedAds => _searchedAds;
-  List<Ad> get currentUser => _currentUserAds;
+  List<Ad> get currentUserAds => _currentUserAds;
   List<Ad> get searchedUserAds => _searchedUserAds;
 
   DisplayAdsPresenter()
@@ -27,6 +28,26 @@ class DisplayAdsPresenter with ChangeNotifier {
     Position currentPosition = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return GeoPoint(currentPosition.latitude, currentPosition.longitude);
+  }
+
+  void fetchCurrentUserAds() async {
+    FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+    List<Map<String, dynamic>> jsonAdsFromUser =
+        await getAdsFromUser(currentUser.uid);
+    List<Ad> adsFromUser = [];
+    for (var jsonAd in jsonAdsFromUser) {
+      adsFromUser.add(Ad.fromJson(jsonAd));
+    }
+    this._currentUserAds = adsFromUser;
+  }
+
+  fetchSearchedUserAds(String uid) async {
+    List<Map<String, dynamic>> jsonAdsFromUser = await getAdsFromUser(uid);
+    List<Ad> adsFromUser = [];
+    for (var jsonAd in jsonAdsFromUser) {
+      adsFromUser.add(Ad.fromJson(jsonAd));
+    }
+    this._searchedUserAds = adsFromUser;
   }
 
   void fetchHomeAds() async {
