@@ -1,9 +1,10 @@
 import 'dart:math';
-
-import '../utils/geohashes.dart';
+import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<List<Map<String, dynamic>>> fetchAllAdsAround(
+import '../utils/geohashes.dart';
+
+Future<List<Map<String, dynamic>>> _fetchAllAdsAround(
     GeoPoint geoPoint, double radius) async {
   Map<String, GeoPoint> boundingBox =
       boundingBoxCoordinates(geoPoint.latitude, geoPoint.longitude, radius);
@@ -19,6 +20,61 @@ Future<List<Map<String, dynamic>>> fetchAllAdsAround(
     docAsMap["idStr"] = document.documentID;
     double distance = distanceInMetersBetween(docAsMap["location"], geoPoint);
     if (distance < 1000 * radius) docsAsMaps.add(docAsMap);
+  });
+  return docsAsMaps;
+}
+
+Future<List<Map<String, dynamic>>> getAdsAround(
+    GeoPoint geoPoint, double radius) async {
+  return await _fetchAllAdsAround(geoPoint, radius);
+}
+
+Future<List<Map<String, dynamic>>> getAdsAroundWithCategory(
+    GeoPoint geoPoint, double radius, String category) async {
+  List<Map<String, dynamic>> allAdsAround =
+      await _fetchAllAdsAround(geoPoint, radius);
+  List<Map<String, dynamic>> filteredAds =
+      allAdsAround.where((ad) => ad["category"] == category);
+  return filteredAds;
+}
+
+Future<List<Map<String, dynamic>>> getAdsAroundWithKeywords(
+    GeoPoint geoPoint, double radius, List<String> keywords) async {
+  List<Map<String, dynamic>> allAdsAround =
+      await _fetchAllAdsAround(geoPoint, radius);
+  List<Map<String, dynamic>> filteredAds = allAdsAround
+      .where((Map<String, dynamic> ad) =>
+          listContainsAtLeastOneOf(ad["keywords"], keywords))
+      .toList();
+  return filteredAds;
+}
+
+Future<List<Map<String, dynamic>>> getAdsAroundWithCategoryAndKeywords(
+    GeoPoint geoPoint,
+    double radius,
+    String category,
+    List<String> keywords) async {
+  List<Map<String, dynamic>> allAdsAround =
+      await _fetchAllAdsAround(geoPoint, radius);
+  List<Map<String, dynamic>> filteredAds = allAdsAround
+      .where((Map<String, dynamic> ad) =>
+          listContainsAtLeastOneOf(ad["keywords"], keywords) &&
+          ad["category"] == category)
+      .toList();
+  return filteredAds;
+}
+
+Future<List<Map<String, dynamic>>> getAdsFromUser(String userId) async {
+  var response = await Firestore()
+      .collection("ads")
+      .where("authorId", isEqualTo: userId)
+      .getDocuments();
+  var documents = response.documents;
+  List<Map<String, dynamic>> docsAsMaps = [];
+  documents.forEach((document) {
+    Map<String, dynamic> docAsMap = document.data;
+    docAsMap["idStr"] = document.documentID;
+    docsAsMaps.add(docAsMap);
   });
   return docsAsMaps;
 }

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../src/display_ads/presenter/display_ads.dart';
-import '../src/display_ads/service/retrieve_ads.dart';
 import '../src/display_ads/view/home.dart';
 import '../src/display_ads/view/favorites.dart';
 import '../src/display_ads/view/search.dart';
@@ -82,13 +79,6 @@ class _TabsState extends State<Tabs> {
               title: Text(e['icon_name']),
             ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        child: Icon(Icons.add),
-        onPressed: //populateTable,
-            Provider.of<DisplayAdsPresenter>(context, listen: false)
-                .fetchHomeAds,
       ),
     );
   }
