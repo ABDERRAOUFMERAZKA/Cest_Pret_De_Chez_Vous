@@ -4,6 +4,7 @@ class Styles {
   static const _textSizeLarge = 25.0;
   static const _textSizeMedium = 20.0;
   static const _textSizeDefault = 16.0;
+  static const _textSizeSmall = 12.0;
   static final Color _textColorStrong = _hexToColor('000000');
   static final Color _textColorDefault = _hexToColor('666666');
   static final String _fontNameDefault = 'GlacialIndifference';
@@ -11,6 +12,12 @@ class Styles {
   static final navBarTitle = TextStyle(
     fontFamily: _fontNameDefault,
     fontWeight: FontWeight.w700,
+  );
+
+  static final smallText = TextStyle(
+    fontFamily: _fontNameDefault,
+    fontSize: _textSizeSmall,
+    color: _textColorStrong,
   );
 
   static final mediumText = TextStyle(
@@ -34,6 +41,12 @@ class Styles {
     fontFamily: _fontNameDefault,
     fontSize: _textSizeDefault,
     color: _textColorDefault,
+  );
+
+  static final mediumErrorText = TextStyle(
+    fontFamily: _fontNameDefault,
+    fontSize: _textSizeMedium,
+    color: Colors.red,
   );
 
   static Color _hexToColor(String code) {
