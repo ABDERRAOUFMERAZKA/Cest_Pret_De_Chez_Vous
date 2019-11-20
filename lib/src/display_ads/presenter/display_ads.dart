@@ -7,7 +7,7 @@ import '../model/ad.dart';
 import '../service/retrieve_ads.dart';
 
 class DisplayAdsPresenter with ChangeNotifier {
-  final double _RADIUS = 10;
+  static const double _RADIUS = 10;
   List<Ad> _homeAds;
   List<Ad> _searchedAds;
   List<Ad> _currentUserAds;
