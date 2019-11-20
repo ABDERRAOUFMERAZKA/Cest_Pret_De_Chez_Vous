@@ -44,7 +44,7 @@ class _HomePageState extends State<Search> {
     );
     return Scaffold(
       appBar: appBar,
-      body: Container(
+      body: SingleChildScrollView(
           padding: EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
