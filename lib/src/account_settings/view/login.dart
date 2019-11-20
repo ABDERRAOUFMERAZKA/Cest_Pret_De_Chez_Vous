@@ -12,8 +12,9 @@ class Login extends StatefulWidget {
 
 class _LoginPageState extends State<Login> {
   //State Variables
-  String _email, _password;
+  String _email, _password, _username;
   bool isUserCreated = false;
+  bool isRegistering = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -23,25 +24,33 @@ class _LoginPageState extends State<Login> {
 
   Widget build(BuildContext context) {
     var presenter = Provider.of<LoginPresenter>(context);
-    loginButton(String text, onPressed) => Material(
-          elevation: 5.0,
-          borderRadius: BorderRadius.circular(30.0),
+    pillButton(String text, onPressed) => MaterialButton(
           color: Colors.deepOrange,
-          child: MaterialButton(
-            minWidth: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            onPressed: onPressed,
-            child: Text(text,
-                textAlign: TextAlign.center,
-                style: Styles.mediumText.copyWith(
-                    color: Colors.white, fontWeight: FontWeight.bold)),
-          ),
+          disabledColor: Colors.grey,
+          elevation: 5.0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+          minWidth: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          onPressed:
+              presenter.loginStatus != LoginStatus.isLoading ? onPressed : null,
+          child: Text(text,
+              textAlign: TextAlign.center,
+              style: Styles.mediumText
+                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
         );
 
     final emailField = TextFormField(
+      enabled: presenter.loginStatus != LoginStatus.isLoading,
       obscureText: false,
-      onSaved: (input) => _email = input.trim(),
-      validator: emailValidator,
+      onChanged: (input) => _email = input.trim(),
+      validator: (input) {
+        if (!emailValidator(input)) {
+          return 'Please enter a valid email';
+        } else {
+          return null;
+        }
+      },
       decoration: InputDecoration(
           icon: new Icon(
             Icons.mail,
@@ -53,12 +62,35 @@ class _LoginPageState extends State<Login> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
 
+    final usernameField = TextFormField(
+      enabled: presenter.loginStatus != LoginStatus.isLoading,
+      obscureText: false,
+      onChanged: (input) => _username = input,
+      validator: (input) {
+        if (!commonCharactersValidator(input)) {
+          return 'Please enter a valid username.';
+        } else {
+          return null;
+        }
+      },
+      decoration: InputDecoration(
+          icon: new Icon(
+            Icons.person,
+            color: Colors.grey,
+          ),
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Username",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+
     final passwordField = TextFormField(
+      enabled: presenter.loginStatus != LoginStatus.isLoading,
       obscureText: true,
-      onSaved: (input) => _password = input,
+      onChanged: (input) => _password = input,
       validator: (input) {
         if (input.length < 6) {
-          return 'Please, Provide a password with 6 characters minimum';
+          return 'Please enter a valid password';
         } else
           return null;
       },
@@ -80,47 +112,71 @@ class _LoginPageState extends State<Login> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(36.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 35.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 125.0,
+                width: 125.0,
+                child: presenter.loginStatus != LoginStatus.isLoading
+                    ? Icon(Icons.person, color: Colors.deepOrange, size: 150)
+                    : CircularProgressIndicator(
+                        backgroundColor: Colors.deepOrange,
+                      ),
+              ),
+              SizedBox(
+                height: 50.0,
+                child: presenter.loginStatus == LoginStatus.onError
+                    ? Text(
+                        presenter.loginErrorMessage,
+                        textAlign: TextAlign.center,
+                        style: Styles.mediumErrorText,
+                      )
+                    : null,
+              ),
+              emailField,
+              if (isRegistering)
+                usernameField,
+              SizedBox(
+                height: 15.0,
+                child: Text(
+                  "Password must be 6 char long and contain a letter and a number.",
+                  textAlign: TextAlign.start,
+                  style: Styles.smallText,
                 ),
-                SizedBox(
-                  height: 125.0,
-                  child:
-                      Icon(Icons.person, color: Colors.deepOrange, size: 150),
-                ),
-                SizedBox(
-                  height: 25.0,
-                ),
-                emailField,
-                SizedBox(
-                  height: 15.0,
-                ),
-                passwordField,
-                SizedBox(
-                  height: 25.0,
-                ),
-                loginButton("Login",
-                    () => presenter.signIn(_formKey, _email, _password)),
-                SizedBox(
-                  height: 15.0,
-                ),
-                Text('Or', style: Styles.textDefault),
-                SizedBox(
-                  height: 5.0,
-                ),
-                loginButton("Register",
-                    () => presenter.signUp(_formKey, _email, _password)),
-                if (isUserCreated)
-                  Text(
-                      "please confirm your account, confirmation mail was sent"),
-              ],
-            ),
+              ),
+              passwordField,
+              if (!isRegistering)
+                pillButton("Login",
+                    () => presenter.signIn(_formKey, _email, _password))
+              else
+                pillButton(
+                    "Register",
+                    () => presenter.signUp(
+                        _formKey, _email, _password, _username)),
+              Text('Or', style: Styles.textDefault),
+              FlatButton(
+                onPressed: () {
+                  setState(() {
+                    isRegistering = !isRegistering;
+                  });
+                },
+                child: Text(isRegistering ? "Login" : "Register"),
+              ),
+              //pillButton("Register", () => presenter.signUp(_formKey, _email, _password)),
+              if (isUserCreated)
+                Text("Please confirm your account, confirmation mail was sent"),
+            ]
+                .map(
+                  (c) => !(c is SizedBox)
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(36, 10, 36, 10),
+                          child: c,
+                        )
+                      : c,
+                )
+                .toList(),
           ),
         ),
       ),

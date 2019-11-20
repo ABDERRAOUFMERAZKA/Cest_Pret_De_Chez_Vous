@@ -1,29 +1,37 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
-Future<void> firebaseSignIn(String email, String password) async {
+Future<String> firebaseSignIn(String email, String password) async {
   try {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
+    return "OK";
   } catch (e) {
-    if (e is PlatformException) {
-      return e.message;
-    }
-    return e.message;
+    return e.code;
   }
 }
 
-Future<void> firebaseSignUp(String email, String password) async {
+Future<String> firebaseSignUp(
+    String email, String password, String displayName) async {
   try {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     var currentUser = await FirebaseAuth.instance.currentUser();
+    UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+    userUpdateInfo.displayName = displayName;
+    currentUser.updateProfile(userUpdateInfo);
     currentUser.sendEmailVerification();
+    return 'OK';
   } catch (e) {
-    if (e is PlatformException) {
-      return e.message;
-    }
-    print(e.runtimeType);
-    return (e.message);
+    return e.code;
+  }
+}
+
+Future<String> firebaseSignOut() async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    return "OK";
+  } catch (e) {
+    return e.code;
   }
 }
