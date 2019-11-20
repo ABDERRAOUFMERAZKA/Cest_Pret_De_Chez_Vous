@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../src/display_ads/view/home.dart';
-import '../src/display_ads/view/favorites.dart';
 import '../src/display_ads/view/add_ads.dart';
+import '../src/display_ads/view/favorites.dart';
+import '../src/display_ads/view/home.dart';
 import '../src/display_ads/view/my_ads.dart';
-import '../src/Menu/Menu.dart';
-import '../src/display_ads/view/Search.dart';
+import '../src/display_ads/view/search.dart';
+import '../src/menu/menu.dart';
 
 import '../styles.dart';
 

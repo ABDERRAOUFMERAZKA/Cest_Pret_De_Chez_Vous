@@ -1,8 +1,9 @@
-import './src/account_settings/view/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import './navigation/navigation.dart';
-import 'package:cest_pret_de_chez_vous/src/login/view/mail_validation.dart';
+import './src/account_settings/view/login.dart';
+import './src/account_settings/view/mail_validation.dart';
 
 class Welcome extends StatelessWidget {
   getLoggedContent(data) {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import './src/account_settings/presenter/login.dart';
-import './src/display_ads/presenter/display_ads.dart';
-import './Welcome.dart';
+import './src/account_settings/view_model/login_view_model.dart';
+import './src/display_ads/view_model/display_ads_view_model.dart';
+import './welcome.dart';
 
 void main() => runApp(MyApp());
 
