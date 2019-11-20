@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
-import '../../../styles.dart';
-
+import 'package:flutter_tags/tag.dart';
 import 'package:provider/provider.dart';
 
-import '../presenter/display_ads.dart';
-
-import 'package:flutter_tags/tag.dart';
+import '../view_model/display_ads_view_model.dart';
+import '../../../styles.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -41,12 +38,11 @@ class _HomePageState extends State<Search> {
   Widget build(BuildContext context) {
     var provider = Provider.of<DisplayAdsPresenter>(context);
     provider.getCategories();
-    var dropDownitems = provider.categories;
+    var dropDownItems = provider.categories;
     final AppBar appBar = AppBar(
-      title:
-      Text('Search', style: Styles.navBarTitle),
+      title: Text('Search', style: Styles.navBarTitle),
     );
-    return Scaffold (
+    return Scaffold(
       appBar: appBar,
       body: Container(
           padding: EdgeInsets.all(20),
@@ -55,7 +51,7 @@ class _HomePageState extends State<Search> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text('Categorie', style: Styles.mediumText),
+              Text('Category', style: Styles.mediumText),
               SizedBox(
                 height: 15.0,
               ),
@@ -66,10 +62,12 @@ class _HomePageState extends State<Search> {
                     border: Border.all(color: Colors.deepOrange)),
                 child: DropdownButton<String>(
                   isExpanded: true,
-                  items: dropDownitems.map((String value) {
+                  items: dropDownItems.map((String value) {
                     return new DropdownMenuItem<String>(
                       value: value,
-                      child: new Text(value, ),
+                      child: new Text(
+                        value,
+                      ),
                     );
                   }).toList(),
                   value: category,
@@ -83,32 +81,31 @@ class _HomePageState extends State<Search> {
               SizedBox(
                 height: 15.0,
               ),
-              Text('Mots-Clefs', style: Styles.mediumText),
-              Text('maximum 3 mots clefs', style: Styles.textDefault),
+              Text('Keywords', style: Styles.mediumText),
+              Text('(maximum 3)', style: Styles.textDefault),
               SizedBox(
                 height: 15.0,
               ),
               Tags(
                 textField: TagsTextField(
-                  autofocus: true,
-                  width: 250,
-                  textStyle: Styles.textDefault,
-                  onSubmitted: (var str) {
-                    if(keyWords.length == 2) {
-                      setState(() {
-                        isFullKeyWords = true;
-                      });
-                    }
-                    if(keyWords.length < 3) {
-                      setState(() {
-                        keyWords.add(str);
-                      });
-                    }
-                  }
-                ),
+                    autofocus: true,
+                    width: 250,
+                    textStyle: Styles.textDefault,
+                    onSubmitted: (var str) {
+                      if (keyWords.length == 2) {
+                        setState(() {
+                          isFullKeyWords = true;
+                        });
+                      }
+                      if (keyWords.length < 3) {
+                        setState(() {
+                          keyWords.add(str);
+                        });
+                      }
+                    }),
                 direction: Axis.vertical,
                 itemCount: keyWords.length,
-                itemBuilder: (int index){
+                itemBuilder: (int index) {
                   final item = keyWords[index];
                   return ItemTags(
                     singleItem: true,
@@ -124,7 +121,9 @@ class _HomePageState extends State<Search> {
                         isFullKeyWords = false;
                       });
                     },
-                    textStyle: TextStyle( fontSize: 14, ),
+                    textStyle: TextStyle(
+                      fontSize: 14,
+                    ),
                   );
                 },
               ),

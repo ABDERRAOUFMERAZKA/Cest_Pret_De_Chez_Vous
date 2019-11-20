@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 import '../../../styles.dart';
 
-class ValidationMail extends  StatefulWidget {
+class ValidationMail extends StatefulWidget {
   @override
   _VerificationPageState createState() => _VerificationPageState();
 }
@@ -17,28 +17,29 @@ class _VerificationPageState extends State<ValidationMail> {
     getEmail();
   }
 
-  getEmail() async{
+  getEmail() async {
     var currentUser = await FirebaseAuth.instance.currentUser();
     var currentUserMail = currentUser.email;
     setState(() {
       _email = currentUserMail;
     });
   }
+
   Widget build(BuildContext context) {
     loginButton(String text, onPressed) => Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Colors.deepOrange,
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 15.0),
-        onPressed: onPressed,
-        child: Text(text,
-            textAlign: TextAlign.center,
-            style: Styles.mediumText.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
+          elevation: 5.0,
+          borderRadius: BorderRadius.circular(30.0),
+          color: Colors.deepOrange,
+          child: MaterialButton(
+            minWidth: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.fromLTRB(20.0, 15.0, 10.0, 15.0),
+            onPressed: onPressed,
+            child: Text(text,
+                textAlign: TextAlign.center,
+                style: Styles.mediumText.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+          ),
+        );
 
     validateMail() async {
       var currentUser = await FirebaseAuth.instance.currentUser();
@@ -60,22 +61,21 @@ class _VerificationPageState extends State<ValidationMail> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text('Please Check E-mail of Validation in this adress $_email',
-                            textAlign: TextAlign.start, style: Styles.textDefault),
+                        Text(
+                            'Please Check E-mail of Validation in this adress $_email',
+                            textAlign: TextAlign.start,
+                            style: Styles.textDefault),
                         SizedBox(
                           height: 25.0,
                         ),
-                        loginButton("Send Email",
-                                () => validateMail()),
+                        loginButton("Send Email", () => validateMail()),
                         SizedBox(
                           height: 25.0,
                         ),
-                        loginButton("Logout",
-                                () => logOut()),
+                        loginButton("Logout", () => logOut()),
                       ],
                     )
-                  ])
-          )),
+                  ]))),
     );
   }
 }

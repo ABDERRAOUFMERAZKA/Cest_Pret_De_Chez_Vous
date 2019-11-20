@@ -3,7 +3,7 @@ import 'package:cest_pret_de_chez_vous/utils/string_verifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../presenter/login.dart';
+import '../view_model/login_view_model.dart';
 
 class Login extends StatefulWidget {
   @override

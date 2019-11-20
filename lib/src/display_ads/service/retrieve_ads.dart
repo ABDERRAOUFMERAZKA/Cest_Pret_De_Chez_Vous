@@ -1,8 +1,9 @@
 import 'dart:math';
+
 import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../utils/geohashes.dart';
+import '../utils/geo_compute.dart';
 
 Future<List<Map<String, dynamic>>> _fetchAllAdsAround(
     GeoPoint geoPoint, double radius) async {

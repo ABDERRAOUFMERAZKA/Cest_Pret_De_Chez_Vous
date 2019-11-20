@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+
 import '../services/manage_auth.dart';
 
 class LoginPresenter with ChangeNotifier {
