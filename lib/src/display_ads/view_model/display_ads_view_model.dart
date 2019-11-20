@@ -35,12 +35,13 @@ class DisplayAdsPresenter with ChangeNotifier {
   void fetchCurrentUserAds() async {
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     List<Map<String, dynamic>> jsonAdsFromUser =
-    await getAdsFromUser(currentUser.uid);
+        await getAdsFromUser(currentUser.uid);
     List<Ad> adsFromUser = [];
     for (var jsonAd in jsonAdsFromUser) {
       adsFromUser.add(Ad.fromJson(jsonAd));
     }
     this._currentUserAds = adsFromUser;
+    notifyListeners();
   }
 
   fetchSearchedUserAds(String uid) async {
@@ -50,23 +51,25 @@ class DisplayAdsPresenter with ChangeNotifier {
       adsFromUser.add(Ad.fromJson(jsonAd));
     }
     this._searchedUserAds = adsFromUser;
+    notifyListeners();
   }
 
   void fetchHomeAds() async {
     GeoPoint firebaseGeoPoint = await _getPositionAsFirebaseGeoPoint();
     List<Map<String, dynamic>> jsonAllAdsAround =
-    await getAdsAround(firebaseGeoPoint, _RADIUS);
+        await getAdsAround(firebaseGeoPoint, _RADIUS);
     List<Ad> allAdsAround = [];
     for (var jsonAd in jsonAllAdsAround) {
       allAdsAround.add(Ad.fromJson(jsonAd));
     }
     this._homeAds = allAdsAround;
+    notifyListeners();
   }
 
   void searchAds([String category, List<String> keywords]) async {
     GeoPoint firebaseGeoPoint = await _getPositionAsFirebaseGeoPoint();
     List<Map<String, dynamic>> jsonAdsAround =
-    await (String category, List<String> keywords) async {
+        await (String category, List<String> keywords) async {
       if ((category == null || category == "") &&
           (keywords == null || keywords.isEmpty)) {
         return await getAdsAround(firebaseGeoPoint, _RADIUS);
@@ -86,9 +89,11 @@ class DisplayAdsPresenter with ChangeNotifier {
       adsAround.add(Ad.fromJson(jsonAd));
     }
     this._searchedAds = adsAround;
+    notifyListeners();
   }
 
   void getCategories() async {
     this._categories = await getCategoriesList();
+    notifyListeners();
   }
 }
