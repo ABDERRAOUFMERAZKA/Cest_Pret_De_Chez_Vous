@@ -10,7 +10,7 @@ bool emailValidator(String value) {
 }
 
 bool commonCharactersValidator(String value) {
-  Pattern pattern = r'^[a-z0-9\_\- ]{3,30}$';
+  Pattern pattern = r'^[A-z0-9\_\- ]{3,30}$';
   RegExp regex = new RegExp(pattern);
   if (!regex.hasMatch(value)) {
     return false;
