@@ -23,7 +23,7 @@ class _LoginPageState extends State<Login> {
   }
 
   Widget build(BuildContext context) {
-    var presenter = Provider.of<LoginPresenter>(context);
+    var viewModel = Provider.of<LoginViewModel>(context);
     pillButton(String text, onPressed) => MaterialButton(
           color: Colors.deepOrange,
           disabledColor: Colors.grey,
@@ -33,7 +33,7 @@ class _LoginPageState extends State<Login> {
           minWidth: MediaQuery.of(context).size.width,
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           onPressed:
-              presenter.loginStatus != LoginStatus.isLoading ? onPressed : null,
+              viewModel.loginStatus != LoginStatus.isLoading ? onPressed : null,
           child: Text(text,
               textAlign: TextAlign.center,
               style: Styles.mediumText
@@ -41,7 +41,7 @@ class _LoginPageState extends State<Login> {
         );
 
     final emailField = TextFormField(
-      enabled: presenter.loginStatus != LoginStatus.isLoading,
+      enabled: viewModel.loginStatus != LoginStatus.isLoading,
       obscureText: false,
       onChanged: (input) => _email = input.trim(),
       validator: (input) {
@@ -63,7 +63,7 @@ class _LoginPageState extends State<Login> {
     );
 
     final usernameField = TextFormField(
-      enabled: presenter.loginStatus != LoginStatus.isLoading,
+      enabled: viewModel.loginStatus != LoginStatus.isLoading,
       obscureText: false,
       onChanged: (input) => _username = input,
       validator: (input) {
@@ -85,7 +85,7 @@ class _LoginPageState extends State<Login> {
     );
 
     final passwordField = TextFormField(
-      enabled: presenter.loginStatus != LoginStatus.isLoading,
+      enabled: viewModel.loginStatus != LoginStatus.isLoading,
       obscureText: true,
       onChanged: (input) => _password = input,
       validator: (input) {
@@ -119,7 +119,7 @@ class _LoginPageState extends State<Login> {
               SizedBox(
                 height: 125.0,
                 width: 125.0,
-                child: presenter.loginStatus != LoginStatus.isLoading
+                child: viewModel.loginStatus != LoginStatus.isLoading
                     ? Icon(Icons.person, color: Colors.deepOrange, size: 150)
                     : CircularProgressIndicator(
                         backgroundColor: Colors.deepOrange,
@@ -127,17 +127,16 @@ class _LoginPageState extends State<Login> {
               ),
               SizedBox(
                 height: 50.0,
-                child: presenter.loginStatus == LoginStatus.onError
+                child: viewModel.loginStatus == LoginStatus.onError
                     ? Text(
-                        presenter.loginErrorMessage,
+                        viewModel.loginErrorMessage,
                         textAlign: TextAlign.center,
                         style: Styles.mediumErrorText,
                       )
                     : null,
               ),
               emailField,
-              if (isRegistering)
-                usernameField,
+              if (isRegistering) usernameField,
               SizedBox(
                 height: 15.0,
                 child: Text(
@@ -149,11 +148,11 @@ class _LoginPageState extends State<Login> {
               passwordField,
               if (!isRegistering)
                 pillButton("Login",
-                    () => presenter.signIn(_formKey, _email, _password))
+                    () => viewModel.signIn(_formKey, _email, _password))
               else
                 pillButton(
                     "Register",
-                    () => presenter.signUp(
+                    () => viewModel.signUp(
                         _formKey, _email, _password, _username)),
               Text('Or', style: Styles.textDefault),
               FlatButton(
@@ -164,7 +163,6 @@ class _LoginPageState extends State<Login> {
                 },
                 child: Text(isRegistering ? "Login" : "Register"),
               ),
-              //pillButton("Register", () => presenter.signUp(_formKey, _email, _password)),
               if (isUserCreated)
                 Text("Please confirm your account, confirmation mail was sent"),
             ]

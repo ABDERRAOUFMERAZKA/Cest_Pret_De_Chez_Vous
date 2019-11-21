@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(builder: (context) => LoginPresenter()),
+          ChangeNotifierProvider(builder: (context) => LoginViewModel()),
           ChangeNotifierProvider(
-            builder: (context) => DisplayAdsPresenter(),
+            builder: (context) => DisplayAdsViewModel(),
           ),
         ],
         child: MaterialApp(
