@@ -80,6 +80,21 @@ Future<List<Map<String, dynamic>>> getAdsFromUser(String userId) async {
   return docsAsMaps;
 }
 
+Future<List<Map<String, dynamic>>> getFavoriteAdsFromUser(String userId) async {
+  var response = await Firestore()
+      .collection("ads")
+      .where("favored", arrayContains: userId)
+      .getDocuments();
+  var documents = response.documents;
+  List<Map<String, dynamic>> docsAsMaps = [];
+  documents.forEach((document) {
+    Map<String, dynamic> docAsMap = document.data;
+    docAsMap["idStr"] = document.documentID;
+    docsAsMaps.add(docAsMap);
+  });
+  return docsAsMaps;
+}
+
 Future populateTable() async {
   double minWest = -4.486;
   double maxEast = 7.7521;
