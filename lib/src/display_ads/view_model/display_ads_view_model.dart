@@ -8,23 +8,26 @@ import '../service/retrieve_ads.dart';
 
 class DisplayAdsViewModel with ChangeNotifier {
   static const double _RADIUS = 10;
-  List<Ad> _homeAds;
-  List<Ad> _searchedAds;
-  List<Ad> _currentUserAds;
-  List<Ad> _searchedUserAds;
+  List<Ad> _homeAds = [];
+  List<Ad> _searchedAds = [];
+  List<Ad> _currentUserAds = [];
+  List<Ad> _currentUserFavoriteAds = [];
+  List<Ad> _searchedUserAds = [];
   List<String> _categories = [];
 
   List<Ad> get homeAds => _homeAds;
   List<Ad> get searchedAds => _searchedAds;
   List<Ad> get currentUserAds => _currentUserAds;
+  List<Ad> get currentUserFavoriteAds => _currentUserFavoriteAds;
   List<Ad> get searchedUserAds => _searchedUserAds;
   List<String> get categories => _categories;
 
-  DisplayAdsViewModel()
-      : _homeAds = null,
-        _searchedAds = null,
-        _currentUserAds = null,
-        _searchedUserAds = null;
+  DisplayAdsViewModel() {
+    fetchCurrentUserAds();
+    fetchCurrentUserFavoriteAds();
+    fetchHomeAds();
+    getCategories();
+  }
 
   Future<GeoPoint> _getPositionAsFirebaseGeoPoint() async {
     Position currentPosition = await Geolocator()
@@ -41,6 +44,18 @@ class DisplayAdsViewModel with ChangeNotifier {
       adsFromUser.add(Ad.fromJson(jsonAd));
     }
     this._currentUserAds = adsFromUser;
+    notifyListeners();
+  }
+
+  fetchCurrentUserFavoriteAds() async {
+    FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+    List<Map<String, dynamic>> jsonFavoriteAdsFromUser =
+        await getFavoriteAdsFromUser(currentUser.uid);
+    List<Ad> favoriteAdsFromUser = [];
+    for (var jsonAd in jsonFavoriteAdsFromUser) {
+      favoriteAdsFromUser.add(Ad.fromJson(jsonAd));
+    }
+    this._currentUserFavoriteAds = favoriteAdsFromUser;
     notifyListeners();
   }
 

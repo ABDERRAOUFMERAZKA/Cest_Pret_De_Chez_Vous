@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 Future<String> firebaseSignIn(String email, String password) async {
@@ -20,6 +21,10 @@ Future<String> firebaseSignUp(
     userUpdateInfo.displayName = displayName;
     currentUser.updateProfile(userUpdateInfo);
     currentUser.sendEmailVerification();
+    Firestore()
+        .collection("users")
+        .document(currentUser.uid)
+        .setData({"userId": currentUser.uid, "favorites": []});
     return 'OK';
   } catch (e) {
     return e.code;
