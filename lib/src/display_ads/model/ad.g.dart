@@ -14,6 +14,7 @@ Ad _$AdFromJson(Map<String, dynamic> json) {
     json['authorId'] as String,
     (json['picturesUrl'] as List)?.map((e) => e as String)?.toList(),
     (json['keyWords'] as List)?.map((e) => e as String)?.toList(),
+    (json['favored'] as List)?.map((e) => e as String)?.toList(),
     json['description'] as String,
     Ad._positionFromFirebaseGeoPoint(json['geoLocation']),
   );
@@ -26,6 +27,7 @@ Map<String, dynamic> _$AdToJson(Ad instance) => <String, dynamic>{
       'authorId': instance.authorId,
       'picturesUrl': instance.picturesUrl,
       'keyWords': instance.keyWords,
+      'favored': instance.favored,
       'description': instance.description,
       'geoLocation': instance.geoLocation,
     };
