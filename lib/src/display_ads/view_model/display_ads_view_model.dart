@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import '../model/ad.dart';
 import '../service/retrieve_ads.dart';
 
-class DisplayAdsPresenter with ChangeNotifier {
+class DisplayAdsViewModel with ChangeNotifier {
   static const double _RADIUS = 10;
   List<Ad> _homeAds;
   List<Ad> _searchedAds;
@@ -20,7 +20,7 @@ class DisplayAdsPresenter with ChangeNotifier {
   List<Ad> get searchedUserAds => _searchedUserAds;
   List<String> get categories => _categories;
 
-  DisplayAdsPresenter()
+  DisplayAdsViewModel()
       : _homeAds = null,
         _searchedAds = null,
         _currentUserAds = null,

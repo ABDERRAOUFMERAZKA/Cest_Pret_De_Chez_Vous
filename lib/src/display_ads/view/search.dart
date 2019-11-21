@@ -36,7 +36,7 @@ class _HomePageState extends State<Search> {
   }
 
   Widget build(BuildContext context) {
-    var provider = Provider.of<DisplayAdsPresenter>(context);
+    var provider = Provider.of<DisplayAdsViewModel>(context);
     provider.getCategories();
     var dropDownItems = provider.categories;
     final AppBar appBar = AppBar(

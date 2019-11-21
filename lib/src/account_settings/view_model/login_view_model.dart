@@ -7,7 +7,7 @@ import '../services/manage_auth.dart';
 enum LoginStatus { initialState, isLoading, isLoaded, onError }
 enum ServerResponse { ok, platformError, otherError }
 
-class LoginPresenter with ChangeNotifier {
+class LoginViewModel with ChangeNotifier {
   LoginStatus loginStatus = LoginStatus.initialState;
   String loginErrorMessage;
 
