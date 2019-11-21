@@ -1,9 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './navigation/navigation.dart';
 import './src/account_settings/view/login.dart';
 import './src/account_settings/view/mail_validation.dart';
+
+class MainViewModel with ChangeNotifier {
+  String uid;
+  MainViewModel(this.uid);
+}
 
 class Welcome extends StatelessWidget {
   getLoggedContent(data) {
@@ -19,7 +25,9 @@ class Welcome extends StatelessWidget {
     return StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (context, snapshot) {
-        return getLoggedContent(snapshot.data);
+        return ChangeNotifierProvider(
+            builder: (context) => MainViewModel(snapshot.data.uid),
+            child: getLoggedContent(snapshot.data));
       },
     );
   }

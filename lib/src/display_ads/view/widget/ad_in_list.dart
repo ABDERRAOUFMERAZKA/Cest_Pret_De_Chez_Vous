@@ -5,9 +5,9 @@ import '../../model/ad.dart';
 
 class AdInList extends StatelessWidget {
   final Ad ad;
-  final bool isFavorable;
+  final String uid;
 
-  AdInList(this.ad, {@required isFavorable}) : isFavorable = isFavorable;
+  AdInList(this.ad, {@required String uid}) : uid = uid;
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +46,13 @@ class AdInList extends StatelessWidget {
             child: ButtonBar(
               children: <Widget>[
                 FlatButton(
-                  child: Text('VOIR DETAILS'),
+                  child: Text('SEE DETAILS'),
                   onPressed: () {/* ... */},
                 ),
                 FlatButton(
-                  child: Text('Ajouter Au favoris'),
+                  child: Text((ad.favored.contains(uid))
+                      ? 'Remove from favorites'
+                      : "Add to favorites"),
                   onPressed: () {/* ... */},
                 ),
               ],

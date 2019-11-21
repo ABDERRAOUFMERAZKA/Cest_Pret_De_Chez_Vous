@@ -4,19 +4,9 @@ import 'package:cest_pret_de_chez_vous/src/display_ads/view_model/display_ads_vi
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatelessWidget {
-  List<Ad> dummyAds = [
-    Ad(
-        "title",
-        "idStr",
-        "category",
-        "authorId",
-        [],
-        ["keyWord"],
-        "this is my description and it is verrrryyyyy looooong ok stop now this is awkward",
-        null)
-  ];
+import '../../../welcome.dart';
 
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var viewModel = Provider.of<DisplayAdsViewModel>(context);
@@ -25,9 +15,12 @@ class Home extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: ListView.builder(
-          itemCount: homeAds.length,
-          itemBuilder: (context, index) =>
-              AdInList(homeAds[index], isFavorable: true)),
+        itemCount: homeAds.length,
+        itemBuilder: (context, index) => AdInList(
+          homeAds[index],
+          uid: Provider.of<MainViewModel>(context).uid,
+        ),
+      ),
     );
   }
 }

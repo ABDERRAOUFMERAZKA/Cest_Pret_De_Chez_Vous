@@ -24,10 +24,10 @@ class _TabsState extends State<Tabs> {
       'icon_name': 'Home',
     },
     {
-      'title': 'Favorite',
+      'title': 'Favorites',
       'body': Favorite(),
       'icon': Icons.favorite,
-      'icon_name': 'Favorite',
+      'icon_name': 'Favorites',
     },
     {
       'title': 'Add',
@@ -36,10 +36,10 @@ class _TabsState extends State<Tabs> {
       'icon_name': 'Add',
     },
     {
-      'title': 'MyAd',
+      'title': 'My Ads',
       'body': MyAd(),
       'icon': Icons.stars,
-      'icon_name': 'MyAd',
+      'icon_name': 'My Ads',
     },
     {
       'title': 'Menu',

@@ -11,6 +11,7 @@ class Ad {
   final String authorId;
   final List<String> picturesUrl;
   final List<String> keyWords;
+  final List<String> favored;
   final String description;
   @JsonKey(fromJson: _positionFromFirebaseGeoPoint)
   final Position geoLocation;
@@ -22,7 +23,7 @@ class Ad {
   }
 
   Ad(this.title, this.idStr, this.category, this.authorId, this.picturesUrl,
-      this.keyWords, this.description, this.geoLocation);
+      this.keyWords, this.favored, this.description, this.geoLocation);
 
   factory Ad.fromJson(Map<String, dynamic> json) => _$AdFromJson(json);
 
