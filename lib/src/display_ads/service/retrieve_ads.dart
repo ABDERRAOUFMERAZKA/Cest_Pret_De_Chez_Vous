@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../utils/geo_compute.dart';
 
@@ -96,18 +97,30 @@ Future<List<Map<String, dynamic>>> getFavoriteAdsFromUser(String userId) async {
 }
 
 Future populateTable() async {
-  double minWest = -4.486;
-  double maxEast = 7.7521;
-  double minSouth = 42.6888;
-  double maxNorth = 51.0344;
+  var categories = ["book", "kitchen", "electronic"];
+  double minWest = 2.228833;
+  double maxEast = 2.254857;
+  double minSouth = 48.82882;
+  double maxNorth = 48.845492;
+  String authorId = (await FirebaseAuth.instance.currentUser()).uid;
   final _random = new Random();
-  for (var i = 0; i < 5000; i++) {
+  for (var i = 0; i < 1000; i++) {
     String title = "Title $i";
+    String category = categories[i % 3];
+    String description =
+        "This is a random description for add $i and yes i don't know what to add, but... yeah...";
     double latitude = minSouth + _random.nextDouble() * (maxNorth - minSouth);
     double longitude = minWest + _random.nextDouble() * (maxEast - minWest);
-    Firestore()
-        .collection("ads")
-        .add({"title": title, "location": GeoPoint(latitude, longitude)});
+    var docRef = await Firestore().collection("ads").add({
+      "authorId": authorId,
+      "category": category,
+      "title": title,
+      "description": description,
+      "keywords": ["keyword1"],
+      "picturesUrl": [],
+      "location": GeoPoint(latitude, longitude)
+    });
+    docRef.updateData({"adId": docRef.documentID});
   }
   print("done");
 }
