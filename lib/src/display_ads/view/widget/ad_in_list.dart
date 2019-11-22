@@ -2,6 +2,7 @@ import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 
+import '../details_ads.dart';
 import '../../model/ad.dart';
 
 class AdInList extends StatelessWidget {
@@ -15,6 +16,10 @@ class AdInList extends StatelessWidget {
       {@required this.uid,
       @required this.addAdToFavorites,
       @required this.removeFromFavorites});
+
+  void showDetailAds(BuildContext ctx, Ad value) {
+    showModalBottomSheet(context: ctx, builder: (_) => DetailAds(value));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +59,7 @@ class AdInList extends StatelessWidget {
               children: <Widget>[
                 FlatButton(
                   child: Text('SEE DETAILS'),
-                  onPressed: () {/* ... */},
+                  onPressed: () => showDetailAds(context, ad),
                 ),
                 if (isNotNullAndContains(ad.favored, uid))
                   FlatButton(
