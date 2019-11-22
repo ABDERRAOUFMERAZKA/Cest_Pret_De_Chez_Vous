@@ -13,7 +13,6 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     var viewModel = Provider.of<DisplayAdsViewModel>(context);
     List<Ad> homeAds = viewModel.homeAds;
-    viewModel.fetchHomeAds();
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: isNotNullNorEmpty(homeAds)
