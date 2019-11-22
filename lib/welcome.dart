@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import './navigation/navigation.dart';
 import './src/account_settings/view/login.dart';
 import './src/account_settings/view/mail_validation.dart';
+import './src/display_ads/view_model/display_ads_view_model.dart';
 
 class MainViewModel with ChangeNotifier {
   String uid;
@@ -16,7 +17,10 @@ class Welcome extends StatelessWidget {
     if (data == null) {
       return Login();
     } else if (data.isEmailVerified) {
-      return Tabs();
+      return ChangeNotifierProvider(
+        builder: (context) => DisplayAdsViewModel(),
+        child: Tabs(),
+      );
     }
     return ValidationMail();
   }
@@ -26,7 +30,7 @@ class Welcome extends StatelessWidget {
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (context, snapshot) {
         return ChangeNotifierProvider(
-            builder: (context) => MainViewModel(snapshot.data.uid),
+            builder: (context) => MainViewModel(snapshot.data?.uid),
             child: getLoggedContent(snapshot.data));
       },
     );
