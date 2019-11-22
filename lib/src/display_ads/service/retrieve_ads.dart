@@ -134,3 +134,21 @@ Future<List<String>> getCategoriesList() async {
   });
   return categories;
 }
+
+postNewAdToFavorites(String adId, String userId) async {
+  await Firestore().collection("users").document(userId).updateData({
+    "favorites": FieldValue.arrayUnion([adId])
+  });
+  await Firestore().collection("ads").document(adId).updateData({
+    "favored": FieldValue.arrayUnion([userId])
+  });
+}
+
+deleteAdFromFavorites(String adId, String userId) async {
+  await Firestore().collection("users").document(userId).updateData({
+    "favorites": FieldValue.arrayRemove([adId])
+  });
+  await Firestore().collection("ads").document(adId).updateData({
+    "favored": FieldValue.arrayRemove([userId])
+  });
+}

@@ -2,12 +2,24 @@ import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/ad.dart';
+import '../../view_model/display_ads_view_model.dart';
 
 class AdInList extends StatelessWidget {
   final Ad ad;
   final String uid;
 
-  AdInList(this.ad, {@required String uid}) : uid = uid;
+  Function addAdToFavorites;
+  Function removeFromFavorites;
+
+  AdInList(this.ad,
+      {@required this.uid,
+      @required this.addAdToFavorites,
+      @required this.removeFromFavorites});
+
+  bool isNotNullAndContains(List<String> list, String element) {
+    if (list == null) return false;
+    return (list.contains(element));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +61,16 @@ class AdInList extends StatelessWidget {
                   child: Text('SEE DETAILS'),
                   onPressed: () {/* ... */},
                 ),
-                FlatButton(
-                  child: Text((ad.favored.contains(uid))
-                      ? 'Remove from favorites'
-                      : "Add to favorites"),
-                  onPressed: () {/* ... */},
-                ),
+                if (isNotNullAndContains(ad.favored, uid))
+                  FlatButton(
+                    child: Text('Remove from favorites'),
+                    onPressed: () => removeFromFavorites(),
+                  )
+                else
+                  FlatButton(
+                    child: Text('Add to favorites'),
+                    onPressed: () => addAdToFavorites(),
+                  ),
               ],
             ),
           ),

@@ -25,7 +25,7 @@ class _TabsState extends State<Tabs> {
     },
     {
       'title': 'Favorites',
-      'body': Favorite(),
+      'body': Favorites(),
       'icon': Icons.favorite,
       'icon_name': 'Favorites',
     },

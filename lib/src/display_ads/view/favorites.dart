@@ -6,7 +6,7 @@ import './widget/ad_in_list.dart';
 import '../model/ad.dart';
 import '../view_model/display_ads_view_model.dart';
 
-class Favorite extends StatelessWidget {
+class Favorites extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var viewModel = Provider.of<DisplayAdsViewModel>(context);
