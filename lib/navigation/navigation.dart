@@ -37,7 +37,7 @@ class _TabsState extends State<Tabs> {
     },
     {
       'title': 'My Ads',
-      'body': MyAd(),
+      'body': MyAds(),
       'icon': Icons.stars,
       'icon_name': 'My Ads',
     },

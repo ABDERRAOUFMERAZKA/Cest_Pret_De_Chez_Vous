@@ -1,8 +1,7 @@
+import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:flutter/material.dart';
 
-import '../../../styles.dart';
-
-class MyAd extends StatelessWidget {
+class MyAds extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
