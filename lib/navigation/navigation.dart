@@ -75,6 +75,7 @@ class _TabsState extends State<Tabs> {
       ],
     );
     return Scaffold(
+      backgroundColor: Color.fromRGBO(230, 230, 230, 1),
       appBar: appBar,
       body: Container(
         height:

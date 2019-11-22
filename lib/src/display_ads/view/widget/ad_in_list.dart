@@ -1,8 +1,8 @@
 import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 
 import '../../model/ad.dart';
-import '../../view_model/display_ads_view_model.dart';
 
 class AdInList extends StatelessWidget {
   final Ad ad;
@@ -15,11 +15,6 @@ class AdInList extends StatelessWidget {
       {@required this.uid,
       @required this.addAdToFavorites,
       @required this.removeFromFavorites});
-
-  bool isNotNullAndContains(List<String> list, String element) {
-    if (list == null) return false;
-    return (list.contains(element));
-  }
 
   @override
   Widget build(BuildContext context) {

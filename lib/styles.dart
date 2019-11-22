@@ -49,6 +49,12 @@ class Styles {
     color: Colors.red,
   );
 
+  static final bigCenterText = TextStyle(
+    fontFamily: _fontNameDefault,
+    fontSize: 25,
+    color: Colors.grey,
+  );
+
   static Color _hexToColor(String code) {
     return Color(int.parse(code.substring(0, 6), radix: 16) + 0xFF000000);
   }
