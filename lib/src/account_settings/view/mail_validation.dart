@@ -1,7 +1,6 @@
+import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../../../styles.dart';
 
 class ValidationMail extends StatefulWidget {
   @override
