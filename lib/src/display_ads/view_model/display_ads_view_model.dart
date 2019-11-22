@@ -111,4 +111,14 @@ class DisplayAdsViewModel with ChangeNotifier {
     this._categories = await getCategoriesList();
     notifyListeners();
   }
+
+  void addAdToFavorites(String adId) async {
+    String userId = (await FirebaseAuth.instance.currentUser()).uid;
+    await postNewAdToFavorites(adId, userId);
+  }
+
+  void removeAdFromFavorites(String adId) async {
+    String userId = (await FirebaseAuth.instance.currentUser()).uid;
+    await deleteAdFromFavorites(adId, userId);
+  }
 }

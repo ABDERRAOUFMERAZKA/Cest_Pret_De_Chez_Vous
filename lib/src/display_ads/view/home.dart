@@ -16,10 +16,16 @@ class Home extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 10),
       child: ListView.builder(
         itemCount: homeAds.length,
-        itemBuilder: (context, index) => AdInList(
-          homeAds[index],
-          uid: Provider.of<MainViewModel>(context).uid,
-        ),
+        itemBuilder: (context, index) {
+          Ad currentAd = homeAds[index];
+          return AdInList(
+            currentAd,
+            uid: Provider.of<MainViewModel>(context).uid,
+            addAdToFavorites: () => viewModel.addAdToFavorites(currentAd.idStr),
+            removeFromFavorites: () =>
+                viewModel.removeAdFromFavorites(currentAd.idStr),
+          );
+        },
       ),
     );
   }
