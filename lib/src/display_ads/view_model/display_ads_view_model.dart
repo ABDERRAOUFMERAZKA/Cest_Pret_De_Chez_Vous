@@ -1,3 +1,4 @@
+import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
@@ -8,14 +9,14 @@ import '../service/retrieve_ads.dart';
 
 class DisplayAdsViewModel with ChangeNotifier {
   static const double _RADIUS = 10;
-  List<Ad> _homeAds = [];
+  List<Ad> _adsAround = [];
   List<Ad> _searchedAds = [];
   List<Ad> _currentUserAds = [];
   List<Ad> _currentUserFavoriteAds = [];
   List<Ad> _searchedUserAds = [];
   List<String> _categories = [];
 
-  List<Ad> get homeAds => _homeAds;
+  List<Ad> get homeAds => _adsAround;
   List<Ad> get searchedAds => _searchedAds;
   List<Ad> get currentUserAds => _currentUserAds;
   List<Ad> get currentUserFavoriteAds => _currentUserFavoriteAds;
@@ -23,10 +24,10 @@ class DisplayAdsViewModel with ChangeNotifier {
   List<String> get categories => _categories;
 
   DisplayAdsViewModel() {
-    fetchCurrentUserAds();
-    fetchCurrentUserFavoriteAds();
-    fetchHomeAds();
-    getCategories();
+    _fetchAdsAround();
+    _fetchCurrentUserAds();
+    _fetchCurrentUserFavoriteAds();
+    _getCategories();
   }
 
   Future<GeoPoint> _getPositionAsFirebaseGeoPoint() async {
@@ -35,7 +36,7 @@ class DisplayAdsViewModel with ChangeNotifier {
     return GeoPoint(currentPosition.latitude, currentPosition.longitude);
   }
 
-  void fetchCurrentUserAds() async {
+  void _fetchCurrentUserAds() async {
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     List<Map<String, dynamic>> jsonAdsFromUser =
         await getAdsFromUser(currentUser.uid);
@@ -47,7 +48,7 @@ class DisplayAdsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  fetchCurrentUserFavoriteAds() async {
+  _fetchCurrentUserFavoriteAds() async {
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     List<Map<String, dynamic>> jsonFavoriteAdsFromUser =
         await getFavoriteAdsFromUser(currentUser.uid);
@@ -69,7 +70,7 @@ class DisplayAdsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchHomeAds() async {
+  void _fetchAdsAround() async {
     GeoPoint firebaseGeoPoint = await _getPositionAsFirebaseGeoPoint();
     List<Map<String, dynamic>> jsonAllAdsAround =
         await getAdsAround(firebaseGeoPoint, _RADIUS);
@@ -77,37 +78,39 @@ class DisplayAdsViewModel with ChangeNotifier {
     for (var jsonAd in jsonAllAdsAround) {
       allAdsAround.add(Ad.fromJson(jsonAd));
     }
-    this._homeAds = allAdsAround;
+    this._adsAround = allAdsAround;
     notifyListeners();
   }
 
   void searchAds([String category, List<String> keywords]) async {
     GeoPoint firebaseGeoPoint = await _getPositionAsFirebaseGeoPoint();
-    List<Map<String, dynamic>> jsonAdsAround =
+    List<Ad> searchedAds =
         await (String category, List<String> keywords) async {
-      if ((category == null || category == "") &&
-          (keywords == null || keywords.isEmpty)) {
+      if ((category == null || category == "") && (isNullOrEmpty(keywords))) {
         return await getAdsAround(firebaseGeoPoint, _RADIUS);
-      } else if ((keywords == null || keywords.isEmpty)) {
-        return await getAdsAroundWithCategory(
-            firebaseGeoPoint, _RADIUS, category);
+      } else if ((isNullOrEmpty(keywords))) {
+        List<Ad> filteredAds =
+            _adsAround.where((ad) => ad.category == category);
+        return filteredAds;
       } else if (category == null) {
-        return await getAdsAroundWithKeywords(
-            firebaseGeoPoint, _RADIUS, keywords);
+        List<Ad> filteredAds = _adsAround
+            .where((Ad ad) => listContainsAtLeastOneOf(ad.keywords, keywords))
+            .toList();
+        return filteredAds;
       } else {
-        return await getAdsAroundWithCategoryAndKeywords(
-            firebaseGeoPoint, _RADIUS, category, keywords);
+        List<Ad> filteredAds = _adsAround
+            .where((Ad ad) =>
+                listContainsAtLeastOneOf(ad.keywords, keywords) &&
+                ad.category == category)
+            .toList();
+        return filteredAds;
       }
     }(category, keywords);
-    List<Ad> adsAround = [];
-    for (var jsonAd in jsonAdsAround) {
-      adsAround.add(Ad.fromJson(jsonAd));
-    }
-    this._searchedAds = adsAround;
+    this._searchedAds = searchedAds;
     notifyListeners();
   }
 
-  void getCategories() async {
+  void _getCategories() async {
     this._categories = await getCategoriesList();
     notifyListeners();
   }

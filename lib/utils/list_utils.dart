@@ -9,6 +9,6 @@ bool isNotNullAndContains(List<dynamic> list, dynamic element) {
   return (list.contains(element));
 }
 
-bool isNotNullNorEmpty(List<dynamic> list) {
-  return list != null && list.isNotEmpty;
-}
+bool isNotNullNorEmpty(List<dynamic> list) => list != null && list.isNotEmpty;
+
+bool isNullOrEmpty(List<dynamic> list) => list == null || list.isEmpty;

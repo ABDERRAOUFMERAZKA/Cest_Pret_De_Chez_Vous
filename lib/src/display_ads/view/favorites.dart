@@ -13,7 +13,6 @@ class Favorites extends StatelessWidget {
   Widget build(BuildContext context) {
     var viewModel = Provider.of<DisplayAdsViewModel>(context);
     List<Ad> currentUserFavoriteAds = viewModel.currentUserFavoriteAds;
-    viewModel.fetchHomeAds();
     return isNotNullNorEmpty(currentUserFavoriteAds)
         ? Container(
             margin: EdgeInsets.symmetric(vertical: 10),
