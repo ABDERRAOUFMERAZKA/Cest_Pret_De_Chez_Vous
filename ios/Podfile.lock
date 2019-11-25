@@ -5,6 +5,11 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.3):
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
+  - BSGridCollectionViewLayout (1.2.5)
+  - BSImagePicker (2.10.3):
+    - BSGridCollectionViewLayout (= 1.2.5)
+    - BSImageView (= 1.0.3)
+  - BSImageView (1.0.3)
   - cloud_firestore (0.0.1):
     - Firebase/Core
     - Firebase/Firestore (~> 6.0)
@@ -137,6 +142,9 @@ PODS:
   - leveldb-library (1.22)
   - location_permissions (2.0.3):
     - Flutter
+  - multi_image_picker (4.6.0-rc.3):
+    - BSImagePicker (~> 2.10.3)
+    - Flutter
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -153,10 +161,14 @@ DEPENDENCIES:
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
   - google_api_availability (from `.symlinks/plugins/google_api_availability/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
+  - multi_image_picker (from `.symlinks/plugins/multi_image_picker/ios`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BoringSSL-GRPC
+    - BSGridCollectionViewLayout
+    - BSImagePicker
+    - BSImageView
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -195,9 +207,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_api_availability/ios"
   location_permissions:
     :path: ".symlinks/plugins/location_permissions/ios"
+  multi_image_picker:
+    :path: ".symlinks/plugins/multi_image_picker/ios"
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  BSGridCollectionViewLayout: 333dcb457a5a3bdd9212607ab5756553dcfe06cb
+  BSImagePicker: 07404254f2fcdaf5a2eb403c0f8c337267ce8738
+  BSImageView: a149459433a2687157d034c78e059d30ac7f2544
   cloud_firestore: 2d82a8ddea1ac2f535ec891ed68b5975fe4f9509
   Firebase: bc9cfc7a96c73268656d5aaab453ff1b4b530e0e
   firebase_auth: 1e3b7bdd37b9fbd4ef75ba1d985b00be09e02d3d
@@ -224,6 +241,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 43b8b64263023d4f32caa0b40f4c8bfa3c5f36d8
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   location_permissions: 195ff2a1182fa9029ef3f2653156961ee5a1e40b
+  multi_image_picker: c384a0033811367a89d51693513dc156a89e4c37
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
 
