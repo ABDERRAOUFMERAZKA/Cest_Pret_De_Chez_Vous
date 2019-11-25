@@ -2,6 +2,7 @@ import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 
+import '../ad_details.dart';
 import '../../model/ad.dart';
 
 class AdInList extends StatelessWidget {
@@ -54,7 +55,10 @@ class AdInList extends StatelessWidget {
               children: <Widget>[
                 FlatButton(
                   child: Text('SEE DETAILS'),
-                  onPressed: () {/* ... */},
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AdDetails(ad)),
+                  ),
                 ),
                 if (isNotNullAndContains(ad.favored, uid))
                   FlatButton(
