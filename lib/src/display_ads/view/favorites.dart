@@ -30,7 +30,7 @@ class Favorites extends StatelessWidget {
                 child: NoAdsFound(),
               ),
             ),
-      onRefresh: viewModel.refreshAdsAround,
+      onRefresh: viewModel.refreshCurrentUserFavoriteAds,
     );
   }
 }
