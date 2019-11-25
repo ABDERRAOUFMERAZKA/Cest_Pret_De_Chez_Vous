@@ -5,6 +5,7 @@ import '../src/display_ads/view/favorites.dart';
 import '../src/display_ads/view/home.dart';
 import '../src/display_ads/view/my_ads.dart';
 import '../src/display_ads/view/search.dart';
+import '../src/display_ads/view_model/display_ads_view_model.dart';
 import '../src/menu/menu.dart';
 
 import '../styles.dart';

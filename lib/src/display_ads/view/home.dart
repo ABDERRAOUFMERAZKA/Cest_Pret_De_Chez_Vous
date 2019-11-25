@@ -12,6 +12,7 @@ import '../../account_settings/view_model/login_view_model.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("context: ${context.toString()}");
     var viewModel = Provider.of<DisplayAdsViewModel>(context);
     List<Ad> homeAds = viewModel.homeAds;
     return RefreshIndicator(

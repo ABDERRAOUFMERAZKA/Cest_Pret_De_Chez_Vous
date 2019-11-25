@@ -1,43 +1,40 @@
 import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/tag.dart';
-import 'package:provider/provider.dart';
 
 import '../view_model/display_ads_view_model.dart';
 
 class Search extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _SearchState createState() => _SearchState();
 }
 
-class _HomePageState extends State<Search> {
+class _SearchState extends State<Search> {
   String category = '--';
-  bool isFullKeyWords = false;
-  var keyWords = [];
-
-  final keyWordsController = TextEditingController();
+  var keywords = [];
+  final keywordsController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    keyWordsController.addListener(_onVerifierChanged);
+    keywordsController.addListener(_onVerifierChanged);
   }
 
   void _onVerifierChanged() {
     setState(() {
-      keyWords = keyWordsController.text.split(" ");
+      keywords = keywordsController.text.split(" ");
     });
   }
 
   void _search() {
-    print(keyWords);
+    print(keywords);
     print(category);
   }
 
   Widget build(BuildContext context) {
-    var provider = Provider.of<DisplayAdsViewModel>(context);
-    var dropDownItems = provider.categories;
+    print("context: ${context.toString()}");
+    var dropDownItems = [category, "books"];
     final AppBar appBar = AppBar(
       title: Text('Search', style: Styles.navBarTitle),
     );
@@ -91,21 +88,16 @@ class _HomePageState extends State<Search> {
                     width: 250,
                     textStyle: Styles.textDefault,
                     onSubmitted: (var str) {
-                      if (keyWords.length == 2) {
+                      if (keywords.length < 3) {
                         setState(() {
-                          isFullKeyWords = true;
-                        });
-                      }
-                      if (keyWords.length < 3) {
-                        setState(() {
-                          keyWords.add(str);
+                          keywords.add(str);
                         });
                       }
                     }),
                 direction: Axis.vertical,
-                itemCount: keyWords.length,
+                itemCount: keywords.length,
                 itemBuilder: (int index) {
-                  final item = keyWords[index];
+                  final item = keywords[index];
                   return ItemTags(
                     singleItem: true,
                     color: Colors.orangeAccent,
@@ -116,8 +108,7 @@ class _HomePageState extends State<Search> {
                     removeButton: ItemTagsRemoveButton(),
                     onRemoved: () {
                       setState(() {
-                        keyWords.removeAt(index);
-                        isFullKeyWords = false;
+                        keywords.removeAt(index);
                       });
                     },
                     textStyle: TextStyle(
