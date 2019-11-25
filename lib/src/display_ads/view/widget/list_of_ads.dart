@@ -17,7 +17,6 @@ class ListOfAds extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
       child: ListView.builder(
         itemCount: listOfAdsToDisplay.length,
         itemBuilder: (context, index) {
