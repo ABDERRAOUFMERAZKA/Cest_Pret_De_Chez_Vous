@@ -17,10 +17,6 @@ class AdInList extends StatelessWidget {
       @required this.addAdToFavorites,
       @required this.removeFromFavorites});
 
-  void showDetailAds(BuildContext ctx, Ad value) {
-    showModalBottomSheet(context: ctx, builder: (_) => DetailAds(value));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -59,7 +55,10 @@ class AdInList extends StatelessWidget {
               children: <Widget>[
                 FlatButton(
                   child: Text('SEE DETAILS'),
-                  onPressed: () => showDetailAds(context, ad),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DetailAds(ad)),
+                  ),
                 ),
                 if (isNotNullAndContains(ad.favored, uid))
                   FlatButton(
