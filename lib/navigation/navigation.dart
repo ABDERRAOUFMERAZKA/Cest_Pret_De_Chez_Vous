@@ -61,7 +61,7 @@ class _TabsState extends State<Tabs> {
   Widget build(BuildContext context) {
     final AppBar appBar = AppBar(
       title:
-          Text(_listTabsbar[_indexTabsbar]['title'], style: Styles.navBarTitle),
+      Text(_listTabsbar[_indexTabsbar]['title'], style: Styles.navBarTitle),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),
@@ -79,7 +79,7 @@ class _TabsState extends State<Tabs> {
       appBar: appBar,
       body: Container(
         height:
-            MediaQuery.of(context).size.height - appBar.preferredSize.height,
+        MediaQuery.of(context).size.height - appBar.preferredSize.height,
         child: _listTabsbar[_indexTabsbar]['body'],
       ),
       bottomNavigationBar: BottomNavigationBar(

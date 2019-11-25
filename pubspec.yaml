@@ -25,6 +25,8 @@ dependencies:
         sdk: flutter
     flutter_tags: ^0.4.5
     geolocator: ^5.1.5
+    http:
+    image_picker: ^0.6.2+1
     json_annotation: ^3.0.0
     meta: ^1.1.7
     provider: ^3.1.0
