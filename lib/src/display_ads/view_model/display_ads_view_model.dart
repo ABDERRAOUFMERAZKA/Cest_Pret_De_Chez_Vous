@@ -20,6 +20,7 @@ class DisplayAdsViewModel with ChangeNotifier {
 
   DateTime _lastAdsAroundRefresh = DateTime.now();
   DateTime _lastCurrentUserAdsRefresh = DateTime.now();
+  DateTime _lastCurrentUserFavoriteAdsRefresh = DateTime.now();
 
   List<Ad> get homeAds => _adsAround;
   List<Ad> get searchedAds => _searchedAds;
@@ -52,6 +53,13 @@ class DisplayAdsViewModel with ChangeNotifier {
     if (isItTimeToRefresh(_lastCurrentUserAdsRefresh)) {
       await _fetchCurrentUserAds();
       this._lastCurrentUserAdsRefresh = DateTime.now();
+    }
+  }
+
+  Future<void> refreshCurrentUserFavoriteAds() async {
+    if (isItTimeToRefresh(_lastCurrentUserFavoriteAdsRefresh)) {
+      await _fetchAdsAround();
+      this._lastCurrentUserFavoriteAdsRefresh = DateTime.now();
     }
   }
 
