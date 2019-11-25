@@ -2,7 +2,7 @@ import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 
-import '../details_ads.dart';
+import '../ad_details.dart';
 import '../../model/ad.dart';
 
 class AdInList extends StatelessWidget {
@@ -57,7 +57,7 @@ class AdInList extends StatelessWidget {
                   child: Text('SEE DETAILS'),
                   onPressed: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DetailAds(ad)),
+                    MaterialPageRoute(builder: (context) => AdDetails(ad)),
                   ),
                 ),
                 if (isNotNullAndContains(ad.favored, uid))

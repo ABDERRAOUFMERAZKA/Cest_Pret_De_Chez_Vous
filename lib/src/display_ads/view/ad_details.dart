@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../model/ad.dart';
 
-class DetailAds extends StatelessWidget {
+class AdDetails extends StatelessWidget {
   final Ad ad;
-  DetailAds(this.ad);
+  AdDetails(this.ad);
 
   @override
   Widget build(BuildContext context) {
