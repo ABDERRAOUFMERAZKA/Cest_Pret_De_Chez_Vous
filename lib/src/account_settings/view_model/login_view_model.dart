@@ -1,15 +1,23 @@
-import 'package:cest_pret_de_chez_vous/src/account_settings/utils/firebase_responses.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../services/manage_auth.dart';
+import '../utils/firebase_responses.dart';
 
 enum LoginStatus { initialState, isLoading, isLoaded, onError }
 enum ServerResponse { ok, platformError, otherError }
 
 class LoginViewModel with ChangeNotifier {
+  String currentUserId;
   LoginStatus loginStatus = LoginStatus.initialState;
   String loginErrorMessage;
+
+  LoginViewModel(this.currentUserId);
+
+  void setCurrentUserId(String uid) {
+    this.currentUserId = uid;
+    notifyListeners();
+  }
 
   signIn(GlobalKey<FormState> formKey, String email, String password) async {
     this.loginStatus = LoginStatus.isLoading;
