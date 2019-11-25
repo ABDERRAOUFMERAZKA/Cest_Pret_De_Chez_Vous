@@ -9,12 +9,17 @@ import '../service/retrieve_ads.dart';
 
 class DisplayAdsViewModel with ChangeNotifier {
   static const double _RADIUS = 10;
+  static const double _REFRESH_DEBOUNCE_TIME = 15000; // in milliseconds
+
   List<Ad> _adsAround = [];
   List<Ad> _searchedAds = [];
   List<Ad> _currentUserAds = [];
   List<Ad> _currentUserFavoriteAds = [];
   List<Ad> _searchedUserAds = [];
   List<String> _categories = [];
+
+  DateTime _lastAdsAroundRefresh = DateTime.now();
+  DateTime _lastCurrentUserAdsRefresh = DateTime.now();
 
   List<Ad> get homeAds => _adsAround;
   List<Ad> get searchedAds => _searchedAds;
@@ -30,13 +35,35 @@ class DisplayAdsViewModel with ChangeNotifier {
     _getCategories();
   }
 
+  bool isItTimeToRefresh(DateTime dateTime) {
+    DateTime refreshTime = DateTime.now();
+    return refreshTime.difference(this._lastAdsAroundRefresh) >
+        Duration(milliseconds: _REFRESH_DEBOUNCE_TIME.toInt());
+  }
+
+  Future<void> refreshAdsAround() async {
+    if (isItTimeToRefresh(_lastAdsAroundRefresh)) {
+      await _fetchAdsAround();
+      this._lastAdsAroundRefresh = DateTime.now();
+    }
+  }
+
+  Future<void> refreshCurrentUserAds() async {
+    if (isItTimeToRefresh(_lastCurrentUserAdsRefresh)) {
+      await _fetchCurrentUserAds();
+      this._lastCurrentUserAdsRefresh = DateTime.now();
+    }
+  }
+
+  refreshAdsFromCurrentSearchedUser() {}
+
   Future<GeoPoint> _getPositionAsFirebaseGeoPoint() async {
     Position currentPosition = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return GeoPoint(currentPosition.latitude, currentPosition.longitude);
   }
 
-  void _fetchCurrentUserAds() async {
+  Future<void> _fetchCurrentUserAds() async {
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     List<Map<String, dynamic>> jsonAdsFromUser =
         await getAdsFromUser(currentUser.uid);
@@ -48,7 +75,7 @@ class DisplayAdsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  _fetchCurrentUserFavoriteAds() async {
+  Future<void> _fetchCurrentUserFavoriteAds() async {
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     List<Map<String, dynamic>> jsonFavoriteAdsFromUser =
         await getFavoriteAdsFromUser(currentUser.uid);
@@ -60,7 +87,7 @@ class DisplayAdsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  fetchSearchedUserAds(String uid) async {
+  Future<void> fetchSearchedUserAds(String uid) async {
     List<Map<String, dynamic>> jsonAdsFromUser = await getAdsFromUser(uid);
     List<Ad> adsFromUser = [];
     for (var jsonAd in jsonAdsFromUser) {
@@ -70,7 +97,7 @@ class DisplayAdsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void _fetchAdsAround() async {
+  Future<void> _fetchAdsAround() async {
     GeoPoint firebaseGeoPoint = await _getPositionAsFirebaseGeoPoint();
     List<Map<String, dynamic>> jsonAllAdsAround =
         await getAdsAround(firebaseGeoPoint, _RADIUS);
@@ -82,7 +109,7 @@ class DisplayAdsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void searchAds([String category, List<String> keywords]) async {
+  Future<void> searchAds([String category, List<String> keywords]) async {
     GeoPoint firebaseGeoPoint = await _getPositionAsFirebaseGeoPoint();
     List<Ad> searchedAds =
         await (String category, List<String> keywords) async {
@@ -110,17 +137,17 @@ class DisplayAdsViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void _getCategories() async {
+  Future<void> _getCategories() async {
     this._categories = await getCategoriesList();
     notifyListeners();
   }
 
-  void addAdToFavorites(String adId) async {
+  Future<void> addAdToFavorites(String adId) async {
     String userId = (await FirebaseAuth.instance.currentUser()).uid;
     await postNewAdToFavorites(adId, userId);
   }
 
-  void removeAdFromFavorites(String adId) async {
+  Future<void> removeAdFromFavorites(String adId) async {
     String userId = (await FirebaseAuth.instance.currentUser()).uid;
     await deleteAdFromFavorites(adId, userId);
   }
