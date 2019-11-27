@@ -16,10 +16,9 @@ class _AddPageState extends State<Add> {
   String category = '--';
   String description = '';
   String title = '';
-  bool isFullKeyWords = false;
   var keyWords = [];
   File _imageFile;
-
+  List picturesName = new List();
   final keyWordsController = TextEditingController();
 
   @override
@@ -39,11 +38,17 @@ class _AddPageState extends State<Add> {
     try {
       _imageFile = await ImagePicker.pickImage(source: source);
       setState(() {
-        _imageFile = _imageFile;
+        picturesName.add(_imageFile);
       });
     } catch (e) {
       return e.toString();
     }
+  }
+
+  removePicture(item) {
+    setState(() {
+      picturesName.remove(item);
+    });
   }
 
   void _add() {
@@ -51,13 +56,11 @@ class _AddPageState extends State<Add> {
     print(category);
     print(description);
     print(title);
-    print(_imageFile);
+    print(picturesName);
   }
-
 
   Widget build(BuildContext context) {
     var provider = Provider.of<DisplayAdsViewModel>(context);
-    provider.getCategories();
     var dropDownItems = provider.categories;
     final descriptionField = TextFormField(
       obscureText: false,
@@ -67,7 +70,7 @@ class _AddPageState extends State<Add> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Description",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final titleField = TextFormField(
       obscureText: false,
@@ -76,7 +79,7 @@ class _AddPageState extends State<Add> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Title",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     return SingleChildScrollView(
       padding: EdgeInsets.all(20),
@@ -134,11 +137,6 @@ class _AddPageState extends State<Add> {
                 width: 250,
                 textStyle: Styles.textDefault,
                 onSubmitted: (var str) {
-                  if (keyWords.length == 2) {
-                    setState(() {
-                      isFullKeyWords = true;
-                    });
-                  }
                   if (keyWords.length < 3) {
                     setState(() {
                       keyWords.add(str);
@@ -160,7 +158,6 @@ class _AddPageState extends State<Add> {
                 onRemoved: () {
                   setState(() {
                     keyWords.removeAt(index);
-                    isFullKeyWords = false;
                   });
                 },
                 textStyle: TextStyle(
@@ -181,7 +178,19 @@ class _AddPageState extends State<Add> {
             height: 15.0,
           ),
           Text('Add pictures', style: Styles.mediumText),
-          Text('', style: Styles.smallText),
+          if (picturesName != null)
+            for (var item in picturesName)
+              Flexible(
+                child: Row(
+                  children: <Widget>[
+                    Image.file(item, width: 200, height: 200),
+                    InkWell(
+                      child: Icon(Icons.delete),
+                      onTap: () => removePicture(item),
+                    ),
+                  ],
+                ),
+              ),
           SizedBox(
             height: 15.0,
           ),
