@@ -19,7 +19,6 @@ class _AddPageState extends State<Add> {
   bool isFullKeyWords = false;
   var keyWords = [];
   File _imageFile;
-  dynamic _pickImageError;
 
   final keyWordsController = TextEditingController();
 
@@ -36,12 +35,14 @@ class _AddPageState extends State<Add> {
     });
   }
 
-  void _onImageButtonPressed(ImageSource source) async {
+  onImageButtonPressed(ImageSource source) async {
     try {
       _imageFile = await ImagePicker.pickImage(source: source);
-      setState(() {});
+      setState(() {
+        _imageFile = _imageFile;
+      });
     } catch (e) {
-      _pickImageError = e;
+      return e.toString();
     }
   }
 
@@ -50,36 +51,8 @@ class _AddPageState extends State<Add> {
     print(category);
     print(description);
     print(title);
+    print(_imageFile);
   }
-
-  Widget _previewImage() {
-    if (_imageFile != null) {
-      return Image.file(_imageFile);
-    } else if (_pickImageError != null) {
-      return Text(
-        'Pick image error: $_pickImageError',
-        textAlign: TextAlign.center,
-      );
-    } else {
-      return const Text(
-        'You have not yet picked an image.',
-        textAlign: TextAlign.center,
-      );
-    }
-  }
-
-  Future<void> retrieveLostData() async {
-    final LostDataResponse response = await ImagePicker.retrieveLostData();
-    if (response.isEmpty) {
-      return;
-    }
-    if (response.file != null) {
-      setState(() {
-        _imageFile = response.file;
-      });
-    }
-  }
-
 
 
   Widget build(BuildContext context) {
@@ -207,7 +180,20 @@ class _AddPageState extends State<Add> {
           SizedBox(
             height: 15.0,
           ),
-
+          Text('Add pictures', style: Styles.mediumText),
+          Text('', style: Styles.smallText),
+          SizedBox(
+            height: 15.0,
+          ),
+          FloatingActionButton(
+            onPressed: () => onImageButtonPressed(ImageSource.gallery),
+            heroTag: 'image0',
+            tooltip: 'Pick Image from gallery',
+            child: const Icon(Icons.add_a_photo),
+          ),
+          SizedBox(
+            height: 15.0,
+          ),
           Material(
             elevation: 5.0,
             borderRadius: BorderRadius.circular(30.0),
