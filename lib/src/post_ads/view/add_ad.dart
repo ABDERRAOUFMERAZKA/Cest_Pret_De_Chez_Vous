@@ -1,11 +1,13 @@
 import 'dart:io';
+import 'package:cest_pret_de_chez_vous/utils/enum_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/tag.dart';
 import 'package:provider/provider.dart';
 
-import '../view_model/display_ads_view_model.dart';
+import '../view_model/post_ad_view_model.dart';
+import '../../category.dart';
 
 class Add extends StatefulWidget {
   @override
@@ -13,12 +15,11 @@ class Add extends StatefulWidget {
 }
 
 class _AddPageState extends State<Add> {
-  String category = '--';
+  Category category = null;
   String description = '';
   String title = '';
-  var keyWords = [];
-  File _imageFile;
-  List picturesName = new List();
+  List<String> keyWords = [];
+  List<File> picturesLoaded = new List();
   final keyWordsController = TextEditingController();
 
   @override
@@ -36,9 +37,9 @@ class _AddPageState extends State<Add> {
 
   onImageButtonPressed(ImageSource source) async {
     try {
-      _imageFile = await ImagePicker.pickImage(source: source);
+      File _imageFile = await ImagePicker.pickImage(source: source);
       setState(() {
-        picturesName.add(_imageFile);
+        picturesLoaded.add(_imageFile);
       });
     } catch (e) {
       return e.toString();
@@ -47,7 +48,7 @@ class _AddPageState extends State<Add> {
 
   removePicture(item) {
     setState(() {
-      picturesName.remove(item);
+      picturesLoaded.remove(item);
     });
   }
 
@@ -56,12 +57,12 @@ class _AddPageState extends State<Add> {
     print(category);
     print(description);
     print(title);
-    print(picturesName);
+    print(picturesLoaded);
   }
 
   Widget build(BuildContext context) {
-    var provider = Provider.of<DisplayAdsViewModel>(context);
-    var dropDownItems = provider.categories;
+    var viewModel = Provider.of<PostAdViewModel>(context);
+    var dropDownItems = Category.values;
     final descriptionField = TextFormField(
       obscureText: false,
       maxLines: 5,
@@ -70,7 +71,7 @@ class _AddPageState extends State<Add> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Description",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final titleField = TextFormField(
       obscureText: false,
@@ -79,7 +80,7 @@ class _AddPageState extends State<Add> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Title",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     return SingleChildScrollView(
       padding: EdgeInsets.all(20),
@@ -105,18 +106,18 @@ class _AddPageState extends State<Add> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(7.0),
                 border: Border.all(color: Colors.deepOrange)),
-            child: DropdownButton<String>(
+            child: DropdownButton<Category>(
               isExpanded: true,
-              items: dropDownItems.map((String value) {
-                return new DropdownMenuItem<String>(
-                  value: value,
+              items: dropDownItems.map((Category category) {
+                return new DropdownMenuItem<Category>(
+                  value: category,
                   child: new Text(
-                    value,
+                    EnumToString.parseCamelCase(category) ?? '--',
                   ),
                 );
               }).toList(),
               value: category,
-              onChanged: (String value) {
+              onChanged: (Category value) {
                 setState(() {
                   category = value;
                 });
@@ -178,8 +179,8 @@ class _AddPageState extends State<Add> {
             height: 15.0,
           ),
           Text('Add pictures', style: Styles.mediumText),
-          if (picturesName != null)
-            for (var item in picturesName)
+          if (picturesLoaded != null)
+            for (var item in picturesLoaded)
               Flexible(
                 child: Row(
                   children: <Widget>[
@@ -210,7 +211,7 @@ class _AddPageState extends State<Add> {
             child: MaterialButton(
               minWidth: MediaQuery.of(context).size.width,
               padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              onPressed: _add,
+              onPressed: () => viewModel.postAd(keywords: keyWords, category: category, title: title, description: description, picturesLoaded: picturesLoaded),
               child: Text('Add',
                   textAlign: TextAlign.center,
                   style: Styles.mediumText.copyWith(
