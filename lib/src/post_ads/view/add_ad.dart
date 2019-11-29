@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:cest_pret_de_chez_vous/src/post_ads/view/widgets/show_dialog_popup.dart';
 import 'package:cest_pret_de_chez_vous/utils/enum_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cest_pret_de_chez_vous/styles.dart';
@@ -28,7 +27,6 @@ class _AddPageState extends State<Add> {
     super.initState();
 
     keyWordsController.addListener(_onVerifierChanged);
-
   }
 
   void _onVerifierChanged() {
@@ -54,28 +52,43 @@ class _AddPageState extends State<Add> {
     });
   }
 
-  void _add() {
-    print(keyWords);
-    print(category);
-    print(description);
-    print(title);
-    print(picturesLoaded);
-  }
-
   @override
   didUpdateWidget(add) {
     super.didUpdateWidget(add);
   }
+
   @override
   Widget build(BuildContext context) {
     var viewModel = Provider.of<PostAdViewModel>(context);
     PostAdStatus postAdStatus = viewModel.postAdStatus;
     var dropDownItems = Category.values;
     if (postAdStatus == PostAdStatus.isLoaded) {
-      ShowDialogPopup.showSuccessPopup(context, 'Ad was successfully posted');
+      return AlertDialog(
+        title: Text("Success!"),
+        content: Text("Your Ad was added successfully"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              viewModel.updatePostAdStatus();
+            },
+          ),
+        ],
+      );
     }
     if (postAdStatus == PostAdStatus.onError) {
-      ShowDialogPopup.showErrorPopup(context, 'error');
+      return AlertDialog(
+        title: Text("Error!"),
+        content: Text("Error in post add, retry please!"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              viewModel.updatePostAdStatus();
+            },
+          ),
+        ],
+      );
     }
     final descriptionField = TextFormField(
       obscureText: false,
@@ -85,7 +98,7 @@ class _AddPageState extends State<Add> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Description",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     final titleField = TextFormField(
       obscureText: false,
@@ -94,7 +107,7 @@ class _AddPageState extends State<Add> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Title",
           border:
-          OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
     return SingleChildScrollView(
       padding: EdgeInsets.all(20),
@@ -225,7 +238,12 @@ class _AddPageState extends State<Add> {
             child: MaterialButton(
               minWidth: MediaQuery.of(context).size.width,
               padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              onPressed: () => viewModel.postAd(keywords: keyWords, category: category, title: title, description: description, picturesLoaded: picturesLoaded),
+              onPressed: () => viewModel.postAd(
+                  keywords: keyWords,
+                  category: category,
+                  title: title,
+                  description: description,
+                  picturesLoaded: picturesLoaded),
               child: Text('Add',
                   textAlign: TextAlign.center,
                   style: Styles.mediumText.copyWith(

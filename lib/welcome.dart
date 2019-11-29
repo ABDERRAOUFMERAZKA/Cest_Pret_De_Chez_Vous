@@ -26,11 +26,13 @@ class Welcome extends StatelessWidget {
           view = ValidationMail();
         } else {
           uid = snapshot.data.uid;
-          view = MultiProvider(providers: [ChangeNotifierProvider(
-            builder: (context) => DisplayAdsViewModel()),
-            ChangeNotifierProvider(
-              builder: (context) => PostAdViewModel(),
-            )
+          view = MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                  builder: (context) => DisplayAdsViewModel()),
+              ChangeNotifierProvider(
+                builder: (context) => PostAdViewModel(),
+              )
             ],
             child: Tabs(),
           );
