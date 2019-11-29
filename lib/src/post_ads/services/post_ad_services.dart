@@ -6,27 +6,29 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../model/ad.dart';
 import '../view_model/post_ad_view_model.dart';
 
-Future<List<String>>savePictureInDatabase(List<File> picturesLoaded) async {
+Future<List<String>> savePictureInDatabase(List<File> picturesLoaded) async {
   if (picturesLoaded != null) {
     List<String> urls = [];
     for (var picture in picturesLoaded) {
-      if(picture != null){
+      if (picture != null) {
         StorageReference ref =
-        FirebaseStorage.instance.ref().child(randomString(20));
+            FirebaseStorage.instance.ref().child(randomString(20));
         StorageUploadTask uploadTask = ref.putFile(picture);
         urls.add(await (await uploadTask.onComplete).ref.getDownloadURL());
       }
     }
     return urls;
-  } return null;
+  }
+  return null;
 }
 
-Future<String>uploadAd(Ad ad) async{
+Future<String> uploadAd(Ad ad) async {
   Map<String, dynamic> adMap = ad.toJson();
   try {
     await Firestore().collection("ads").add(adMap);
     return "OK";
-  } catch (e){
+  } catch (e) {
+    print("here");
     return e.code;
   }
 }
