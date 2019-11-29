@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cest_pret_de_chez_vous/src/post_ads/view/widgets/show_dialog_popup.dart';
 import 'package:cest_pret_de_chez_vous/utils/enum_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cest_pret_de_chez_vous/styles.dart';
@@ -27,6 +28,7 @@ class _AddPageState extends State<Add> {
     super.initState();
 
     keyWordsController.addListener(_onVerifierChanged);
+
   }
 
   void _onVerifierChanged() {
@@ -60,9 +62,21 @@ class _AddPageState extends State<Add> {
     print(picturesLoaded);
   }
 
+  @override
+  didUpdateWidget(add) {
+    super.didUpdateWidget(add);
+  }
+  @override
   Widget build(BuildContext context) {
     var viewModel = Provider.of<PostAdViewModel>(context);
+    PostAdStatus postAdStatus = viewModel.postAdStatus;
     var dropDownItems = Category.values;
+    if (postAdStatus == PostAdStatus.isLoaded) {
+      ShowDialogPopup.showSuccessPopup(context, 'Ad was successfully posted');
+    }
+    if (postAdStatus == PostAdStatus.onError) {
+      ShowDialogPopup.showErrorPopup(context, 'error');
+    }
     final descriptionField = TextFormField(
       obscureText: false,
       maxLines: 5,
