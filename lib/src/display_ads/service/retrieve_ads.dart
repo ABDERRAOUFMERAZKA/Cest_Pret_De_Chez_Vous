@@ -5,58 +5,62 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../utils/geo_compute.dart';
 
-Future<List<Map<String, dynamic>>> _fetchAllAdsAround(
-    GeoPoint geoPoint, double radius) async {
-  Map<String, GeoPoint> boundingBox =
-      boundingBoxCoordinates(geoPoint.latitude, geoPoint.longitude, radius);
-  var response = await Firestore()
-      .collection("ads")
-      .where("location", isGreaterThan: boundingBox["swCorner"])
-      .where("location", isLessThan: boundingBox["neCorner"])
-      .getDocuments();
+Future<List<Map<String, dynamic>>> _fetchAds(
+    Query query, bool fromServer) async {
+  var response = await query.getDocuments(
+      source: fromServer ? Source.serverAndCache : Source.cache);
   var documents = response.documents;
   List<Map<String, dynamic>> docsAsMaps = [];
   documents.forEach((document) {
     Map docAsMap = document.data;
     docAsMap["idStr"] = document.documentID;
-    double distance = distanceInMetersBetween(docAsMap["location"], geoPoint);
-    if (distance < 1000 * radius) docsAsMaps.add(docAsMap);
+    docsAsMaps.add(docAsMap);
   });
   return docsAsMaps;
 }
 
 Future<List<Map<String, dynamic>>> getAdsAround(
-    GeoPoint geoPoint, double radius) async {
-  return await _fetchAllAdsAround(geoPoint, radius);
+    Map<String, double> position, double radius,
+    {bool fromServer = false}) async {
+  GeoPoint positionAsGeoPoint =
+      GeoPoint(position["latitude"], position["longitude"]);
+
+  Map<String, GeoPoint> boundingBox = boundingBoxCoordinates(
+      positionAsGeoPoint.latitude, positionAsGeoPoint.longitude, radius);
+
+  Query ref = Firestore()
+      .collection("ads")
+      .where("location", isGreaterThan: boundingBox["swCorner"])
+      .where("location", isLessThan: boundingBox["neCorner"]);
+
+  //Firebase doesn't currently curate with geo position, so we have to filter again.
+  List<Map<String, dynamic>> adsAround =
+      (await _fetchAds(ref, fromServer)).where((ad) {
+    double distance =
+        distanceInMetersBetween(ad["location"], positionAsGeoPoint);
+    return (distance < 1000 * radius);
+  }).toList();
+
+  return adsAround;
 }
 
-Future<List<Map<String, dynamic>>> getAdsFromUser(String userId) async {
-  var response = await Firestore()
-      .collection("ads")
-      .where("authorId", isEqualTo: userId)
-      .getDocuments();
-  var documents = response.documents;
-  List<Map<String, dynamic>> docsAsMaps = [];
-  documents.forEach((document) {
-    Map<String, dynamic> docAsMap = document.data;
-    docAsMap["idStr"] = document.documentID;
-    docsAsMaps.add(docAsMap);
-  });
+Future<List<Map<String, dynamic>>> getAdsFromUser(String userId,
+    {fromServer = false}) async {
+  Query query =
+      Firestore().collection("ads").where("authorId", isEqualTo: userId);
+
+  List<Map<String, dynamic>> docsAsMaps = await _fetchAds(query, fromServer);
+
   return docsAsMaps;
 }
 
-Future<List<Map<String, dynamic>>> getFavoriteAdsFromUser(String userId) async {
-  var response = await Firestore()
-      .collection("ads")
-      .where("favored", arrayContains: userId)
-      .getDocuments();
-  var documents = response.documents;
-  List<Map<String, dynamic>> docsAsMaps = [];
-  documents.forEach((document) {
-    Map<String, dynamic> docAsMap = document.data;
-    docAsMap["idStr"] = document.documentID;
-    docsAsMaps.add(docAsMap);
-  });
+Future<List<Map<String, dynamic>>> getFavoriteAdsFromUser(String userId,
+    {fromServer = false}) async {
+  Query query =
+      Firestore().collection("ads").where("favored", arrayContains: userId);
+
+  List<Map<String, dynamic>> docsAsMaps = await _fetchAds(query, fromServer);
+
   return docsAsMaps;
 }
 
@@ -87,16 +91,6 @@ Future populateTable() async {
     docRef.updateData({"adId": docRef.documentID});
   }
   print("done");
-}
-
-Future<List<String>> getCategoriesList() async {
-  var response = await Firestore().collection('category').getDocuments();
-  var documents = response.documents;
-  List<String> categories = ['--'];
-  documents[0]['types'].forEach((category) {
-    categories.add(category);
-  });
-  return categories;
 }
 
 postNewAdToFavorites(String adId, String userId) async {

@@ -9,8 +9,8 @@ class AdInList extends StatelessWidget {
   final Ad ad;
   final String uid;
 
-  Function addAdToFavorites;
-  Function removeFromFavorites;
+  final Function addAdToFavorites;
+  final Function removeFromFavorites;
 
   AdInList(this.ad,
       {@required this.uid,
@@ -60,7 +60,7 @@ class AdInList extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => AdDetails(ad)),
                   ),
                 ),
-                if (isNotNullAndContains(ad.favored, uid))
+                if (isListNotNullAndContains(ad.favored, uid))
                   FlatButton(
                     child: Text('Remove from favorites'),
                     onPressed: () => removeFromFavorites(),
