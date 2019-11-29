@@ -32,7 +32,6 @@ class PostAdViewModel with ChangeNotifier {
         geoLocation.latitude, geoLocation.longitude);
     if (title != "") {
       String serverResponse = await uploadAd(ad);
-      print('serverResponse: $serverResponse');
       if (serverResponse == "OK") {
         this.postAdStatus = PostAdStatus.isLoaded;
         notifyListeners();
