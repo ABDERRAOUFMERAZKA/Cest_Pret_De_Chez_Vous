@@ -51,4 +51,5 @@ String camelCaseToWords(String subject,
   }
   return words.join(' ');
 }
+
 const String defaultPattern = WORD;

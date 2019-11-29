@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
-class ShowDialogPopup{
- static Future<void> showErrorPopup(BuildContext context, String errorMessage) async {
+class ShowDialogPopup {
+  static Future<void> showErrorPopup(
+      BuildContext context, String errorMessage) async {
     return await showDialog<void>(
       context: context,
       builder: (context) => _ErrorDialog(errorMessage),
     );
   }
 
-  static Future<void> showSuccessPopup(BuildContext context, String successMessage) async {
+  static Future<void> showSuccessPopup(
+      BuildContext context, String successMessage) async {
     return await showDialog<void>(
       context: context,
       builder: (context) => _SuccessDialog(successMessage),
@@ -44,8 +46,8 @@ class _SuccessDialog extends StatelessWidget {
   _SuccessDialog(this.successMessage);
 
   @override
-  Widget build(BuildContext context)  {
-    return  AlertDialog(
+  Widget build(BuildContext context) {
+    return AlertDialog(
       title: Text("Success!"),
       content: Text(successMessage),
       actions: <Widget>[
