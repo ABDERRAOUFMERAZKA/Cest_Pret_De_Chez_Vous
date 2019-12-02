@@ -43,5 +43,7 @@
 	<false/>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>We need your location to find ads around you</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We need access to your library to find pictures of your ads</string>
 </dict>
 </plist>

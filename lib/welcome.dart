@@ -1,3 +1,4 @@
+import 'package:cest_pret_de_chez_vous/src/post_ads/view_model/post_ad_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

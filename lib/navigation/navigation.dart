@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../src/display_ads/view/add_ads.dart';
 import '../src/display_ads/view/favorites.dart';
 import '../src/display_ads/view/home.dart';
 import '../src/display_ads/view/my_ads.dart';
 import '../src/display_ads/view/search.dart';
+import '../src/post_ads/view/add_ad.dart';
 import '../src/menu/menu.dart';
 
 import '../styles.dart';
