@@ -30,7 +30,7 @@ class _ErrorDialog extends StatelessWidget {
       content: Text(errorMessage),
       actions: <Widget>[
         FlatButton(
-          child: Text('Regret'),
+          child: Text('Ok'),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -52,7 +52,7 @@ class _SuccessDialog extends StatelessWidget {
       content: Text(successMessage),
       actions: <Widget>[
         FlatButton(
-          child: Text('Regret'),
+          child: Text('Ok'),
           onPressed: () {
             Navigator.of(context).pop();
           },
