@@ -39,6 +39,9 @@ class Welcome extends StatelessWidget {
               ChangeNotifierProvider(
                 builder: (context) => CurrentUserAdsViewModel(uid),
               ),
+              ChangeNotifierProvider(
+                builder: (context) => PostAdViewModel(),
+              )
             ],
             child: Tabs(),
           );
