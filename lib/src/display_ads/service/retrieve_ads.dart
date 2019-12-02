@@ -15,6 +15,8 @@ Future<List<Map<String, dynamic>>> _fetchAds(
     Map docAsMap = document.data;
     docsAsMaps.add(docAsMap);
   });
+  print("documents $documents");
+  print("docsAsMaps $docsAsMaps");
   if (isNotNullNorEmpty(docsAsMaps))
     docsAsMaps.sort((var ad1, var ad2) {
       if (ad1["createdAt"] != null && ad2["createdAt"] != null)
@@ -30,12 +32,17 @@ Future<List<Map<String, dynamic>>> getAdsAround(
   Map<String, Map<String, double>> boundingBox = boundingBoxCoordinates(
       position["latitude"], position["longitude"], radius);
 
+  print(boundingBox);
+
   Map<String, GeoPoint> geoBoundingBox = {
     "swCorner": GeoPoint(boundingBox["swCorner"]["latitude"],
         boundingBox["swCorner"]["longitude"]),
     "neCorner": GeoPoint(boundingBox["neCorner"]["latitude"],
         boundingBox["neCorner"]["longitude"]),
   };
+
+  print("sw: ${geoBoundingBox["swCorner"].latitude}");
+  print("ne: ${geoBoundingBox["neCorner"].longitude}");
 
   Query ref = Firestore()
       .collection("ads")

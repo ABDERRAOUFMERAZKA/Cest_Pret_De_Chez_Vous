@@ -13,7 +13,7 @@ class FavoriteAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
   List<Ad> get favoriteAds => _favoriteAds;
 
   FavoriteAdsViewModel(this.userId) {
-    _fetchAds();
+    _fetchAds(fromServer: true);
   }
 
   @override

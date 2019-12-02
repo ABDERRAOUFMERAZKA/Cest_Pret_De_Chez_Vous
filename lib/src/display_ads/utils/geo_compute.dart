@@ -20,14 +20,16 @@ double distanceInMetersBetween(
 }
 
 Map<String, Map<String, double>> boundingBoxCoordinates(
-    num centerLatitude, num centerLongitude, num radius) {
+    num centerLatitude, num centerLongitude, num radiusInKm) {
   const KM_PER_DEGREE_LATITUDE = 110.574;
-  double latDegrees = radius / KM_PER_DEGREE_LATITUDE;
+  double latDegrees = radiusInKm / KM_PER_DEGREE_LATITUDE;
   double latitudeNorth = math.min(90, centerLatitude + latDegrees);
   double latitudeSouth = math.max(-90, centerLatitude - latDegrees);
   // calculate longitude based on current latitude
-  double longDegsNorth = metersToLongitudeDegrees(1000 * radius, latitudeNorth);
-  double longDegsSouth = metersToLongitudeDegrees(1000 * radius, latitudeSouth);
+  double longDegsNorth =
+      metersToLongitudeDegrees(1000 * radiusInKm, latitudeNorth);
+  double longDegsSouth =
+      metersToLongitudeDegrees(1000 * radiusInKm, latitudeSouth);
   double longDegs = math.max(longDegsNorth, longDegsSouth);
   return {
     "swCorner": {
