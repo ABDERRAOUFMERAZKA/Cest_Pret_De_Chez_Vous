@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../src/display_ads/view/favorites.dart';
 import '../src/display_ads/view/home.dart';
 import '../src/display_ads/view/my_ads.dart';
-import '../src/display_ads/view/search.dart';
 import '../src/post_ads/view/add_ad.dart';
 import '../src/menu/menu.dart';
 
@@ -62,17 +61,6 @@ class _TabsState extends State<Tabs> {
     final AppBar appBar = AppBar(
       title:
           Text(_listTabsbar[_indexTabsbar]['title'], style: Styles.navBarTitle),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Search()),
-            );
-          },
-        ),
-      ],
     );
     return Scaffold(
       backgroundColor: Color.fromRGBO(230, 230, 230, 1),

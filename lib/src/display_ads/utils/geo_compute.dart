@@ -1,15 +1,16 @@
 import 'dart:math' as math;
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-double distanceInMetersBetween(GeoPoint location1, GeoPoint location2) {
+double distanceInMetersBetween(
+    Map<String, double> location1, Map<String, double> location2) {
   const int EARTH_RADIUS = 6371000; // Earth's radius in meters
-  double latDelta = degreesToRadians(location2.latitude - location1.latitude);
-  double lonDelta = degreesToRadians(location2.longitude - location1.longitude);
+  double latDelta =
+      degreesToRadians(location2["latitude"] - location1["latitude"]);
+  double lonDelta =
+      degreesToRadians(location2["longitude"] - location1["longitude"]);
 
   double a = (math.sin(latDelta / 2) * math.sin(latDelta / 2)) +
-      (math.cos(degreesToRadians(location1.latitude)) *
-          math.cos(degreesToRadians(location2.latitude)) *
+      (math.cos(degreesToRadians(location1["latitude"])) *
+          math.cos(degreesToRadians(location2["latitude"])) *
           math.sin(lonDelta / 2) *
           math.sin(lonDelta / 2));
 
@@ -18,7 +19,7 @@ double distanceInMetersBetween(GeoPoint location1, GeoPoint location2) {
   return EARTH_RADIUS * c;
 }
 
-Map<String, GeoPoint> boundingBoxCoordinates(
+Map<String, Map<String, double>> boundingBoxCoordinates(
     num centerLatitude, num centerLongitude, num radius) {
   const KM_PER_DEGREE_LATITUDE = 110.574;
   double latDegrees = radius / KM_PER_DEGREE_LATITUDE;
@@ -29,16 +30,16 @@ Map<String, GeoPoint> boundingBoxCoordinates(
   double longDegsSouth = metersToLongitudeDegrees(1000 * radius, latitudeSouth);
   double longDegs = math.max(longDegsNorth, longDegsSouth);
   return {
-    "swCorner": GeoPoint(
+    "swCorner": {
       // bottom-left (SW corner)
-      latitudeSouth,
-      wrapLongitude(centerLongitude - longDegs),
-    ),
-    "neCorner": GeoPoint(
+      "latitude": latitudeSouth,
+      "longitude": wrapLongitude(centerLongitude - longDegs),
+    },
+    "neCorner": {
       // top-right (NE corner)
-      latitudeNorth,
-      wrapLongitude(centerLongitude + longDegs),
-    ),
+      "latitude": latitudeNorth,
+      "longitude": wrapLongitude(centerLongitude + longDegs),
+    },
   };
 }
 

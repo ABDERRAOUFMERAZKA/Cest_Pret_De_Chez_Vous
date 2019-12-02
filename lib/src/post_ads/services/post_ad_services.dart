@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../model/ad.dart';
-import '../view_model/post_ad_view_model.dart';
 
 Future<List<String>> savePictureInDatabase(List<File> picturesLoaded) async {
   if (picturesLoaded != null) {
@@ -28,7 +27,6 @@ Future<String> uploadAd(Ad ad) async {
     await Firestore().collection("ads").add(adMap);
     return "OK";
   } catch (e) {
-    print("here");
     return e.code;
   }
 }

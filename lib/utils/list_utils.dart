@@ -14,13 +14,15 @@ bool isListNotNullAndContains(List<dynamic> list, dynamic element) {
  * for String and List
  */
 bool isNotNullNorEmpty(dynamic element) {
-  if (element is List || element is String)
-    return element != null && element.isNotEmpty;
+  if (element == null)
+    return false;
+  else if (element is List || element is String) return element.isNotEmpty;
   return null;
 }
 
 bool isNullOrEmpty(dynamic element) {
-  if (element is List || element is String)
-    return element == null || element.isEmpty;
+  if (element == null)
+    return true;
+  else if (element is List || element is String) return element.isEmpty;
   return null;
 }
