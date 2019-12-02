@@ -35,6 +35,7 @@ class AdsAroundViewModel extends DisplayAdsViewModel with ChangeNotifier {
 
   Future<List<Ad>> _fetchAds({bool fromServer = false}) async {
     Map<String, double> mapPosition = await _getPositionAsMap();
+    print("mapPosition $mapPosition");
     List<Map<String, dynamic>> jsonAllAdsAround =
         await getAdsAround(mapPosition, _RADIUS);
     List<Ad> allAdsAround = [];
@@ -45,11 +46,12 @@ class AdsAroundViewModel extends DisplayAdsViewModel with ChangeNotifier {
   }
 
   Future<Map<String, double>> _getPositionAsMap() async {
-    Position currentPosition = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position currentPosition =
+        Position(latitude: 48.8396952, longitude: 2.2399123);
+    //await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return {
       "latitude": currentPosition.latitude,
-      "longitude": currentPosition.longitude
+      "longitude": currentPosition.longitude,
     };
   }
 }
