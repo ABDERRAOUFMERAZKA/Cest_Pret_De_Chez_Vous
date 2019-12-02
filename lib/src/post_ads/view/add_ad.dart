@@ -17,7 +17,7 @@ class Add extends StatefulWidget {
 }
 
 class _AddPageState extends State<Add> {
-  Category category = null;
+  Category category;
   String description = '';
   String title = '';
   List<String> keyWords = [];
@@ -144,7 +144,7 @@ class _AddPageState extends State<Add> {
           ),
           Tags(
             textField: TagsTextField(
-                autofocus: true,
+                autofocus: false,
                 width: 250,
                 textStyle: Styles.textDefault,
                 onSubmitted: (var str) {

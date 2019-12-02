@@ -1,9 +1,7 @@
 import 'dart:math';
-import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cest_pret_de_chez_vous/utils/string_generator.dart';
 
 import '../utils/geo_compute.dart';
 
@@ -15,31 +13,39 @@ Future<List<Map<String, dynamic>>> _fetchAds(
   List<Map<String, dynamic>> docsAsMaps = [];
   documents.forEach((document) {
     Map docAsMap = document.data;
-    docAsMap["idStr"] = document.documentID;
     docsAsMaps.add(docAsMap);
   });
+  if (isNotNullNorEmpty(docsAsMaps))
+    docsAsMaps.sort((var ad1, var ad2) {
+      if (ad1["createdAt"] != null && ad2["createdAt"] != null)
+        return ad1["createdAt"].compareTo(ad2["createdAt"]);
+      return 1;
+    });
   return docsAsMaps;
 }
 
 Future<List<Map<String, dynamic>>> getAdsAround(
     Map<String, double> position, double radius,
     {bool fromServer = false}) async {
-  GeoPoint positionAsGeoPoint =
-      GeoPoint(position["latitude"], position["longitude"]);
+  Map<String, Map<String, double>> boundingBox = boundingBoxCoordinates(
+      position["latitude"], position["longitude"], radius);
 
-  Map<String, GeoPoint> boundingBox = boundingBoxCoordinates(
-      positionAsGeoPoint.latitude, positionAsGeoPoint.longitude, radius);
+  Map<String, GeoPoint> geoBoundingBox = {
+    "swCorner": GeoPoint(boundingBox["swCorner"]["latitude"],
+        boundingBox["swCorner"]["longitude"]),
+    "neCorner": GeoPoint(boundingBox["neCorner"]["latitude"],
+        boundingBox["neCorner"]["longitude"]),
+  };
 
   Query ref = Firestore()
       .collection("ads")
-      .where("location", isGreaterThan: boundingBox["swCorner"])
-      .where("location", isLessThan: boundingBox["neCorner"]);
+      .where("location", isGreaterThan: geoBoundingBox["swCorner"])
+      .where("location", isLessThan: geoBoundingBox["neCorner"]);
 
   //Firebase doesn't currently curate with geo position, so we have to filter again.
   List<Map<String, dynamic>> adsAround =
       (await _fetchAds(ref, fromServer)).where((ad) {
-    double distance =
-        distanceInMetersBetween(ad["location"], positionAsGeoPoint);
+    double distance = distanceInMetersBetween(ad["location"], position);
     return (distance < 1000 * radius);
   }).toList();
 
@@ -92,7 +98,6 @@ Future populateTable() async {
     });
     docRef.updateData({"adId": docRef.documentID});
   }
-  print("done");
 }
 
 postNewAdToFavorites(String adId, String userId) async {

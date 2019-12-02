@@ -24,8 +24,8 @@ class ListOfAds extends StatelessWidget {
           return AdInList(
             currentAd,
             uid: uid,
-            addAdToFavorites: () => addAdToFavorites(currentAd.idStr),
-            removeFromFavorites: () => removeAdFromFavorites(currentAd.idStr),
+            addAdToFavorites: () => addAdToFavorites(currentAd.adId),
+            removeFromFavorites: () => removeAdFromFavorites(currentAd.adId),
           );
         },
       ),

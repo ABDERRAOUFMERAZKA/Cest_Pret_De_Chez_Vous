@@ -42,13 +42,13 @@ class PostAdViewModel with ChangeNotifier {
         notifyListeners();
       }
     } else {
-      this.errorMessage = "please, fill all fields";
+      this.errorMessage = "Please, fill all fields";
       this.postAdStatus = PostAdStatus.onError;
       notifyListeners();
     }
   }
 
-  Future<void> resetPostAdStatus() {
+  resetPostAdStatus() {
     this.postAdStatus = PostAdStatus.initialState;
     notifyListeners();
   }
