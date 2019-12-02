@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cest_pret_de_chez_vous/utils/enum_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cest_pret_de_chez_vous/styles.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_tags/tag.dart';
 import 'package:provider/provider.dart';
 
 import '../view_model/post_ad_view_model.dart';
+import '../view/widgets/show_dialog_popup.dart';
 import '../../category.dart';
 
 class Add extends StatefulWidget {
@@ -22,17 +24,17 @@ class _AddPageState extends State<Add> {
   List<File> picturesLoaded = new List();
   final keyWordsController = TextEditingController();
 
+  void _onVerifierChanged() {
+    setState(() {
+      keyWords = keyWordsController.text.split(" ");
+    });
+  }
+
   @override
   void initState() {
     super.initState();
 
     keyWordsController.addListener(_onVerifierChanged);
-  }
-
-  void _onVerifierChanged() {
-    setState(() {
-      keyWords = keyWordsController.text.split(" ");
-    });
   }
 
   onImageButtonPressed(ImageSource source) async {
@@ -53,43 +55,24 @@ class _AddPageState extends State<Add> {
   }
 
   @override
-  didUpdateWidget(add) {
-    super.didUpdateWidget(add);
-  }
-
-  @override
   Widget build(BuildContext context) {
     var viewModel = Provider.of<PostAdViewModel>(context);
     PostAdStatus postAdStatus = viewModel.postAdStatus;
-    var dropDownItems = Category.values;
-    if (postAdStatus == PostAdStatus.isLoaded) {
-      return AlertDialog(
-        title: Text("Success!"),
-        content: Text("Your Ad was added successfully"),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Cancel'),
-            onPressed: () {
-              viewModel.updatePostAdStatus();
-            },
-          ),
-        ],
-      );
-    }
+
     if (postAdStatus == PostAdStatus.onError) {
-      return AlertDialog(
-        title: Text("Error!"),
-        content: Text("Error in post add, retry please!"),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('Cancel'),
-            onPressed: () {
-              viewModel.updatePostAdStatus();
-            },
-          ),
-        ],
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await ShowDialogPopup.showErrorPopup(context, viewModel.errorMessage);
+        viewModel.resetPostAdStatus();
+      });
     }
+    if (postAdStatus == PostAdStatus.isLoaded) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await ShowDialogPopup.showSuccessPopup(context, "Ad posted!");
+        viewModel.resetPostAdStatus();
+      });
+    }
+
+    var dropDownItems = Category.values;
     final descriptionField = TextFormField(
       obscureText: false,
       maxLines: 5,
