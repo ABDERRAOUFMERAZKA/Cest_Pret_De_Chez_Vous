@@ -6,13 +6,13 @@ import 'package:provider/provider.dart';
 import './widget/list_of_ads.dart';
 import './widget/no_ads_found.dart';
 import '../model/ad.dart';
-import '../view_model/display_ads_view_model.dart';
+import '../view_model/ads_around_view_model.dart';
 import '../../account_settings/view_model/login_view_model.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var viewModel = Provider.of<DisplayAdsViewModel>(context);
+    var viewModel = Provider.of<AdsAroundViewModel>(context);
     List<Ad> homeAds = viewModel.homeAds;
     return RefreshIndicator(
       backgroundColor: Styles.refreshIndicatorColor,
@@ -30,7 +30,7 @@ class Home extends StatelessWidget {
                 child: NoAdsFound(),
               ),
             ),
-      onRefresh: viewModel.refreshAdsAround,
+      onRefresh: viewModel.refreshAds,
     );
   }
 }

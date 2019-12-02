@@ -4,11 +4,23 @@ bool listContainsAtLeastOneOf(
       false, (acc, cur) => acc || validatorList.contains(cur));
 }
 
-bool isNotNullAndContains(List<dynamic> list, dynamic element) {
+bool isListNotNullAndContains(List<dynamic> list, dynamic element) {
   if (list == null) return false;
   return (list.contains(element));
 }
 
-bool isNotNullNorEmpty(List<dynamic> list) => list != null && list.isNotEmpty;
+/** 
+ * checks if variable is null or empty
+ * for String and List
+ */
+bool isNotNullNorEmpty(dynamic element) {
+  if (element is List || element is String)
+    return element != null && element.isNotEmpty;
+  return null;
+}
 
-bool isNullOrEmpty(List<dynamic> list) => list == null || list.isEmpty;
+bool isNullOrEmpty(dynamic element) {
+  if (element is List || element is String)
+    return element == null || element.isEmpty;
+  return null;
+}

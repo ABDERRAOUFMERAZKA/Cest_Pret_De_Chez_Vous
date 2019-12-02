@@ -7,7 +7,9 @@ import './navigation/navigation.dart';
 import './src/account_settings/view/login.dart';
 import './src/account_settings/view/mail_validation.dart';
 import './src/account_settings/view_model/login_view_model.dart';
-import './src/display_ads/view_model/display_ads_view_model.dart';
+import 'src/display_ads/view_model/ads_around_view_model.dart';
+import 'src/display_ads/view_model/current_user_ads_view_model.dart';
+import 'src/display_ads/view_model/favorite_ads_view_model.dart';
 
 class Welcome extends StatelessWidget {
   getLoggedContent(data) {}
@@ -29,7 +31,14 @@ class Welcome extends StatelessWidget {
           view = MultiProvider(
             providers: [
               ChangeNotifierProvider(
-                  builder: (context) => DisplayAdsViewModel()),
+                builder: (context) => AdsAroundViewModel(),
+              ),
+              ChangeNotifierProvider(
+                builder: (context) => FavoriteAdsViewModel(uid),
+              ),
+              ChangeNotifierProvider(
+                builder: (context) => CurrentUserAdsViewModel(uid),
+              ),
               ChangeNotifierProvider(
                 builder: (context) => PostAdViewModel(),
               )

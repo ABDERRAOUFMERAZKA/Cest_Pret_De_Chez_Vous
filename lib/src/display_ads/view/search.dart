@@ -1,9 +1,6 @@
 import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/tag.dart';
-import 'package:provider/provider.dart';
-
-import '../view_model/display_ads_view_model.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -36,8 +33,7 @@ class _HomePageState extends State<Search> {
   }
 
   Widget build(BuildContext context) {
-    var provider = Provider.of<DisplayAdsViewModel>(context);
-    var dropDownItems = provider.categories;
+    var dropDownItems = [category, "category1", "category2"];
     final AppBar appBar = AppBar(
       title: Text('Search', style: Styles.navBarTitle),
     );
