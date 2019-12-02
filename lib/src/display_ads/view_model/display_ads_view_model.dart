@@ -4,9 +4,9 @@ import '../service/retrieve_ads.dart';
 
 abstract class DisplayAdsViewModel {
   /// When extending this class, you should pay attention to use the
-  /// isItTimeToRefresh function, to prevent to many calls to your database.
+  /// isItTimeToRefresh function to prevent to many calls to your database.
   /// Use an optional {fromServer = false} parameter in your functions for
-  ///
+  /// checking.
 
   static const double _REFRESH_DEBOUNCE_TIME = 15000; // in milliseconds
 
