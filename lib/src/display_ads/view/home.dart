@@ -32,23 +32,25 @@ class Home extends StatelessWidget {
             }
           },
         ),
-        RefreshIndicator(
-          backgroundColor: Styles.refreshIndicatorColor,
-          child: isNotNullNorEmpty(homeAds)
-              ? ListOfAds(
-                  viewModel.homeAds,
-                  uid: Provider.of<LoginViewModel>(context).currentUserId,
-                  addAdToFavorites: viewModel.addAdToFavorites,
-                  removeAdFromFavorites: viewModel.removeAdFromFavorites,
-                )
-              : SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Container(
-                    margin: EdgeInsets.all(10),
-                    child: NoAdsFound(),
+        Expanded(
+          child: RefreshIndicator(
+            backgroundColor: Styles.refreshIndicatorColor,
+            child: isNotNullNorEmpty(homeAds)
+                ? ListOfAds(
+                    viewModel.homeAds,
+                    uid: Provider.of<LoginViewModel>(context).currentUserId,
+                    addAdToFavorites: viewModel.addAdToFavorites,
+                    removeAdFromFavorites: viewModel.removeAdFromFavorites,
+                  )
+                : SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Container(
+                      margin: EdgeInsets.all(10),
+                      child: NoAdsFound(),
+                    ),
                   ),
-                ),
-          onRefresh: viewModel.refreshAds,
+            onRefresh: viewModel.refreshAds,
+          ),
         ),
       ],
     );

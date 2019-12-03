@@ -13,7 +13,7 @@ class CurrentUserAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
   List<Ad> get currentUserAds => _currentUserAds;
 
   CurrentUserAdsViewModel(this.userId) {
-    _fetchAds();
+    _fetchAds(fromServer: true);
   }
 
   @override

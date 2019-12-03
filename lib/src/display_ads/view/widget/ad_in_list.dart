@@ -34,6 +34,10 @@ class AdInList extends StatelessWidget {
                     ad.category,
                     style: Styles.mediumText,
                   ),
+                  Text(
+                    ad.createdAt.toString(),
+                    style: Styles.smallText,
+                  )
                 ],
               ),
               Flexible(

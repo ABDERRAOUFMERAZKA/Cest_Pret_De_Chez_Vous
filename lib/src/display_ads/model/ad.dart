@@ -15,12 +15,18 @@ class Ad {
   final String description;
   @JsonKey(fromJson: _positionFromFirebaseGeoPoint, name: "location")
   final Position geoLocation;
+  @JsonKey(fromJson: _dateTimeFromFirebaseTimestamp)
   final DateTime createdAt;
 
   static Position _positionFromFirebaseGeoPoint(var geoPoint) {
     Position currentPosition = new Position(
         latitude: geoPoint.latitude, longitude: geoPoint.longitude);
     return currentPosition;
+  }
+
+  static DateTime _dateTimeFromFirebaseTimestamp(var timestamp) {
+    DateTime createdAt = timestamp.toDate();
+    return createdAt;
   }
 
   Ad(

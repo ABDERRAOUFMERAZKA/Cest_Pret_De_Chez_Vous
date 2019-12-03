@@ -14,7 +14,7 @@ class AdsAroundViewModel extends DisplayAdsViewModel with ChangeNotifier {
   List<Ad> get homeAds => _adsAround;
 
   AdsAroundViewModel() {
-    _fetchAds();
+    _fetchAds(fromServer: true);
   }
 
   @override
@@ -35,7 +35,6 @@ class AdsAroundViewModel extends DisplayAdsViewModel with ChangeNotifier {
 
   Future<List<Ad>> _fetchAds({bool fromServer = false}) async {
     Map<String, double> mapPosition = await _getPositionAsMap();
-    print("mapPosition $mapPosition");
     List<Map<String, dynamic>> jsonAllAdsAround =
         await getAdsAround(mapPosition, _RADIUS);
     List<Ad> allAdsAround = [];

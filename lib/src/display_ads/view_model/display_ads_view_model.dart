@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../service/retrieve_ads.dart';
 
+/// When extending this class, you should pay attention to use the
+/// isItTimeToRefresh function to prevent to many calls to your database.
+/// Use an optional {fromServer = false} parameter in your functions for
+/// checking.
 abstract class DisplayAdsViewModel {
-  /// When extending this class, you should pay attention to use the
-  /// isItTimeToRefresh function to prevent to many calls to your database.
-  /// Use an optional {fromServer = false} parameter in your functions for
-  /// checking.
-
-  static const double _REFRESH_DEBOUNCE_TIME = 15000; // in milliseconds
+  /// Refresh period in milliseconds.
+  static const double _REFRESH_DEBOUNCE_TIME = 15000;
 
   DateTime _lastAdsRefresh = DateTime.now();
 
@@ -30,16 +30,12 @@ abstract class DisplayAdsViewModel {
     await deleteAdFromFavorites(adId, userId);
   }
 
-  /**
-   * This method should update your ListOfAds with distant server only
-   * if it is time.
-   * Use isItTimeToRefresh() to check.
-   * At the end of your function, you should set lastAdRefresh = DateTime.now()
-   */
+  /// This method should update your ListOfAds with distant server only
+  /// if it is time.
+  /// Use isItTimeToRefresh() to check.
+  /// At the end of your function, you should set lastAdRefresh = DateTime.now()
   Future<void> refreshAds();
 
-  /**
-   * This method should update your ListOfAds from local Storage.
-   */
+  /// This method should update your ListOfAds from local Storage.
   Future<void> filterAds();
 }
