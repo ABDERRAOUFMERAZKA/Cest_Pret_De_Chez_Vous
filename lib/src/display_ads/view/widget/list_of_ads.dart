@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import './ad_in_list.dart';
 import '../../model/ad.dart';
@@ -17,17 +18,19 @@ class ListOfAds extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView.builder(
-        itemCount: listOfAdsToDisplay.length,
-        itemBuilder: (context, index) {
-          Ad currentAd = listOfAdsToDisplay[index];
-          return AdInList(
-            currentAd,
-            uid: uid,
-            addAdToFavorites: () => addAdToFavorites(currentAd.adId),
-            removeFromFavorites: () => removeAdFromFavorites(currentAd.adId),
-          );
-        },
+      child: Scrollbar(
+        child: ListView.builder(
+          itemCount: listOfAdsToDisplay.length,
+          itemBuilder: (context, index) {
+            Ad currentAd = listOfAdsToDisplay[index];
+            return AdInList(
+              currentAd,
+              uid: uid,
+              addAdToFavorites: () => addAdToFavorites(currentAd.adId),
+              removeFromFavorites: () => removeAdFromFavorites(currentAd.adId),
+            );
+          },
+        ),
       ),
     );
   }

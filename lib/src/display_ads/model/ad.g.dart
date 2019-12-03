@@ -17,9 +17,7 @@ Ad _$AdFromJson(Map<String, dynamic> json) {
     (json['favored'] as List)?.map((e) => e as String)?.toList(),
     json['description'] as String,
     Ad._positionFromFirebaseGeoPoint(json['location']),
-    json['createdAt'] == null
-        ? null
-        : DateTime.parse(json['createdAt'] as String),
+    Ad._dateTimeFromFirebaseTimestamp(json['createdAt']),
   );
 }
 

@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
+import 'package:cest_pret_de_chez_vous/utils/random_generator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -7,20 +8,22 @@ import '../utils/geo_compute.dart';
 
 Future<List<Map<String, dynamic>>> _fetchAds(
     Query query, bool fromServer) async {
-  var response = await query.getDocuments(
-      source: fromServer ? Source.serverAndCache : Source.cache);
+  var response = await query
+      .orderBy("createdAt")
+      .getDocuments(source: fromServer ? Source.serverAndCache : Source.cache);
   var documents = response.documents;
   List<Map<String, dynamic>> docsAsMaps = [];
   documents.forEach((document) {
     Map docAsMap = document.data;
     docsAsMaps.add(docAsMap);
   });
-  print("documents $documents");
-  print("docsAsMaps $docsAsMaps");
+
+  print("docs length: ${docsAsMaps.length}");
+
   if (isNotNullNorEmpty(docsAsMaps))
     docsAsMaps.sort((var ad1, var ad2) {
       if (ad1["createdAt"] != null && ad2["createdAt"] != null)
-        return ad1["createdAt"].compareTo(ad2["createdAt"]);
+        return -ad1["createdAt"].compareTo(ad2["createdAt"]);
       return 1;
     });
   return docsAsMaps;
@@ -32,8 +35,6 @@ Future<List<Map<String, dynamic>>> getAdsAround(
   Map<String, Map<String, double>> boundingBox = boundingBoxCoordinates(
       position["latitude"], position["longitude"], radius);
 
-  print(boundingBox);
-
   Map<String, GeoPoint> geoBoundingBox = {
     "swCorner": GeoPoint(boundingBox["swCorner"]["latitude"],
         boundingBox["swCorner"]["longitude"]),
@@ -41,20 +42,24 @@ Future<List<Map<String, dynamic>>> getAdsAround(
         boundingBox["neCorner"]["longitude"]),
   };
 
-  print("sw: ${geoBoundingBox["swCorner"].latitude}");
-  print("ne: ${geoBoundingBox["neCorner"].longitude}");
-
   Query ref = Firestore()
       .collection("ads")
+      .orderBy("location")
       .where("location", isGreaterThan: geoBoundingBox["swCorner"])
       .where("location", isLessThan: geoBoundingBox["neCorner"]);
 
   //Firebase doesn't currently curate with geo position, so we have to filter again.
   List<Map<String, dynamic>> adsAround =
       (await _fetchAds(ref, fromServer)).where((ad) {
-    double distance = distanceInMetersBetween(ad["location"], position);
+    Map<String, double> adLocationAsMap = {
+      "latitude": ad["location"].latitude,
+      "longitude": ad["location"].longitude
+    };
+    double distance = distanceInMetersBetween(adLocationAsMap, position);
     return (distance < 1000 * radius);
   }).toList();
+
+  print("ads around length ${adsAround.length}");
 
   return adsAround;
 }
@@ -66,6 +71,8 @@ Future<List<Map<String, dynamic>>> getAdsFromUser(String userId,
 
   List<Map<String, dynamic>> docsAsMaps = await _fetchAds(query, fromServer);
 
+  print("user ads length ${docsAsMaps.length}");
+
   return docsAsMaps;
 }
 
@@ -76,32 +83,36 @@ Future<List<Map<String, dynamic>>> getFavoriteAdsFromUser(String userId,
 
   List<Map<String, dynamic>> docsAsMaps = await _fetchAds(query, fromServer);
 
+  print("fav ads length ${docsAsMaps.length}");
+
   return docsAsMaps;
 }
 
 Future populateTable() async {
   var categories = ["book", "kitchen", "electronic"];
-  double minWest = 2.228833;
-  double maxEast = 2.254857;
-  double minSouth = 48.82882;
-  double maxNorth = 48.845492;
+  double minWest = 1.829079;
+  double maxEast = 2.516978;
+  double minSouth = 48.643868;
+  double maxNorth = 49.003630;
   String authorId = (await FirebaseAuth.instance.currentUser()).uid;
   final _random = new Random();
   for (var i = 0; i < 1000; i++) {
     String title = "Title $i";
     String category = categories[i % 3];
     String description =
-        "This is a random description for add $i and yes i don't know what to add, but... yeah...";
+        "This is a random description for add $i and yes i don't know what to say, but... yeah...";
     double latitude = minSouth + _random.nextDouble() * (maxNorth - minSouth);
     double longitude = minWest + _random.nextDouble() * (maxEast - minWest);
     var docRef = await Firestore().collection("ads").add({
-      "authorId": authorId,
-      "category": category,
       "title": title,
-      "description": description,
-      "keywords": ["keyword1"],
+      "category": category,
+      "authorId": authorId,
       "picturesUrl": [],
-      "location": GeoPoint(latitude, longitude)
+      "keywords": ["keyword1"],
+      "favored": [],
+      "description": description,
+      "location": GeoPoint(latitude, longitude),
+      "createdAt": randomDate(DateTime(2015, 1), DateTime(2019, 11)),
     });
     docRef.updateData({"adId": docRef.documentID});
   }
