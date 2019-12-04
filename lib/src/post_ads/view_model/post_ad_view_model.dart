@@ -29,26 +29,26 @@ class PostAdViewModel with ChangeNotifier {
       List<File> picturesLoaded}) async {
     this.postAdStatus = PostAdStatus.isLoading;
     notifyListeners();
+
     List<String> picturesUrls = await _uploadPictures(picturesLoaded);
     Position geoLocation = await Geolocator().getCurrentPosition();
     Ad ad = new Ad(title, category, picturesUrls, keywords, description,
         geoLocation.latitude, geoLocation.longitude);
+
     if (title != "") {
-      String serverResponse = await uploadAd(ad);
+      String serverResponse = await uploadAd(ad, userId);
       if (serverResponse == "OK") {
         this.postAdStatus = PostAdStatus.isLoaded;
-        notifyListeners();
       } else {
         this.errorMessage =
             getErrorMessageFromFirebaseErrorCode(serverResponse);
         this.postAdStatus = PostAdStatus.onError;
-        notifyListeners();
       }
     } else {
       this.errorMessage = "Please, fill all fields";
       this.postAdStatus = PostAdStatus.onError;
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   resetPostAdStatus() {
