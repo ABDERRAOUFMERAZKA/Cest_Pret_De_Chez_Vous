@@ -21,6 +21,12 @@ String randomString(int length) {
 
 /// Creates a random Date from 1st day of startDate's month to last day
 /// of endDate's month (included). Doesn't take leap years into account.
+///
+/// Please note that each year between your two dates has the same chance
+/// to be picked.
+/// For example: between 11/2017 and 02/2019
+///   with many dates generated, months of november and december 2017,
+///   and january and february 2019 will have more dates than other months.
 DateTime randomDate(DateTime startDate, DateTime endDate) {
   var random = Random();
   int year = startDate.year + random.nextInt(endDate.year - startDate.year + 1);

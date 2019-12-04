@@ -23,15 +23,17 @@ class Welcome extends StatelessWidget {
         if (snapshot.data == null) {
           uid = null;
           view = Login();
+          print("empty");
         } else if (!snapshot.data.isEmailVerified) {
           uid = snapshot.data.uid;
           view = ValidationMail();
+          print("validation required");
         } else {
           uid = snapshot.data.uid;
           view = MultiProvider(
             providers: [
               ChangeNotifierProvider(
-                builder: (context) => AdsAroundViewModel(),
+                builder: (context) => AdsAroundViewModel(uid),
               ),
               ChangeNotifierProvider(
                 builder: (context) => FavoriteAdsViewModel(uid),
@@ -40,12 +42,15 @@ class Welcome extends StatelessWidget {
                 builder: (context) => CurrentUserAdsViewModel(uid),
               ),
               ChangeNotifierProvider(
-                builder: (context) => PostAdViewModel(),
+                builder: (context) => PostAdViewModel(uid),
               )
             ],
             child: Tabs(),
           );
+          print("ok");
         }
+
+        print("uid: $uid");
 
         return ChangeNotifierProvider(
           builder: (context) => LoginViewModel(uid),

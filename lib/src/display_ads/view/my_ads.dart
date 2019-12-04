@@ -8,7 +8,6 @@ import './widget/list_of_ads.dart';
 import './widget/no_ads_found.dart';
 import '../model/ad.dart';
 import '../view_model/current_user_ads_view_model.dart';
-import '../../account_settings/view_model/login_view_model.dart';
 
 class MyAds extends StatelessWidget {
   @override
@@ -38,7 +37,7 @@ class MyAds extends StatelessWidget {
             child: isNotNullNorEmpty(currentUserAds)
                 ? ListOfAds(
                     viewModel.currentUserAds,
-                    uid: Provider.of<LoginViewModel>(context).currentUserId,
+                    uid: viewModel.userId,
                     addAdToFavorites: viewModel.addAdToFavorites,
                     removeAdFromFavorites: viewModel.removeAdFromFavorites,
                   )

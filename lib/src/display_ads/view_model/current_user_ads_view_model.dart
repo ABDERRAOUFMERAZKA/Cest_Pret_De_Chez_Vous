@@ -1,3 +1,4 @@
+import 'package:cest_pret_de_chez_vous/src/category.dart';
 import 'package:cest_pret_de_chez_vous/src/display_ads/utils/filter_ads.dart';
 import 'package:flutter/widgets.dart';
 
@@ -13,7 +14,11 @@ class CurrentUserAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
   List<Ad> get currentUserAds => _currentUserAds;
 
   CurrentUserAdsViewModel(this.userId) {
-    _fetchAds(fromServer: true);
+    print("current user $userId");
+    _fetchAds(fromServer: true).then((receivedAds) {
+      this._currentUserAds = receivedAds;
+      notifyListeners();
+    });
   }
 
   @override
@@ -26,7 +31,7 @@ class CurrentUserAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
   }
 
   @override
-  Future<void> filterAds({String category, List<String> keywords}) async {
+  Future<void> filterAds({Category category, List<String> keywords}) async {
     List<Ad> fetchedCurrentUserAds = await _fetchAds(fromServer: false);
     List<Ad> filteredAds = FilterAd.filterAds(fetchedCurrentUserAds,
         category: category, keywords: keywords);
