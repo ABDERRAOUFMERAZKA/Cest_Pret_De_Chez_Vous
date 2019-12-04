@@ -10,7 +10,7 @@ Ad _$AdFromJson(Map<String, dynamic> json) {
   return Ad(
     json['title'] as String,
     json['adId'] as String,
-    json['category'] as String,
+    _$enumDecodeNullable(_$CategoryEnumMap, json['category']),
     json['authorId'] as String,
     (json['picturesUrl'] as List)?.map((e) => e as String)?.toList(),
     (json['keywords'] as List)?.map((e) => e as String)?.toList(),
@@ -24,7 +24,7 @@ Ad _$AdFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$AdToJson(Ad instance) => <String, dynamic>{
       'title': instance.title,
       'adId': instance.adId,
-      'category': instance.category,
+      'category': _$CategoryEnumMap[instance.category],
       'authorId': instance.authorId,
       'picturesUrl': instance.picturesUrl,
       'keywords': instance.keywords,
@@ -33,3 +33,41 @@ Map<String, dynamic> _$AdToJson(Ad instance) => <String, dynamic>{
       'location': instance.geoLocation,
       'createdAt': instance.createdAt?.toIso8601String(),
     };
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$CategoryEnumMap = {
+  Category.BOOK: 'BOOK',
+  Category.KITCHEN: 'KITCHEN',
+  Category.ELECTRONIC: 'ELECTRONIC',
+};

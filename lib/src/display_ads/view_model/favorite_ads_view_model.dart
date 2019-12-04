@@ -1,3 +1,4 @@
+import 'package:cest_pret_de_chez_vous/src/category.dart';
 import 'package:cest_pret_de_chez_vous/src/display_ads/utils/filter_ads.dart';
 import 'package:flutter/widgets.dart';
 
@@ -13,7 +14,11 @@ class FavoriteAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
   List<Ad> get favoriteAds => _favoriteAds;
 
   FavoriteAdsViewModel(this.userId) {
-    _fetchAds(fromServer: true);
+    print("favorites $userId");
+    _fetchAds(fromServer: true).then((receivedAds) {
+      this._favoriteAds = receivedAds;
+      notifyListeners();
+    });
   }
 
   @override
@@ -25,7 +30,7 @@ class FavoriteAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
   }
 
   @override
-  Future<void> filterAds({String category, List<String> keywords}) async {
+  Future<void> filterAds({Category category, List<String> keywords}) async {
     List<Ad> favoriteAds = await _fetchAds(fromServer: false);
     List<Ad> filteredAds =
         FilterAd.filterAds(favoriteAds, category: category, keywords: keywords);

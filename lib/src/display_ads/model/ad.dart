@@ -1,3 +1,4 @@
+import 'package:cest_pret_de_chez_vous/src/category.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -7,7 +8,7 @@ part 'ad.g.dart';
 class Ad {
   final String title;
   final String adId;
-  final String category;
+  final Category category;
   final String authorId;
   final List<String> picturesUrl;
   final List<String> keywords;

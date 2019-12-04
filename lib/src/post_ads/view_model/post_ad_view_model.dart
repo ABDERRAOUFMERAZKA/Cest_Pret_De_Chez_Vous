@@ -13,10 +13,13 @@ enum ServerResponse { ok, platformError, otherError }
 class PostAdViewModel with ChangeNotifier {
   PostAdStatus postAdStatus = PostAdStatus.initialState;
   String errorMessage;
+  final String userId;
 
   Future<List<String>> _uploadPictures(List<File> picturesLoaded) async {
     return await savePictureInDatabase(picturesLoaded);
   }
+
+  PostAdViewModel(this.userId);
 
   Future<void> postAd(
       {List<String> keywords,

@@ -15,10 +15,9 @@ Future<List<Map<String, dynamic>>> _fetchAds(
   List<Map<String, dynamic>> docsAsMaps = [];
   documents.forEach((document) {
     Map docAsMap = document.data;
+    docAsMap["category"] = docAsMap["category"].toUpperCase();
     docsAsMaps.add(docAsMap);
   });
-
-  print("docs length: ${docsAsMaps.length}");
 
   if (isNotNullNorEmpty(docsAsMaps))
     docsAsMaps.sort((var ad1, var ad2) {
@@ -59,8 +58,6 @@ Future<List<Map<String, dynamic>>> getAdsAround(
     return (distance < 1000 * radius);
   }).toList();
 
-  print("ads around length ${adsAround.length}");
-
   return adsAround;
 }
 
@@ -70,8 +67,6 @@ Future<List<Map<String, dynamic>>> getAdsFromUser(String userId,
       Firestore().collection("ads").where("authorId", isEqualTo: userId);
 
   List<Map<String, dynamic>> docsAsMaps = await _fetchAds(query, fromServer);
-
-  print("user ads length ${docsAsMaps.length}");
 
   return docsAsMaps;
 }
@@ -83,13 +78,11 @@ Future<List<Map<String, dynamic>>> getFavoriteAdsFromUser(String userId,
 
   List<Map<String, dynamic>> docsAsMaps = await _fetchAds(query, fromServer);
 
-  print("fav ads length ${docsAsMaps.length}");
-
   return docsAsMaps;
 }
 
 Future populateTable() async {
-  var categories = ["book", "kitchen", "electronic"];
+  var categories = ["BOOK", "KITCHEN", "ELECTRONIC"];
   double minWest = 1.829079;
   double maxEast = 2.516978;
   double minSouth = 48.643868;
@@ -128,6 +121,7 @@ postNewAdToFavorites(String adId, String userId) async {
 }
 
 deleteAdFromFavorites(String adId, String userId) async {
+  print("firebase remove $adId");
   await Firestore().collection("users").document(userId).updateData({
     "favorites": FieldValue.arrayRemove([adId])
   });
