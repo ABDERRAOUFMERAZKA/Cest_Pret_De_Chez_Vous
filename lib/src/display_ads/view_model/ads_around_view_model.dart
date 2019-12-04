@@ -18,18 +18,10 @@ class AdsAroundViewModel extends DisplayAdsViewModel with ChangeNotifier {
   List<Ad> get homeAds => _adsAround;
 
   AdsAroundViewModel(this.userId) {
-    print("adsAround $userId");
     _fetchAds(fromServer: true).then((receivedAds) {
       this._adsAround = receivedAds;
       notifyListeners();
     });
-  }
-
-  Future<void> firstFetchInit() async {
-    List<Ad> allAdsAround = await _fetchAds(fromServer: true);
-    this._adsAround = allAdsAround;
-    lastAdRefresh = DateTime.now();
-    notifyListeners();
   }
 
   @override
@@ -65,9 +57,8 @@ class AdsAroundViewModel extends DisplayAdsViewModel with ChangeNotifier {
   }
 
   Future<Map<String, double>> _getPositionAsMap() async {
-    Position currentPosition =
-        Position(latitude: 48.8396952, longitude: 2.2399123);
-    //await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position currentPosition = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return {
       "latitude": currentPosition.latitude,
       "longitude": currentPosition.longitude,

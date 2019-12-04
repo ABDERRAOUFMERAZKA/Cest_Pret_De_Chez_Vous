@@ -121,7 +121,6 @@ postNewAdToFavorites(String adId, String userId) async {
 }
 
 deleteAdFromFavorites(String adId, String userId) async {
-  print("firebase remove $adId");
   await Firestore().collection("users").document(userId).updateData({
     "favorites": FieldValue.arrayRemove([adId])
   });

@@ -14,7 +14,6 @@ class FavoriteAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
   List<Ad> get favoriteAds => _favoriteAds;
 
   FavoriteAdsViewModel(this.userId) {
-    print("favorites $userId");
     _fetchAds(fromServer: true).then((receivedAds) {
       this._favoriteAds = receivedAds;
       notifyListeners();

@@ -21,10 +21,19 @@ Future<List<String>> savePictureInDatabase(List<File> picturesLoaded) async {
   return null;
 }
 
-Future<String> uploadAd(Ad ad) async {
+Future<String> uploadAd(Ad ad, String userId) async {
   Map<String, dynamic> adMap = ad.toJson();
   try {
-    await Firestore().collection("ads").add(adMap);
+    // create GeoPoint from latitude and longitude and remove them from map
+    adMap["location"] = GeoPoint(adMap["latitude"], adMap["longitude"]);
+    adMap.remove("latitude");
+    adMap.remove("longitude");
+    DocumentReference docRef = await Firestore().collection("ads").add(adMap);
+    docRef.updateData({
+      "authorId": userId,
+      "adId": docRef.documentID,
+      "favored": [],
+    });
     return "OK";
   } catch (e) {
     return e.code;

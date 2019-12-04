@@ -14,7 +14,6 @@ class CurrentUserAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
   List<Ad> get currentUserAds => _currentUserAds;
 
   CurrentUserAdsViewModel(this.userId) {
-    print("current user $userId");
     _fetchAds(fromServer: true).then((receivedAds) {
       this._currentUserAds = receivedAds;
       notifyListeners();

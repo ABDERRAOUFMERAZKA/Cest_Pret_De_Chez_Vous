@@ -23,11 +23,9 @@ class Welcome extends StatelessWidget {
         if (snapshot.data == null) {
           uid = null;
           view = Login();
-          print("empty");
         } else if (!snapshot.data.isEmailVerified) {
           uid = snapshot.data.uid;
           view = ValidationMail();
-          print("validation required");
         } else {
           uid = snapshot.data.uid;
           view = MultiProvider(
@@ -47,10 +45,7 @@ class Welcome extends StatelessWidget {
             ],
             child: Tabs(),
           );
-          print("ok");
         }
-
-        print("uid: $uid");
 
         return ChangeNotifierProvider(
           builder: (context) => LoginViewModel(uid),
