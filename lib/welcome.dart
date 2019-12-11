@@ -1,5 +1,4 @@
-import 'package:cest_pret_de_chez_vous/src/post_ads/view_model/post_ad_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // needed for StreamBuilder
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,9 +6,10 @@ import './navigation/navigation.dart';
 import './src/account_settings/view/login.dart';
 import './src/account_settings/view/mail_validation.dart';
 import './src/account_settings/view_model/login_view_model.dart';
-import 'src/display_ads/view_model/ads_around_view_model.dart';
-import 'src/display_ads/view_model/current_user_ads_view_model.dart';
-import 'src/display_ads/view_model/favorite_ads_view_model.dart';
+import './src/post_ads/view_model/post_ad_view_model.dart';
+import './src/display_ads/view_model/ads_around_view_model.dart';
+import './src/display_ads/view_model/current_user_ads_view_model.dart';
+import './src/display_ads/view_model/favorite_ads_view_model.dart';
 
 class Welcome extends StatelessWidget {
   getLoggedContent(data) {}

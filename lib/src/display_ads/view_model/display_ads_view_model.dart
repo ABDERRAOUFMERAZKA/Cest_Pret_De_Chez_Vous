@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 import '../service/retrieve_ads.dart';
 
 /// When extending this class, you should pay attention to use the
@@ -9,6 +7,10 @@ import '../service/retrieve_ads.dart';
 abstract class DisplayAdsViewModel {
   /// Refresh period in milliseconds.
   static const double _REFRESH_DEBOUNCE_TIME = 15000;
+
+  final String userId;
+
+  DisplayAdsViewModel(this.userId);
 
   DateTime _lastAdsRefresh = DateTime.now();
 
@@ -21,12 +23,12 @@ abstract class DisplayAdsViewModel {
   set lastAdRefresh(DateTime dateTime) => _lastAdsRefresh = dateTime;
 
   Future<void> addAdToFavorites(String adId) async {
-    String userId = (await FirebaseAuth.instance.currentUser()).uid;
+    String userId = this.userId;
     await postNewAdToFavorites(adId, userId);
   }
 
   Future<void> removeAdFromFavorites(String adId) async {
-    String userId = (await FirebaseAuth.instance.currentUser()).uid;
+    String userId = this.userId;
     await deleteAdFromFavorites(adId, userId);
   }
 

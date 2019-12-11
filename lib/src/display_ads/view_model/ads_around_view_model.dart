@@ -10,14 +10,13 @@ import '../service/retrieve_ads.dart';
 class AdsAroundViewModel extends DisplayAdsViewModel with ChangeNotifier {
   static const double _RADIUS = 10;
 
-  final String userId;
   List<Ad> _adsAround = [];
   Category category;
   List<String> keywords;
 
   List<Ad> get homeAds => _adsAround;
 
-  AdsAroundViewModel(this.userId) {
+  AdsAroundViewModel(String userId) : super(userId) {
     _fetchAds(fromServer: true).then((receivedAds) {
       this._adsAround = receivedAds;
       notifyListeners();

@@ -7,13 +7,11 @@ import '../model/ad.dart';
 import '../service/retrieve_ads.dart';
 
 class CurrentUserAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
-  final String userId;
-
   List<Ad> _currentUserAds = [];
 
   List<Ad> get currentUserAds => _currentUserAds;
 
-  CurrentUserAdsViewModel(this.userId) {
+  CurrentUserAdsViewModel(String userId) : super(userId) {
     _fetchAds(fromServer: true).then((receivedAds) {
       this._currentUserAds = receivedAds;
       notifyListeners();

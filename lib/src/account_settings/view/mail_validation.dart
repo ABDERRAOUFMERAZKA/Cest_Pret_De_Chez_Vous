@@ -1,13 +1,15 @@
-import 'package:cest_pret_de_chez_vous/src/account_settings/view_model/login_view_model.dart';
 import 'package:cest_pret_de_chez_vous/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../view_model/login_view_model.dart';
 
 class ValidationMail extends StatelessWidget {
   Widget build(BuildContext context) {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
     String email = viewModel.currentUser.email;
-    Widget loginButton(String text, onPressed) => Material(
+
+    Widget loginButton(String text, Function onPressed) => Material(
           elevation: 5.0,
           borderRadius: BorderRadius.circular(30.0),
           color: Colors.deepOrange,
@@ -40,12 +42,12 @@ class ValidationMail extends StatelessWidget {
                         SizedBox(
                           height: 25.0,
                         ),
-                        loginButton("Send Email",
-                            () => viewModel.sendNewVerificationEmail()),
+                        loginButton(
+                            "Send Email", viewModel.sendNewVerificationEmail),
                         SizedBox(
                           height: 25.0,
                         ),
-                        loginButton("Logout", () => viewModel.logout()),
+                        loginButton("Logout", viewModel.signOut),
                       ],
                     )
                   ]))),

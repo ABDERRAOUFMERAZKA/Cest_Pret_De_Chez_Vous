@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // This import is only to use FirebaseUser class
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -29,7 +29,7 @@ class LoginViewModel with ChangeNotifier {
     String serverResponse;
     if (formState.validate()) {
       formState.save();
-      serverResponse = await firebaseSignIn(email, password);
+      serverResponse = await signInUserFromEmailAndPassword(email, password);
     } else {
       this.loginStatus = LoginStatus.initialState;
     }
@@ -51,7 +51,8 @@ class LoginViewModel with ChangeNotifier {
     String serverResponse;
     if (formState.validate()) {
       formState.save();
-      serverResponse = await firebaseSignUp(email, password, username);
+      serverResponse = await signUpUserWithEmailPasswordAndDisplayName(
+          email, password, username);
     } else {
       this.loginStatus = LoginStatus.initialState;
     }
@@ -69,7 +70,7 @@ class LoginViewModel with ChangeNotifier {
     await currentUser.sendEmailVerification();
   }
 
-  logout() async {
-    await firebaseSignOut();
+  Future<void> signOut() async {
+    await signOutUser();
   }
 }

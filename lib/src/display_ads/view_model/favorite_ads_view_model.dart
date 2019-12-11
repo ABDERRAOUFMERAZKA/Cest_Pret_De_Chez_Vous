@@ -7,13 +7,11 @@ import '../model/ad.dart';
 import '../service/retrieve_ads.dart';
 
 class FavoriteAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
-  final String userId;
-
   List<Ad> _favoriteAds = [];
 
   List<Ad> get favoriteAds => _favoriteAds;
 
-  FavoriteAdsViewModel(this.userId) {
+  FavoriteAdsViewModel(String userId) : super(userId) {
     _fetchAds(fromServer: true).then((receivedAds) {
       this._favoriteAds = receivedAds;
       notifyListeners();
