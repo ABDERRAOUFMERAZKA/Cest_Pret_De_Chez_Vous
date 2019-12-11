@@ -7,13 +7,13 @@ import './widget/filter_pop_up.dart';
 import './widget/list_of_ads.dart';
 import './widget/no_ads_found.dart';
 import '../model/ad.dart';
-import '../view_model/favorite_ads_view_model.dart';
+import '../view_model/display_ads_view_model.dart';
 
 class Favorites extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var viewModel = Provider.of<FavoriteAdsViewModel>(context);
-    List<Ad> currentUserFavoriteAds = viewModel.favoriteAds;
+    List<Ad> currentUserFavoriteAds = viewModel.adsToDisplay;
     return Column(
       children: <Widget>[
         FlatButton(

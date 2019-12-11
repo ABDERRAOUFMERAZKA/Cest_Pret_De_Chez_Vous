@@ -7,13 +7,13 @@ import './widget/filter_pop_up.dart';
 import './widget/list_of_ads.dart';
 import './widget/no_ads_found.dart';
 import '../model/ad.dart';
-import '../view_model/current_user_ads_view_model.dart';
+import '../view_model/display_ads_view_model.dart';
 
 class MyAds extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var viewModel = Provider.of<CurrentUserAdsViewModel>(context);
-    List<Ad> currentUserAds = viewModel.currentUserAds;
+    List<Ad> currentUserAds = viewModel.adsToDisplay;
     return Column(
       children: <Widget>[
         FlatButton(
@@ -36,7 +36,7 @@ class MyAds extends StatelessWidget {
             backgroundColor: Styles.refreshIndicatorColor,
             child: isNotNullNorEmpty(currentUserAds)
                 ? ListOfAds(
-                    viewModel.currentUserAds,
+                    currentUserAds,
                     uid: viewModel.userId,
                     addAdToFavorites: viewModel.addAdToFavorites,
                     removeAdFromFavorites: viewModel.removeAdFromFavorites,
