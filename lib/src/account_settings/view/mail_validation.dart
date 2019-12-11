@@ -1,31 +1,13 @@
+import 'package:cest_pret_de_chez_vous/src/account_settings/view_model/login_view_model.dart';
 import 'package:cest_pret_de_chez_vous/styles.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ValidationMail extends StatefulWidget {
-  @override
-  _VerificationPageState createState() => _VerificationPageState();
-}
-
-class _VerificationPageState extends State<ValidationMail> {
-  String _email;
-
-  @override
-  void initState() {
-    super.initState();
-    getEmail();
-  }
-
-  getEmail() async {
-    var currentUser = await FirebaseAuth.instance.currentUser();
-    var currentUserMail = currentUser.email;
-    setState(() {
-      _email = currentUserMail;
-    });
-  }
-
+class ValidationMail extends StatelessWidget {
   Widget build(BuildContext context) {
-    loginButton(String text, onPressed) => Material(
+    LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
+    String email = viewModel.currentUser.email;
+    Widget loginButton(String text, onPressed) => Material(
           elevation: 5.0,
           borderRadius: BorderRadius.circular(30.0),
           color: Colors.deepOrange,
@@ -40,15 +22,6 @@ class _VerificationPageState extends State<ValidationMail> {
           ),
         );
 
-    validateMail() async {
-      var currentUser = await FirebaseAuth.instance.currentUser();
-      currentUser.sendEmailVerification();
-    }
-
-    logOut() {
-      FirebaseAuth.instance.signOut();
-    }
-
     return Scaffold(
       body: Container(
           child: Padding(
@@ -61,17 +34,18 @@ class _VerificationPageState extends State<ValidationMail> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                            'Please Check E-mail of Validation in this adress $_email',
+                            'Please Check E-mail of Validation in this address $email',
                             textAlign: TextAlign.start,
                             style: Styles.textDefault),
                         SizedBox(
                           height: 25.0,
                         ),
-                        loginButton("Send Email", () => validateMail()),
+                        loginButton("Send Email",
+                            () => viewModel.sendNewVerificationEmail()),
                         SizedBox(
                           height: 25.0,
                         ),
-                        loginButton("Logout", () => logOut()),
+                        loginButton("Logout", () => viewModel.logout()),
                       ],
                     )
                   ]))),

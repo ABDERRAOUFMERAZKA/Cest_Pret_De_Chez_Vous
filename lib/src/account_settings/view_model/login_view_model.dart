@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,18 +9,20 @@ enum LoginStatus { initialState, isLoading, isLoaded, onError }
 enum ServerResponse { ok, platformError, otherError }
 
 class LoginViewModel with ChangeNotifier {
-  String currentUserId;
+  FirebaseUser currentUser;
   LoginStatus loginStatus = LoginStatus.initialState;
   String loginErrorMessage;
 
-  LoginViewModel(this.currentUserId);
-
-  void setCurrentUserId(String uid) {
-    this.currentUserId = uid;
-    notifyListeners();
+  LoginViewModel() {
+    print("view model current user: $currentUser");
   }
 
-  signIn(GlobalKey<FormState> formKey, String email, String password) async {
+  void updateCurrentUser(FirebaseUser newUser) {
+    this.currentUser = newUser;
+  }
+
+  Future<void> signIn(
+      GlobalKey<FormState> formKey, String email, String password) async {
     this.loginStatus = LoginStatus.isLoading;
     notifyListeners();
     final formState = formKey.currentState;
@@ -40,8 +43,8 @@ class LoginViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  signUp(GlobalKey<FormState> formKey, String email, String password,
-      String username) async {
+  Future<void> signUp(GlobalKey<FormState> formKey, String email,
+      String password, String username) async {
     this.loginStatus = LoginStatus.isLoading;
     notifyListeners();
     final formState = formKey.currentState;
@@ -60,6 +63,10 @@ class LoginViewModel with ChangeNotifier {
           getErrorMessageFromFirebaseErrorCode(serverResponse);
     }
     notifyListeners();
+  }
+
+  Future<void> sendNewVerificationEmail() async {
+    await currentUser.sendEmailVerification();
   }
 
   logout() async {
