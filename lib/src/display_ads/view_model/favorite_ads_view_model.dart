@@ -1,12 +1,10 @@
-import 'package:cest_pret_de_chez_vous/src/category.dart';
-import 'package:cest_pret_de_chez_vous/src/display_ads/utils/filter_ads.dart';
-import 'package:flutter/widgets.dart';
-
 import './display_ads_view_model.dart';
+import '../utils/filter_ads.dart';
 import '../model/ad.dart';
 import '../service/retrieve_ads.dart';
+import '../../category.dart';
 
-class FavoriteAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
+class FavoriteAdsViewModel extends DisplayAdsViewModel {
   List<Ad> _favoriteAds = [];
 
   List<Ad> get favoriteAds => _favoriteAds;

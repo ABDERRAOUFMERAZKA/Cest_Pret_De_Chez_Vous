@@ -1,13 +1,12 @@
-import 'package:cest_pret_de_chez_vous/src/category.dart';
-import 'package:cest_pret_de_chez_vous/src/display_ads/utils/filter_ads.dart';
-import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 
 import './display_ads_view_model.dart';
 import '../model/ad.dart';
 import '../service/retrieve_ads.dart';
+import '../utils/filter_ads.dart';
+import '../../category.dart';
 
-class AdsAroundViewModel extends DisplayAdsViewModel with ChangeNotifier {
+class AdsAroundViewModel extends DisplayAdsViewModel {
   static const double _RADIUS = 10;
 
   List<Ad> _adsAround = [];

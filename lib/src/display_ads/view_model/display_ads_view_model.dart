@@ -1,10 +1,12 @@
+import 'package:flutter/widgets.dart';
+
 import '../service/retrieve_ads.dart';
 
 /// When extending this class, you should pay attention to use the
 /// isItTimeToRefresh function to prevent to many calls to your database.
 /// Use an optional {fromServer = false} parameter in your functions for
 /// checking.
-abstract class DisplayAdsViewModel {
+abstract class DisplayAdsViewModel with ChangeNotifier {
   /// Refresh period in milliseconds.
   static const double _REFRESH_DEBOUNCE_TIME = 15000;
 
@@ -25,11 +27,13 @@ abstract class DisplayAdsViewModel {
   Future<void> addAdToFavorites(String adId) async {
     String userId = this.userId;
     await postNewAdToFavorites(adId, userId);
+    notifyListeners();
   }
 
   Future<void> removeAdFromFavorites(String adId) async {
     String userId = this.userId;
     await deleteAdFromFavorites(adId, userId);
+    notifyListeners();
   }
 
   /// This method should update your ListOfAds with distant server only
