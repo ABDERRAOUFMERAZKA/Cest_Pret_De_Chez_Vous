@@ -5,16 +5,17 @@ import 'package:cest_pret_de_chez_vous/utils/random_generator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
 import '../model/ad.dart';
 
-Future<List<String>> savePictureInDatabase(List<File> picturesLoaded) async {
+Future<List<String>> savePicturesInDatabase(List<File> picturesLoaded) async {
+  Uuid uuid = Uuid();
   if (picturesLoaded != null) {
     List<String> urls = [];
     for (var picture in picturesLoaded) {
       if (picture != null) {
-        StorageReference ref =
-            FirebaseStorage.instance.ref().child(randomString(20));
+        StorageReference ref = FirebaseStorage.instance.ref().child(uuid.v4());
         StorageUploadTask uploadTask = ref.putFile(picture);
         urls.add(await (await uploadTask.onComplete).ref.getDownloadURL());
       }
