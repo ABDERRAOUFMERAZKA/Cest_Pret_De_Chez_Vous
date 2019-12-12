@@ -13,12 +13,7 @@ class AdsAroundViewModel extends DisplayAdsViewModel {
   @override
   Future<List<Ad>> _fetchAds({bool fromServer = false}) async {
     Map<String, double> mapPosition = await _getPositionAsMap();
-    List<Map<String, dynamic>> jsonAllAdsAround =
-        await getAdsAround(mapPosition, _RADIUS);
-    List<Ad> allAdsAround = [];
-    for (var jsonAd in jsonAllAdsAround) {
-      allAdsAround.add(Ad.fromJson(jsonAd));
-    }
+    List<Ad> allAdsAround = await getAdsAround(mapPosition, _RADIUS);
     return allAdsAround;
   }
 

@@ -10,12 +10,8 @@ class FavoriteAdsViewModel extends DisplayAdsViewModel {
 
   @override
   Future<List<Ad>> _fetchAds({bool fromServer = false}) async {
-    List<Map<String, dynamic>> jsonFavoriteAds =
+    List<Ad> favoriteAds =
         await getFavoriteAdsFromUser(this.userId, fromServer: fromServer);
-    List<Ad> favoriteAds = [];
-    for (var jsonAd in jsonFavoriteAds) {
-      favoriteAds.add(Ad.fromJson(jsonAd));
-    }
     return favoriteAds;
   }
 }

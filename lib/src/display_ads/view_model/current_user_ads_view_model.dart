@@ -10,12 +10,8 @@ class CurrentUserAdsViewModel extends DisplayAdsViewModel {
 
   @override
   Future<List<Ad>> _fetchAds({bool fromServer = false}) async {
-    List<Map<String, dynamic>> jsonCurrentUserAds =
+    List<Ad> currentUserAds =
         await getAdsFromUser(this.userId, fromServer: fromServer);
-    List<Ad> fetchedCurrentUserAds = [];
-    for (var jsonAd in jsonCurrentUserAds) {
-      fetchedCurrentUserAds.add(Ad.fromJson(jsonAd));
-    }
-    return fetchedCurrentUserAds;
+    return currentUserAds;
   }
 }
