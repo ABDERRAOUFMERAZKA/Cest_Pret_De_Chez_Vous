@@ -10,10 +10,10 @@ Ad _$AdFromJson(Map<String, dynamic> json) {
   return Ad(
     json['title'] as String,
     json['adId'] as String,
-    _$enumDecodeNullable(_$CategoryEnumMap, json['category']),
+    _$enumDecode(_$CategoryEnumMap, json['category']),
     json['authorId'] as String,
     (json['picturesUrl'] as List)?.map((e) => e as String)?.toList(),
-    (json['keywords'] as List)?.map((e) => e as String)?.toList(),
+    (json['keywords'] as List).map((e) => e as String).toList(),
     (json['favored'] as List)?.map((e) => e as String)?.toList(),
     json['description'] as String,
     Ad._positionFromFirebaseGeoPoint(json['location']),
@@ -26,8 +26,8 @@ Map<String, dynamic> _$AdToJson(Ad instance) => <String, dynamic>{
       'adId': instance.adId,
       'category': _$CategoryEnumMap[instance.category],
       'authorId': instance.authorId,
-      'picturesUrl': instance.picturesUrl,
       'keywords': instance.keywords,
+      'picturesUrl': instance.picturesUrl,
       'favored': instance.favored,
       'description': instance.description,
       'location': instance.geoLocation,
@@ -53,17 +53,6 @@ T _$enumDecode<T>(
         '${enumValues.values.join(', ')}');
   }
   return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$CategoryEnumMap = {

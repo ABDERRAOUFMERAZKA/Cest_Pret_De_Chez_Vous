@@ -6,16 +6,33 @@ part 'ad.g.dart';
 
 @JsonSerializable()
 class Ad {
+  @JsonKey(nullable: false)
   final String title;
+
+  @JsonKey(nullable: false)
   final String adId;
+
+  @JsonKey(nullable: false)
   final Category category;
+
+  @JsonKey(nullable: false)
   final String authorId;
-  final List<String> picturesUrl;
+
+  @JsonKey(nullable: false)
   final List<String> keywords;
+
+  @JsonKey(nullable: true)
+  final List<String> picturesUrl;
+
+  @JsonKey(nullable: true)
   final List<String> favored;
+
+  @JsonKey(nullable: true)
   final String description;
+
   @JsonKey(fromJson: _positionFromFirebaseGeoPoint, name: "location")
   final Position geoLocation;
+
   @JsonKey(fromJson: _dateTimeFromFirebaseTimestamp)
   final DateTime createdAt;
 

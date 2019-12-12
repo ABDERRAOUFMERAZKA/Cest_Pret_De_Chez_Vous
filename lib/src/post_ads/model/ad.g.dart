@@ -11,10 +11,10 @@ Ad _$AdFromJson(Map<String, dynamic> json) {
     json['title'] as String,
     Ad._categoryFromString(json['category'] as String),
     (json['picturesUrl'] as List)?.map((e) => e as String)?.toList(),
-    (json['keywords'] as List)?.map((e) => e as String)?.toList(),
+    (json['keywords'] as List).map((e) => e as String).toList(),
     json['description'] as String,
-    (json['latitude'] as num)?.toDouble(),
-    (json['longitude'] as num)?.toDouble(),
+    (json['latitude'] as num).toDouble(),
+    (json['longitude'] as num).toDouble(),
   );
 }
 

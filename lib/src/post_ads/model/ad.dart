@@ -6,13 +6,26 @@ part 'ad.g.dart';
 
 @JsonSerializable()
 class Ad {
+  @JsonKey(nullable: false)
   final String title;
-  @JsonKey(fromJson: _categoryFromString, toJson: _categoryToString)
+
+  @JsonKey(
+      nullable: false, fromJson: _categoryFromString, toJson: _categoryToString)
   final Category category;
+
+  @JsonKey(nullable: true)
   final List<String> picturesUrl;
+
+  @JsonKey(nullable: false)
   final List<String> keywords;
+
+  @JsonKey(nullable: true)
   final String description;
+
+  @JsonKey(nullable: false)
   final double latitude;
+
+  @JsonKey(nullable: false)
   final double longitude;
 
   Ad(this.title, this.category, this.picturesUrl, this.keywords,
