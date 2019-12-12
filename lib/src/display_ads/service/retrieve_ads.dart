@@ -21,11 +21,11 @@ Future<List<Map<String, dynamic>>> _fetchAds(
     docsAsMaps.add(docAsMap);
   });
 
-  if (isNotNullNorEmpty(docsAsMaps))
-    docsAsMaps.sort((var ad1, var ad2) {
-      if (ad1["createdAt"] != null && ad2["createdAt"] != null)
-        return -ad1["createdAt"].compareTo(ad2["createdAt"]);
-      return 1;
-    });
+  docsAsMaps?.sort((var ad1, var ad2) {
+    if (ad1["createdAt"] != null && ad2["createdAt"] != null)
+      return -ad1["createdAt"].compareTo(ad2["createdAt"]);
+    return 1;
+  });
+
   return docsAsMaps;
 }
