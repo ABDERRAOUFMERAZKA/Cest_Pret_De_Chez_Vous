@@ -13,10 +13,6 @@ class LoginViewModel with ChangeNotifier {
   LoginStatus loginStatus = LoginStatus.initialState;
   String loginErrorMessage;
 
-  LoginViewModel() {
-    print("view model current user: $currentUser");
-  }
-
   void updateCurrentUser(FirebaseUser newUser) {
     this.currentUser = newUser;
   }
