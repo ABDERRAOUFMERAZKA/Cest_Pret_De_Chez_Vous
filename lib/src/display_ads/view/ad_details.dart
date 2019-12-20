@@ -34,11 +34,7 @@ class AdDetails extends StatelessWidget {
             ),
           ),
           Expanded(
-            child:
-                // Image.network(
-                //   'https://interactive-examples.mdn.mozilla.net/media/examples/grapefruit-slice-332-332.jpg',
-                // ),
-                GridView.count(
+            child: GridView.count(
               crossAxisCount: 3,
               children: List.generate(ad.picturesUrl.length, (index) {
                 return Container(
