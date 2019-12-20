@@ -12,6 +12,7 @@ bool isListNotNullAndContains(List<dynamic> list, dynamic element) {
   return (list.contains(element));
 }
 
+/// Please first check if you can't use List?.function() instead of this.
 /// Checks if String or List is not null nor empty. Returns true if the variable
 /// is neither a String nor a List but is not null.
 bool isNotNullNorEmpty(dynamic element) {

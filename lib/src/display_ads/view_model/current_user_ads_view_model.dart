@@ -1,49 +1,17 @@
-import 'package:cest_pret_de_chez_vous/src/category.dart';
-import 'package:cest_pret_de_chez_vous/src/display_ads/utils/filter_ads.dart';
-import 'package:flutter/widgets.dart';
+part of 'display_ads_view_model.dart';
 
-import './display_ads_view_model.dart';
-import '../model/ad.dart';
-import '../service/retrieve_ads.dart';
-
-class CurrentUserAdsViewModel extends DisplayAdsViewModel with ChangeNotifier {
-  final String userId;
-
-  List<Ad> _currentUserAds = [];
-
-  List<Ad> get currentUserAds => _currentUserAds;
-
-  CurrentUserAdsViewModel(this.userId) {
+class CurrentUserAdsViewModel extends DisplayAdsViewModel {
+  CurrentUserAdsViewModel(String userId) : super(userId) {
     _fetchAds(fromServer: true).then((receivedAds) {
-      this._currentUserAds = receivedAds;
+      this._adsToDisplay = receivedAds;
       notifyListeners();
     });
   }
 
   @override
-  Future<void> refreshAds() async {
-    List<Ad> fetchedCurrentUserAds =
-        await _fetchAds(fromServer: isItTimeToRefresh());
-    this._currentUserAds = fetchedCurrentUserAds;
-    lastAdRefresh = DateTime.now();
-    notifyListeners();
-  }
-
-  @override
-  Future<void> filterAds({Category category, List<String> keywords}) async {
-    List<Ad> fetchedCurrentUserAds = await _fetchAds(fromServer: false);
-    List<Ad> filteredAds = FilterAd.filterAds(fetchedCurrentUserAds,
-        category: category, keywords: keywords);
-    this._currentUserAds = filteredAds;
-  }
-
   Future<List<Ad>> _fetchAds({bool fromServer = false}) async {
-    List<Map<String, dynamic>> jsonCurrentUserAds =
+    List<Ad> currentUserAds =
         await getAdsFromUser(this.userId, fromServer: fromServer);
-    List<Ad> fetchedCurrentUserAds = [];
-    for (var jsonAd in jsonCurrentUserAds) {
-      fetchedCurrentUserAds.add(Ad.fromJson(jsonAd));
-    }
-    return fetchedCurrentUserAds;
+    return currentUserAds;
   }
 }

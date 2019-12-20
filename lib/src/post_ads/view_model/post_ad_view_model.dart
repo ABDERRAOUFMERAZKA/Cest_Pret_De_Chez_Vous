@@ -16,7 +16,7 @@ class PostAdViewModel with ChangeNotifier {
   final String userId;
 
   Future<List<String>> _uploadPictures(List<File> picturesLoaded) async {
-    return await savePictureInDatabase(picturesLoaded);
+    return await savePicturesInDatabase(picturesLoaded);
   }
 
   PostAdViewModel(this.userId);

@@ -1,6 +1,9 @@
+/// This code is from this repo: https://github.com/rknell/flutterEnumsToString
+/// We decided to copy it because the functions didn't satisfy us, so we changed
+/// them.
+
 import 'string_utils.dart';
 
-/// A Calculator.
 class EnumToString {
   static String parse(enumItem) {
     if (enumItem == null) return null;

@@ -1,7 +1,7 @@
 import 'package:cest_pret_de_chez_vous/styles.dart';
-import 'package:cest_pret_de_chez_vous/utils/date_utils.dart';
 import 'package:cest_pret_de_chez_vous/utils/enum_utils.dart';
 import 'package:cest_pret_de_chez_vous/utils/list_utils.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 
 import '../ad_details.dart';
@@ -37,7 +37,7 @@ class AdInList extends StatelessWidget {
                     style: Styles.mediumText,
                   ),
                   Text(
-                    DateToString.fullNumbersWithCharBetween(ad.createdAt, " "),
+                    formatDate(ad.createdAt, [dd, ' ', mm, ' ', yy]),
                     style: Styles.smallText,
                   )
                 ],

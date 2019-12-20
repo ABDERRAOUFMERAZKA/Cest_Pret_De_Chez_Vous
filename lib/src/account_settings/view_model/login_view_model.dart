@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart'; // This import is only to use FirebaseUser class
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -8,25 +9,23 @@ enum LoginStatus { initialState, isLoading, isLoaded, onError }
 enum ServerResponse { ok, platformError, otherError }
 
 class LoginViewModel with ChangeNotifier {
-  String currentUserId;
+  FirebaseUser currentUser;
   LoginStatus loginStatus = LoginStatus.initialState;
   String loginErrorMessage;
 
-  LoginViewModel(this.currentUserId);
-
-  void setCurrentUserId(String uid) {
-    this.currentUserId = uid;
-    notifyListeners();
+  void updateCurrentUser(FirebaseUser newUser) {
+    this.currentUser = newUser;
   }
 
-  signIn(GlobalKey<FormState> formKey, String email, String password) async {
+  Future<void> signIn(
+      GlobalKey<FormState> formKey, String email, String password) async {
     this.loginStatus = LoginStatus.isLoading;
     notifyListeners();
     final formState = formKey.currentState;
     String serverResponse;
     if (formState.validate()) {
       formState.save();
-      serverResponse = await firebaseSignIn(email, password);
+      serverResponse = await signInUserFromEmailAndPassword(email, password);
     } else {
       this.loginStatus = LoginStatus.initialState;
     }
@@ -40,15 +39,16 @@ class LoginViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  signUp(GlobalKey<FormState> formKey, String email, String password,
-      String username) async {
+  Future<void> signUp(GlobalKey<FormState> formKey, String email,
+      String password, String username) async {
     this.loginStatus = LoginStatus.isLoading;
     notifyListeners();
     final formState = formKey.currentState;
     String serverResponse;
     if (formState.validate()) {
       formState.save();
-      serverResponse = await firebaseSignUp(email, password, username);
+      serverResponse = await signUpUserWithEmailPasswordAndDisplayName(
+          email, password, username);
     } else {
       this.loginStatus = LoginStatus.initialState;
     }
@@ -62,7 +62,11 @@ class LoginViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  logout() async {
-    await firebaseSignOut();
+  Future<void> sendNewVerificationEmail() async {
+    await currentUser.sendEmailVerification();
+  }
+
+  Future<void> signOut() async {
+    await signOutUser();
   }
 }
