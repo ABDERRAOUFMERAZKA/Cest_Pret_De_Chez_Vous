@@ -1,7 +1,7 @@
 part of 'display_ads_view_model.dart';
 
 class AdsAroundViewModel extends DisplayAdsViewModel {
-  static const double _RADIUS = 10;
+  static const double _RADIUS = 2;
 
   AdsAroundViewModel(String userId) : super(userId) {
     _fetchAds(fromServer: true).then((receivedAds) {
@@ -18,8 +18,7 @@ class AdsAroundViewModel extends DisplayAdsViewModel {
   }
 
   Future<Map<String, double>> _getPositionAsMap() async {
-    Position currentPosition = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position currentPosition = Position(latitude: 48.8409, longitude: 2.24137);
     return {
       "latitude": currentPosition.latitude,
       "longitude": currentPosition.longitude,
